@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+{% block content %}
+    <h1>About Page</h1>
+    <div class="form-group">
+        {{ form.select.label(class="form-control-label") }}
+        {% if form.select.errors %}
+            {{ form.select(class="form-control form-control-lg is-invalid") }}
+            <div class="invalid-feedback">
+                {% for error in form.select.errors %}
+                    <span>{{ error }}</span>
+                {% endfor %}
+            </div>
+        {% else %}
+            {{ form.select(class="form-control form-control-lg") }}
+        {% endif %}
+    </div>
+    <div class="form-group">
+        {{ form.search.label(class="form-control-label") }}
+        {% if form.search.errors %}
+            {{ form.search(class="form-control form-control-lg is-invalid") }}
+            <div class="invalid-feedback">
+                {% for error in form.search.errors %}
+                    <span>{{ error }}</span>
+                {% endfor %}
+            </div>
+        {% else %}
+            {{ form.search(class="form-control form-control-lg") }}
+        {% endif %}
+    </div>
+{% endblock content %}
