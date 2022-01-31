@@ -1,30 +1,96 @@
 {% extends "layout.html" %}
 {% block content %}
-    <h1>About Page</h1>
-    <div class="form-group">
-        {{ form.select.label(class="form-control-label") }}
-        {% if form.select.errors %}
-            {{ form.select(class="form-control form-control-lg is-invalid") }}
-            <div class="invalid-feedback">
-                {% for error in form.select.errors %}
-                    <span>{{ error }}</span>
-                {% endfor %}
+    <h1>Search Page</h1>
+    <form method="POST" action="">
+        {{ form.hidden_tag() }}
+        <div class="content-section">
+                <fieldset class="form-group ">
+                    <div class="form-group">
+                        {{ form.select.label(class="form-control-label") }}
+                        {% if form.select.errors %}
+                            {{ form.select(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.select.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.select(class="form-control form-control-lg") }}
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.start_pos.label(class="form-control-label") }}
+                        {% if form.start_pos.errors %}
+                            {{ form.start_pos(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.start_pos.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.start_pos(class="form-control") }}
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.end_pos.label(class="form-control-label") }}
+                        {% if form.end_pos.errors %}
+                            {{ form.end_pos(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.end_pos.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.end_pos(class="form-control") }}
+                        {% endif %}
+                    </div>
+                </fieldset>
+                <div class="form-group">
+                    {{ form.submit(class="btn btn-outline-info") }}
+                </div>
             </div>
-        {% else %}
-            {{ form.select(class="form-control form-control-lg") }}
-        {% endif %}
-    </div>
-    <div class="form-group">
-        {{ form.search.label(class="form-control-label") }}
-        {% if form.search.errors %}
-            {{ form.search(class="form-control form-control-lg is-invalid") }}
-            <div class="invalid-feedback">
-                {% for error in form.search.errors %}
-                    <span>{{ error }}</span>
-                {% endfor %}
+            <br>
+            <hr style="height:2px;border-width:0;color:gray;background-color:gray">
+            <br>
+            <div class="content-section">
+                <fieldset class="form-group ">
+                    <div class="form-group">
+                        {{ form.rs_val.label(class="form-control-label") }}
+                        {% if form.rs_val.errors %}
+                            {{ form.rs_val(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.rs_val.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.rs_val(class="form-control form-control-lg") }}
+                        {% endif %}
+                    </div>
+                </fieldset>
+                <div class="form-group">
+                    {{ form.rs_search(class="btn btn-outline-info") }}
+                </div>
             </div>
-        {% else %}
-            {{ form.search(class="form-control form-control-lg") }}
-        {% endif %}
-    </div>
+            <br>
+            <hr style="height:2px;border-width:0;color:gray;background-color:gray">
+            <br>
+                <fieldset class="form-group content-section">
+                    <div class="form-group">
+                        {{ form.gene.label(class="form-control-label") }}
+                        {% if form.gene.errors %}
+                            {{ form.gene(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.gene.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.gene(class="form-control form-control-lg") }}
+                        {% endif %}
+                        <div class="form-group">
+                            {{ form.gene_search(class="btn btn-outline-info") }}
+                        </div>
+                </fieldset>
+        </form>
 {% endblock content %}

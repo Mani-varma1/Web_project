@@ -27,8 +27,11 @@ def about():
 def search():
     form = SearchForVCF()
     if form.validate_on_submit():
+        if request.form.get('action') == "info_sub":
             flash(f'Needs building ', 'success')   
-            redirect()
+            return redirect(url_for('home'))
+        else:
+            return redirect(url_for('contact'))
     return render_template('search.html', title='About', form=form)
     
 
