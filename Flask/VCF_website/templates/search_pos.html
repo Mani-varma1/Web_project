@@ -1,0 +1,53 @@
+{% extends "layout.html" %}
+{% block content %}
+    <h1>Search Page</h1>
+    <form method="POST" action="">
+        {{ form.hidden_tag() }}
+        <div class="content-section">
+            <fieldset class="form-group ">
+                <div class="form-group">
+                    {{ form.select.label(class="form-control-label") }}
+                    {% if form.select.errors %}
+                        {{ form.select(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.select.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.select(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form.start_pos.label(class="form-control-label") }}
+                    {% if form.start_pos.errors %}
+                        {{ form.start_pos(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.start_pos.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.start_pos(class="form-control") }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form.end_pos.label(class="form-control-label") }}
+                    {% if form.end_pos.errors %}
+                        {{ form.end_pos(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.end_pos.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.end_pos(class="form-control") }}
+                    {% endif %}
+                </div>
+            </fieldset>
+            <div class="form-group">
+                {{ form.submit(class="btn btn-outline-info") }}
+            </div>
+        </div>
+    </form>
+{% endblock content %}

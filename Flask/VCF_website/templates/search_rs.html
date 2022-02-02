@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+{% block content %}
+    <h1>Search Page</h1>
+    <form method="POST" action="">
+        {{ form.hidden_tag() }}
+        <div class="content-section">
+            <fieldset class="form-group">
+                <div class="form-group">
+                    {{ form.rs_val.label(class="form-control-label") }}
+                    {% if form.rs_val.errors %}
+                        {{ form.rs_val(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.rs_val.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.rs_val(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form.rs_search(class="btn btn-outline-info") }}
+                </div>
+            </fieldset>
+        </div>
+    </form>
+{% endblock content %}

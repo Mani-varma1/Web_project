@@ -10,13 +10,20 @@ class ContactForm(FlaskForm):
     submit = SubmitField('Send')
 
 
-class SearchForVCF(FlaskForm):
-    choices = [('CHR', 'CHR'),('1', '1'), ('2', '2')]
+class SearchPos(FlaskForm):
+    choices = [('CHR', 'CHR'),('1', '1'), ('22', '22')]
     select = SelectField('Select Chromosome:', choices=choices)
     start_pos = IntegerField('Starting position', validators=[DataRequired()])
     end_pos = IntegerField('Ending position', validators=[Optional()])
     submit = SubmitField('Search')
-    rs_val = StringField('rs value',validators=[Optional()])
+    
+    
+    
+class SearchRs(FlaskForm):
+    rs_val = StringField('rs value',validators=[DataRequired()])
     rs_search = SubmitField('Search')
+
+
+class SearchGene(FlaskForm):
     gene = StringField('Gene Name',validators=[DataRequired()])
     gene_search = SubmitField('Search')

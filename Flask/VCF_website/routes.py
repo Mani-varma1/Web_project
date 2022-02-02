@@ -1,7 +1,7 @@
 from flask import render_template,url_for ,flash, redirect, request
 from importlib_metadata import email
 from VCF_website import app
-from VCF_website.forms import ContactForm,SearchForVCF
+from VCF_website.forms import ContactForm,SearchPos, SearchRs,SearchGene
 from VCF_website.models import VCF_db
 
 
@@ -23,16 +23,35 @@ def about():
     return render_template('about.html', title='About Us')
 
 
-@app.route("/search",methods=['GET','POST'])
-def search():
-    form = SearchForVCF()
+@app.route("/search_pos",methods=['GET','POST'])
+def search_pos():
+    form = SearchPos()
     if form.validate_on_submit():
-        if request.form.get('action') == "info_sub":
-            flash(f'Needs building ', 'success')   
-            return redirect(url_for('home'))
-        else:
-            return redirect(url_for('contact'))
-    return render_template('search.html', title='About', form=form)
+            return redirect(url_for('results'))
+    return render_template('search_pos.html', title='About', form=form)
+    
+
+
+@app.route("/search_rs",methods=['GET','POST'])
+def search_rs():
+    form = SearchRs()
+    if form.validate_on_submit():
+            return redirect(url_for('results'))
+    return render_template('search_rs.html', title='About', form=form)
+
+
+
+@app.route("/search_gene",methods=['GET','POST'])
+def search_gene():
+    form = SearchGene()
+    if form.validate_on_submit():
+        return redirect(url_for('results'))
+    return render_template('search_gene.html', title='About', form=form)
+
+
+@app.route("/results",methods=['GET','POST'])
+def results():
+    return render_template('results.html', title='Results')
     
 
 @app.route("/contact", methods=['GET','POST'])
