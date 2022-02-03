@@ -23,12 +23,15 @@ def about():
     return render_template('about.html', title='About Us')
 
 
-@app.route("/search_pos",methods=['GET','POST'])
-def search_pos():
-    form = SearchPos()
-    if form.validate_on_submit():
+@app.route("/search",methods=['GET','POST'])
+def search():
+    form1 = SearchPos()
+    form2 = SearchRs()
+    form3 = SearchGene()
+
+    if form1.validate_on_submit():
             return redirect(url_for('results'))
-    return render_template('search_pos.html', title='About', form=form)
+    return render_template('search.html', title='About', form1=form1, form2=form2, form3=form3)
     
 
 
