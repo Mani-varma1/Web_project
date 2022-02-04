@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 {% block content %}
     <h1>Search Page</h1>
-        <form method="POST" action="">
+        <form novalidate="novalidate" method="POST" action="">
             {{ form1.hidden_tag() }}
             <div class="content-section">
                 <fieldset class="form-group ">
@@ -15,7 +15,7 @@
                                 {% endfor %}
                             </div>
                         {% else %}
-                            {{ form1.select(class="form-control form-control-lg") }}
+                            {{ form1.select(option_attr={"select-0": {"disabled": ""} }, class="form-control form-control-lg") }}
                         {% endif %}
                     </div>
                     <div class="form-group">
@@ -52,7 +52,7 @@
         </form>
         <br>
         <hr style="height:2px;border-width:0;color:gray;background-color:gray">
-        <form method="POST" action="">
+        <form novalidate="novalidate" method="POST" action="">
             {{ form2.hidden_tag() }}
             <div class="content-section">
                 <fieldset class="form-group">
@@ -78,7 +78,7 @@
         <br>
         <hr style="height:2px;border-width:0;color:gray;background-color:gray">
         <br>
-        <form method="POST" action="">
+        <form novalidate="novalidate" method="POST" action="">
             {{ form3.hidden_tag() }}
             <div class="content-section">
                 <fieldset class="form-group ">
