@@ -29,27 +29,14 @@ def search():
     form2 = SearchRs()
     form3 = SearchGene()
 
-    if form1.validate_on_submit():
-            return redirect(url_for('results'))
-    return render_template('search.html', title='About', form1=form1, form2=form2, form3=form3)
-    
-
-
-@app.route("/search_rs",methods=['GET','POST'])
-def search_rs():
-    form = SearchRs()
-    if form.validate_on_submit():
-            return redirect(url_for('results'))
-    return render_template('search_rs.html', title='About', form=form)
-
-
-
-@app.route("/search_gene",methods=['GET','POST'])
-def search_gene():
-    form = SearchGene()
-    if form.validate_on_submit():
+    if form1.submit.data and form1.validate_on_submit():
         return redirect(url_for('results'))
-    return render_template('search_gene.html', title='About', form=form)
+    elif form2.rs_search.data and form2.validate_on_submit():
+        return redirect(url_for('home'))
+    elif form3.gene_search.data and form3.validate_on_submit():
+        return redirect(url_for('results'))
+    return render_template('search.html', title='About', form1=form1, form2=form2, form3=form3)
+
 
 
 @app.route("/results",methods=['GET','POST'])
