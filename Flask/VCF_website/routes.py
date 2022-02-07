@@ -1,16 +1,17 @@
-from flask import render_template,url_for ,flash, redirect, request
+from re import S
+from flask import render_template,url_for ,flash, redirect, request, session
 from importlib_metadata import email
 from VCF_website import app
 from VCF_website.forms import ContactForm,SearchPos, SearchRs,SearchGene
-from VCF_website.models import VCF_db
+from VCF_website.models import query_search
+import ast
 
 
 
 
-
-# @app.before_first_request
-# def create_tables():
-#     db.create_all()
+#@app.before_first_request
+#def create_tables():
+    #db.create_all()
 
 
 @app.route("/")
@@ -30,18 +31,50 @@ def search():
     form3 = SearchGene()
 
     if form1.submit.data and form1.validate_on_submit():
-        return redirect(url_for('results'))
+        chromosome_position =  {
+            "chr" : form1.select.data,
+            "start_pos" : form1.start_pos.data,
+            "end_pos" : form1.end_pos.data
+        }
+        return redirect(url_for('loading',variable=chromosome_position))
     elif form2.rs_search.data and form2.validate_on_submit():
-        return redirect(url_for('home'))
+        form2_rs = f"'{form2.rs_val.data}'"
+        return redirect(url_for('loading',variable=form2_rs))
     elif form3.gene_search.data and form3.validate_on_submit():
-        return redirect(url_for('results'))
+        form3_gene = f"'{form3.gene.data}'"
+        return redirect(url_for('loading',variable=form3_gene))
     return render_template('search.html', title='About', form1=form1, form2=form2, form3=form3)
 
+def get_results(variable):
+    variable = ast.literal_eval(variable)
+    if isinstance(variable, dict):
+        if variable["end_pos"] == None:
+            results = query_search.query.filter(query_search.pos.like(int(variable["start_pos"]))).all()
+            return results
+        else:
+            results = query_search.query.filter(query_search.pos >= int(variable['start_pos'])).filter(query_search.pos <= int(variable['end_pos'])).all()
+            return results
+    else:
+        if variable.startswith('rs') == True:
+            results = query_search.query.filter(query_search.rs_val.like(variable)).all()
+            return results
+        else: 
+            results = query_search.query.filter(query_search.gene_name.like(variable)).all()
+            return results
+        
+                
 
+@app.route("/loading/<variable>",methods=["GET","POST"])
+def loading(variable):
+    if request.method == "GET":
+        results = get_results(variable)
+        return redirect(url_for("results",variable=results))
+    return render_template('loading.html', title='Loading')
 
-@app.route("/results",methods=['GET','POST'])
-def results():
-    return render_template('results.html', title='Results')
+@app.route("/results/<variable>",methods=['GET','POST'])
+def results(variable):
+    return render_template('results.html', title='Results', Results=variable)
+
     
 
 @app.route("/contact", methods=['GET','POST'])
