@@ -68,6 +68,8 @@ def get_results(variable):
 def loading(variable):
     if request.method == "GET":
         results = get_results(variable)
+        if len(results) == 0:
+            results = "None"
         return redirect(url_for("results",variable=results))
     return render_template('loading.html', title='Loading')
 
