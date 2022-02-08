@@ -12,6 +12,6 @@ To activate the virtual environment
 ".venv\Scripts\activate"
 
 install packages:
-"pip install -r packages"
+"pip install -r packages.txt"
 
 Then run the script by: "python run.py" 
