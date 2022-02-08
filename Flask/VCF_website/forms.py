@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, SelectField, IntegerField
 from wtforms.validators import DataRequired, Length, Email, Optional, ValidationError,InputRequired
-from VCF_website.models import VCF_db
+from VCF_website.models import query_search
 from markupsafe import Markup
 from wtforms.widgets.core import html_params
 
