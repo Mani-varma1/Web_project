@@ -83,7 +83,7 @@ class SearchPos(FlaskForm):
     
     
 class SearchRs(FlaskForm):
-    rs_val = StringField("rs value",validators=[DataRequired(), Regexp(r'^(rs[0-9]+,?\s?,?\s?)+', message="Please provide a valid rs value")])
+    rs_val = StringField("RS ID",validators=[DataRequired(), Regexp(r'^(rs[0-9]+,?\s?,?\s?)+', message="Please provide a valid rs value")])
     rs_search = SubmitField("Search")
 
 
