@@ -74,7 +74,7 @@ def get_results(variable):
 @app.route("/loading/<variable>",methods=["GET","POST"])
 def loading(variable):
     if request.method == "GET":
-        results = get_result(variable)
+        results = get_results(variable)
         print(type(results))
         #if len(results) == 0:
         #    results = "None"

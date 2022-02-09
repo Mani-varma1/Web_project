@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, SelectField, IntegerField
-from wtforms.validators import DataRequired, Length, Email, Optional, ValidationError,InputRequired
+from wtforms.validators import DataRequired, Length, Email, Optional, ValidationError,InputRequired, Regexp
 from VCF_website.models import query_search
 from markupsafe import Markup
 from wtforms.widgets.core import html_params
@@ -60,7 +60,7 @@ class GreaterThan(object):
             other = form[self.fieldname]
         except KeyError:
             raise ValidationError(field.gettext("Invalid field name '%s'.") % self.fieldname)
-        if field.data <= other.data:  #  --> Change to <= so it compares with start_pos
+        if other.data and (field.data < other.data):  #  --> Change to <= so it compares with start_pos
             d = {
                 'other_label': hasattr(other, 'label') and other.label.text or self.fieldname,
                 'other_name': self.fieldname
@@ -83,7 +83,7 @@ class SearchPos(FlaskForm):
     
     
 class SearchRs(FlaskForm):
-    rs_val = StringField("rs value",validators=[DataRequired()])
+    rs_val = StringField("rs value",validators=[DataRequired(), Regexp(r'^(rs[0-9]+,?\s?,?\s?)+', message="Please provide a valid rs value")])
     rs_search = SubmitField("Search")
 
 
