@@ -1,7 +1,7 @@
 body {
     background: #fafafa;
     color: #333333;
-    margin-top: 5rem;
+    margin-top: 8rem;
   }
   
   h1, h2, h3, h4, h5, h6 {
@@ -9,7 +9,7 @@ body {
   }
   
   .bg-steel {
-    background-color: #5f788a;
+    background-color: #536e81;
   }
   
   .site-header .navbar-nav .nav-link {
@@ -17,7 +17,7 @@ body {
   }
   
   .site-header .navbar-nav .nav-link:hover {
-    color: #ffffff;
+    color: #050303;
   }
   
   .site-header .navbar-nav .nav-link.active {
@@ -26,10 +26,10 @@ body {
   
   .content-section {
     background: #ffffff;
-    padding: 10px 20px;
-    border: 1px solid #dddddd;
+    padding: 15px 25px;
+    border: 2px solid #867777;
     border-radius: 3px;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
   }
   
   .article-title {
@@ -77,4 +77,12 @@ body {
   
   .account-heading {
     font-size: 2.5rem;
+  }
+
+  
+.change-width{
+    width: 70%;
+    margin-left: 15%;
+    margin-top: 5%;
+    margin-bottom: 10%;
   }

@@ -1,12 +1,12 @@
 {% extends "layout.html" %}
 {% block content %}
-    <h1>Search Page</h1>
+    <h1 style="margin-top:-50px;">Search Page</h1>
         <form novalidate="novalidate" method="POST" action="">
             {{ form1.hidden_tag() }}
-            <div class="content-section">
+            <div class="content-section mt-3">
                 <fieldset class="form-group ">
                     <div class="form-group">
-                        {{ form1.select.label(class="form-control-label") }}
+                        {{ form1.select.label(class="form-control-label mb-1") }}
                         {% if form1.select.errors %}
                             {{ form1.select(class="form-control form-control-lg is-invalid") }}
                             <div class="invalid-feedback">
@@ -15,11 +15,11 @@
                                 {% endfor %}
                             </div>
                         {% else %}
-                            {{ form1.select(option_attr={"select-0": {"disabled": ""} }, class="form-control form-control-lg") }}
+                            {{ form1.select(option_attr={"select-0": {"disabled": ""} }, class="form-control form-control-lg mb-3 ") }}
                         {% endif %}
                     </div>
-                    <div class="form-group">
-                        {{ form1.start_pos.label(class="form-control-label") }}
+                    <div class="form-group ">
+                        {{ form1.start_pos.label(class="form-control-label mb-1") }}
                         {% if form1.start_pos.errors %}
                             {{ form1.start_pos(class="form-control form-control-lg is-invalid") }}
                             <div class="invalid-feedback">
@@ -28,11 +28,11 @@
                                 {% endfor %}
                             </div>
                         {% else %}
-                            {{ form1.start_pos(class="form-control") }}
+                            {{ form1.start_pos(class="form-control mb-3") }}
                         {% endif %}
                     </div>
                     <div class="form-group">
-                        {{ form1.end_pos.label(class="form-control-label") }}
+                        {{ form1.end_pos.label(class="form-control-label mb-1") }}
                         {% if form1.end_pos.errors %}
                             {{ form1.end_pos(class="form-control form-control-lg is-invalid") }}
                             <div class="invalid-feedback">
@@ -41,12 +41,12 @@
                                 {% endfor %}
                             </div>
                         {% else %}
-                            {{ form1.end_pos(class="form-control") }}
+                            {{ form1.end_pos(class="form-control mb-3") }}
                         {% endif %}
                     </div>
                 </fieldset>
                 <div class="form-group">
-                    {{ form1.submit(class="btn btn-outline-info") }}
+                    {{ form1.submit(class="btn btn-outline-info mt-3") }}
                 </div>
             </div>
         </form>
@@ -57,7 +57,7 @@
             <div class="content-section">
                 <fieldset class="form-group">
                     <div class="form-group">
-                        {{ form2.rs_val.label(class="form-control-label") }}
+                        {{ form2.rs_val.label(class="form-control-label mb-1") }}
                         {% if form2.rs_val.errors %}
                             {{ form2.rs_val(class="form-control form-control-lg is-invalid") }}
                             <div class="invalid-feedback">
@@ -70,7 +70,7 @@
                         {% endif %}
                     </div>
                     <div class="form-group">
-                        {{ form2.rs_search(class="btn btn-outline-info") }}
+                        {{ form2.rs_search(class="btn btn-outline-info mt-3") }}
                     </div>
                 </fieldset>
             </div>
@@ -91,10 +91,10 @@
                                 {% endfor %}
                             </div>
                         {% else %}
-                            {{ form3.gene(class="form-control form-control-lg") }}
+                            {{ form3.gene(class="form-control form-control-lg mb-1") }}
                         {% endif %}
                         <div class="form-group">
-                            {{ form3.gene_search(class="btn btn-outline-info") }}
+                            {{ form3.gene_search(class="btn btn-outline-info mt-3") }}
                         </div>
                 </fieldset>
             </div>
