@@ -1,5 +1,24 @@
 {% extends "layout.html" %}
 {% block content %}
- <h1> Results </h1>
-    <h2>{{ Results }}</h2>
+<h1> Results </h1>
+    <table id="example" class="table table-striped table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th>Chromosome</th>
+                <th>RS ID</th>
+                <th>Position</th>
+                <th>Reference allele</th>
+                <th>Alternate allele</th>
+            </tr>
+        </thead>
+        <tbody>
+    {% for row in Results %}
+    <tr>
+        <td>{{ row.chrom}}</td>
+        <td>{{ row.rs_val}}</td>
+        <td>{{ row.pos}}</td>
+        <td>{{ row.ref_allele}}</td>
+        <td>{{ row.alt_allele}}</td>
+        </tr>
+        {% endfor %}  
 {% endblock content %}
