@@ -98,23 +98,55 @@ def get_results(variable):
 def results(search):
     if request.method == "GET":
         variable = search
+        mxl=[]
+        gbr=[]
+        jpt=[]
+        pjl=[]
+        yri=[]
         variable = ast.literal_eval(variable)
         if isinstance(variable, dict):
             if variable["end_pos"] == None:
                 results = query_search.query.filter(query_search.pos.like(variable['start_pos'])).filter(query_search.chrom == '{}'.format(variable["chr"])).all()
-                return render_template('results.html', title='Results', results=results)
+                for x in results:
+                    mxl = x.mxl
+                    gbr = x.gbr
+                    jpt = x.jpt
+                    pjl = x.pjl
+                    yri = x.yri
+                print(mxl)
+                for x in mxl:
+                    hom_alt = ast.literal_eval(x.geno_freq)
+                    print(hom_alt['hom_ref'])
+                return render_template('results.html', title='Results', Results=results,MXL=mxl,GBR=gbr,JPT=jpt,PJL=pjl,YRI=yri)
             else:
                 results = query_search.query.filter(query_search.pos >= int(variable['start_pos'])).filter(query_search.pos <= int(variable['end_pos'])).filter(query_search.chrom == '{}'.format(variable['chr'])).all()
-                return render_template('results.html', title='Results', results=results)
+                for x in results:
+                    mxl = mxl + (x.mxl)
+                    gbr = gbr + x.gbr
+                    jpt = jpt + x.jpt
+                    pjl = pjl + x.pjl
+                    yri = yri + x.yri
+                return render_template('results.html', title='Results', Results=results,MXL=mxl,GBR=gbr,JPT=jpt,PJL=pjl,YRI=yri)
         else:
             if variable.startswith('rs') == True:
                 results = query_search.query.filter(query_search.rs_val.like(variable)).all()
-                results = [row.to_dict() for row in results]
-                print(results)
-                return render_template('results.html', title='Results', results=results)
+                for x in results:
+                    mxl = x.mxl
+                    gbr = x.gbr
+                    jpt = x.jpt
+                    pjl = x.pjl
+                    yri = x.yri
+                return render_template('results.html', title='Results', Results=results,MXL=mxl,GBR=gbr,JPT=jpt,PJL=pjl,YRI=yri)
             else: 
                 results = query_search.query.filter(query_search.gene_name.like(variable)).all()
-                return render_template('results.html', title='Results', results=results) 
+                for x in results:
+                    mxl = x.mxl
+                    gbr = x.gbr
+                    jpt = x.jpt
+                    pjl = x.pjl
+                    yri = x.yri
+                return render_template('results.html', title='Results', Results=results,MXL=mxl,GBR=gbr,JPT=jpt,PJL=pjl,YRI=yri)
+
 
     
 
