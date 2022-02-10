@@ -2,26 +2,45 @@
 {% block content %}
 <h1> Results </h1>
   <div class="container col-md-15 col-md-offset-55">
-    <table id="example" class="table table-hover table-striped table-bordered" style="width:100%">
-      <thead>
-        <tr>
-            <th>Chromosome</th>
-            <th>RS ID</th>
-            <th>Position</th>
-            <th>Gene Name</th>
-            <th>Reference allele</th>
-            <th>Alternate allele</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for i in results %}
+    <table id="example" class="table table-striped table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th>Chromosome</th>
+                <th>RS ID</th>
+                <th>Position</th>
+                <th>Reference allele</th>
+                <th>Alternate allele</th>
+            </tr>
+        </thead>
+        <tbody>
+          {% for row in Results %}
+            <tr>
+            <td>{{ row.chrom}}</td>
+            <td>{{ row.rs_val}}</td>
+            <td>{{ row.pos}}</td>
+            <td>{{ row.ref_allele}}</td>
+            <td>{{ row.alt_allele}}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+    </table>
+    <table id="example" class="table table-striped table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th>RS ID</th>
+                <th>genotypes</th>
+                <th>allele frequency</th>
+            </tr>
+        </thead>
+        <tbody>
+          {% for row in MXL %}
           <tr>
-            {% for key,value in i.items() %}
-              <td>{{ value }}</td>
-            {% endfor %}
+              <td>{{ row.rs_val_id}}</td>
+              <td>{{ row.geno_freq}}</td>
+              <td>{{ row.allele_freq}}</td>
           </tr>
-        {% endfor %}
-      </tbody>
+          {% endfor %}
+        </tbody>
     </table>
     <a href="/download">Download</a>
   </div>
