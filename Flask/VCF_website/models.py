@@ -11,8 +11,19 @@ class query_search(db.Model):
     ref_allele = db.Column(db.String(20), unique=False, nullable=False)
     alt_allele = db.Column(db.String(20), unique=False, nullable=False)
 
-    def __repr__(self):
-        return 'chrom: {0} | RSID: {1} | Position: {2} | Reference: {3} | Alternate: {4} |'.format(self.chrom,self.rs_val,self.pos,self.ref_allele,self.alt_allele)
+    def __init__(self,id, chrom, rs_val, pos, re_allele, alt_allele):
+        self.id = id
+        self.chrom = chrom
+        self.rs_val = rs_val
+        self.pos = pos
+        self.re_allele = re_allele
+        self.alt_allele= alt_allele
+
+    def to_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns if c.name != 'id'}
+
+    # def __repr__(self):
+    #     return 'chrom: {0} | RSID: {1} | Position: {2} | Reference: {3} | Alternate: {4} |'.format(self.chrom,self.rs_val,self.pos,self.ref_allele,self.alt_allele)
 
 
 class sample_info(db.Model):
