@@ -1,9 +1,9 @@
 from re import S
 from flask import render_template,url_for ,flash, redirect, request, session
 from importlib_metadata import email
-from VCF_website import app
+from VCF_website import app, db
 from VCF_website.forms import ContactForm,SearchPos, SearchRs,SearchGene
-from VCF_website.models import query_search
+from VCF_website.models import query_search, snp_GBR, snp_JPT, snp_MXL, snp_PJL, snp_YRI
 import ast
 
 
@@ -74,7 +74,7 @@ def get_results(variable):
 @app.route("/loading/<variable>",methods=["GET","POST"])
 def loading(variable):
     if request.method == "GET":
-        results = get_results(variable)
+        results = get_result(variable)
         print(type(results))
         #if len(results) == 0:
         #    results = "None"
@@ -85,23 +85,56 @@ def loading(variable):
 def results(search):
     if request.method == "GET":
         variable = search
+        mxl=[]
+        gbr=[]
+        jpt=[]
+        pjl=[]
+        yri=[]
         variable = ast.literal_eval(variable)
         if isinstance(variable, dict):
             if variable["end_pos"] == None:
                 results = query_search.query.filter(query_search.pos.like(variable['start_pos'])).filter(query_search.chrom == '{}'.format(variable["chr"])).all()
-                return render_template('results.html', title='Results', Results=results)
+                for x in results:
+                    mxl = x.mxl
+                    gbr = x.gbr
+                    jpt = x.jpt
+                    pjl = x.pjl
+                    yri = x.yri
+                for x in mxl:
+                    hom_alt = ast.literal_eval(x.geno_freq)
+                    print(hom_alt['hom_alt'])
+                return render_template('results.html', title='Results', Results=results,MXL=mxl,GBR=gbr,JPT=jpt,PJL=pjl,YRI=yri)
             else:
                 results = query_search.query.filter(query_search.pos >= int(variable['start_pos'])).filter(query_search.pos <= int(variable['end_pos'])).filter(query_search.chrom == '{}'.format(variable['chr'])).all()
-                return render_template('results.html', title='Results', Results=results)
+                for x in results:
+                    mxl = mxl + (x.mxl)
+                    gbr = gbr + x.gbr
+                    jpt = jpt + x.jpt
+                    pjl = pjl + x.pjl
+                    yri = yri + x.yri
+                return render_template('results.html', title='Results', Results=results,MXL=mxl,GBR=gbr,JPT=jpt,PJL=pjl,YRI=yri)
         else:
             if variable.startswith('rs') == True:
                 results = query_search.query.filter(query_search.rs_val.like(variable)).all()
-                return render_template('results.html', title='Results', Results=results)
+                for x in results:
+                    mxl = x.mxl
+                    gbr = x.gbr
+                    jpt = x.jpt
+                    pjl = x.pjl
+                    yri = x.yri
+                return render_template('results.html', title='Results', Results=results,MXL=mxl,GBR=gbr,JPT=jpt,PJL=pjl,YRI=yri)
             else: 
                 results = query_search.query.filter(query_search.gene_name.like(variable)).all()
-                return render_template('results.html', title='Results', Results=results) 
+                for x in results:
+                    mxl = x.mxl
+                    gbr = x.gbr
+                    jpt = x.jpt
+                    pjl = x.pjl
+                    yri = x.yri
+                return render_template('results.html', title='Results', Results=results,MXL=mxl,GBR=gbr,JPT=jpt,PJL=pjl,YRI=yri)
 
-    
+
+
 
 @app.route("/contact", methods=['GET','POST'])
 def contact():
