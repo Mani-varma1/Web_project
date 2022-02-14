@@ -24,8 +24,8 @@ class query_search(db.Model):
     #    self.re_allele = re_allele
     #    self.alt_allele= alt_allele
 
-    #def to_dict(self):
-    #    return {c.name: getattr(self, c.name) for c in self.__table__.columns if c.name != 'id'}
+    def to_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns if c.name != 'id'}
 
     # def __repr__(self):
     #     return 'chrom: {0} | RSID: {1} | Position: {2} | Reference: {3} | Alternate: {4} |'.format(self.chrom,self.rs_val,self.pos,self.ref_allele,self.alt_allele)
@@ -48,28 +48,37 @@ class snp_MXL(db.Model):
     geno_freq = db.Column(db.String(120), unique=False, nullable=False)
     allele_freq = db.Column(db.String(120), unique=False, nullable=False)
     rs_val_id = db.Column(db.String, db.ForeignKey('query_search.rs_val'))
+    genotypes = db.Column(db.String, unique=False)
 
 class snp_GBR(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     geno_freq = db.Column(db.String(120), unique=False, nullable=False)
     allele_freq = db.Column(db.String(120), unique=False, nullable=False)
     rs_val_id = db.Column(db.String, db.ForeignKey('query_search.rs_val'))
+    genotypes = db.Column(db.String, unique=False)
+
 
 class snp_PJL(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     geno_freq = db.Column(db.String(120), unique=False, nullable=False)
     allele_freq = db.Column(db.String(120), unique=False, nullable=False)
     rs_val_id = db.Column(db.String, db.ForeignKey('query_search.rs_val'))
+    genotypes = db.Column(db.String, unique=False)
+
 
 class snp_JPT(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     geno_freq = db.Column(db.String(120), unique=False, nullable=False)
     allele_freq = db.Column(db.String(120), unique=False, nullable=False)
     rs_val_id = db.Column(db.String, db.ForeignKey('query_search.rs_val'))
+    genotypes = db.Column(db.String, unique=False)
+
 
 class snp_YRI(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     geno_freq = db.Column(db.String(120), unique=False, nullable=False)
     allele_freq = db.Column(db.String(120), unique=False, nullable=False)
     rs_val_id = db.Column(db.String, db.ForeignKey('query_search.rs_val'))
+    genotypes = db.Column(db.String, unique=False)
+
     
