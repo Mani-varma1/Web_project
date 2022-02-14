@@ -2,7 +2,7 @@ from flask import render_template,url_for ,flash, redirect, request, session,mak
 from io import StringIO
 from werkzeug.wrappers import Response
 from VCF_website import app
-from VCF_website.forms import ContactForm,SearchPos, SearchRs,SearchGene
+from VCF_website.forms import ContactForm,SearchPos, SearchRs,SearchGene, PopulationStatistics
 from VCF_website.models import query_search
 import ast
 import csv
@@ -96,6 +96,7 @@ def get_results(variable):
 
 @app.route("/results/<search>",methods=['GET','POST'])
 def results(search):
+    form = PopulationStatistics()
     if request.method == "GET":
         variable = search
         mxl=[]
@@ -117,7 +118,7 @@ def results(search):
                 for x in mxl:
                     hom_alt = ast.literal_eval(x.geno_freq)
                     print(hom_alt['hom_ref'])
-                return render_template('results.html', title='Results', Results=results,MXL=mxl,GBR=gbr,JPT=jpt,PJL=pjl,YRI=yri)
+                return render_template('results.html', title='Results', Results=results,MXL=mxl,GBR=gbr,JPT=jpt,PJL=pjl,YRI=yri,form=form)
             else:
                 results = query_search.query.filter(query_search.pos >= int(variable['start_pos'])).filter(query_search.pos <= int(variable['end_pos'])).filter(query_search.chrom == '{}'.format(variable['chr'])).all()
                 for x in results:
@@ -126,7 +127,7 @@ def results(search):
                     jpt = jpt + x.jpt
                     pjl = pjl + x.pjl
                     yri = yri + x.yri
-                return render_template('results.html', title='Results', Results=results,MXL=mxl,GBR=gbr,JPT=jpt,PJL=pjl,YRI=yri)
+                return render_template('results.html', title='Results', Results=results,MXL=mxl,GBR=gbr,JPT=jpt,PJL=pjl,YRI=yri,form=form)
         else:
             if variable.startswith('rs') == True:
                 results = query_search.query.filter(query_search.rs_val.like(variable)).all()
@@ -136,7 +137,7 @@ def results(search):
                     jpt = x.jpt
                     pjl = x.pjl
                     yri = x.yri
-                return render_template('results.html', title='Results', Results=results,MXL=mxl,GBR=gbr,JPT=jpt,PJL=pjl,YRI=yri)
+                return render_template('results.html', title='Results', Results=results,MXL=mxl,GBR=gbr,JPT=jpt,PJL=pjl,YRI=yri,form=form)
             else: 
                 results = query_search.query.filter(query_search.gene_name.like(variable)).all()
                 for x in results:
@@ -145,7 +146,20 @@ def results(search):
                     jpt = x.jpt
                     pjl = x.pjl
                     yri = x.yri
-                return render_template('results.html', title='Results', Results=results,MXL=mxl,GBR=gbr,JPT=jpt,PJL=pjl,YRI=yri)
+                return render_template('results.html', title='Results', Results=results,MXL=mxl,GBR=gbr,JPT=jpt,PJL=pjl,YRI=yri, form=form)
+    else:
+        print(form.populations.data,form.stats.data)
+        return stats(pop_sel=form.populations.data,stats_sel=form.stats.data)
+        
+
+
+
+
+
+@app.route("/stats")
+def stats(pop_sel, stats_sel):
+    return render_template('stats.html', stats=stats_sel, populations=pop_sel)
+
 
 
     
@@ -178,9 +192,6 @@ def download():
     output.headers["Content-Disposition"] = "attachment; filename=stats.csv"
     output.headers["Content-type"] = "text/csv"
     return output
-
-
-
 
 
 
