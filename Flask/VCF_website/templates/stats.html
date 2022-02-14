@@ -1,0 +1,9 @@
+{% extends "layout.html" %}
+{% block content %}
+    {% for choice in stats %}
+        <h1> {{choice}} </h1>
+    {% endfor %}
+    {% for choice in populations %}
+        <h1> {{choice}} </h1>
+    {% endfor %}
+{% endblock content %}

@@ -1,9 +1,10 @@
+from random import choices
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, SelectField, IntegerField
+from wtforms import StringField, SubmitField, SelectField, IntegerField, SelectMultipleField
 from wtforms.validators import DataRequired, Length, Email, Optional, ValidationError,InputRequired, Regexp
 from VCF_website.models import query_search
 from markupsafe import Markup
-from wtforms.widgets.core import html_params
+from wtforms.widgets.core import html_params, ListWidget, CheckboxInput
 
 class ContactForm(FlaskForm):
     name = StringField(label='Name', validators=[DataRequired()])
@@ -90,3 +91,18 @@ class SearchRs(FlaskForm):
 class SearchGene(FlaskForm):
     gene = StringField("Gene Name",validators=[DataRequired()])
     gene_search = SubmitField("Search")
+
+
+
+
+class MultiCheckboxField(SelectMultipleField):
+    widget = ListWidget(prefix_label=False)
+    option_widget =CheckboxInput()
+
+class PopulationStatistics(FlaskForm):
+    choices_stats = [('Heterozygosity','stats for het'),('Haplotype','stats for hap'),('Tajimas_D','stats for taj_d'),('FST','stats for hap')]
+    stats=MultiCheckboxField('Select Statistics', choices=choices_stats)
+    choices_pop = [('GBR','GBR'),('MXL','MXL'),('POP3','POP3'),('POP4','POP3'),('POP5','POP5')]
+    populations=MultiCheckboxField('Select population', choices=choices_pop)
+    pop_stat = SubmitField("Search")
+    

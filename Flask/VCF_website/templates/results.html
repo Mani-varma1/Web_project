@@ -44,8 +44,36 @@
     </table>
     <a href="/download">Download</a>
   </div>
-  <br>
+  <form novalidate="novalidate" method="POST" action="">
+    {{ form.hidden_tag() }}
+                {{ form.stats.label() }}
+                {% if form.stats.errors %}
+                    {{ form.stats(class="form-control form-control-lg is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.stats.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.stats(style="list-style-type: none") }}
+                {% endif %}
 
+                {{ form.populations.label() }}
+                {% if form.populations.errors %}
+                    {{ form.populations(class="form-control form-control-lg is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form1.populations.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.populations(style="list-style-type: none") }}
+                {% endif %}
+          <div class="form-group">
+              {{ form.pop_stat(class="btn btn-outline-info mt-3") }}
+          </div>
+  </form>
+  <br>
 {% endblock content %}
 {% block carousel%}
 <div class="change-width">
