@@ -14,10 +14,13 @@ def Homozygosity(population):
     obs_homozygosity = total_hom/total_gen
     return obs_homozygosity
 
-# Using scikit-allel - windows determined by number of variants. will need to be plotted with
-# rs IDs on x-axis to work correctly. Exception being nucleotide diversity.
+# Using scikit-allel - windows determined by number of nucleotides.
 # bin_size and step_size are user submitted, and pop refers to a single population chosen. functions
 # would need to be run for each population if multiple populations are selected. 
+# positions need to be passed as a list of chromosome positions. 
+
+# For haplotype diversity, a seperate user submission will be needed for window size (number of variants)
+# and step size
 
 def haplotype_div(pop,bin_size,step_size=None):
     # input list of queries retrieved from the results page, window size and step size. 
@@ -42,6 +45,20 @@ def tajima_d(pop,bin_size,step_size=None):
     ac = pop.count_alleles()
     results = allel.moving_tajima_d(ac,size=bin_size,step=step_size)
     return results
+
+def tajima_d(positions,pop,bin_size,step_size):
+    pos = positions
+    pop_array = []
+    for x in pop:
+        lst = ast.literal_eval(x.genotypes)
+        pop_array.append(lst)
+    pop = allel.GenotypeArray(pop_array)
+    ac = pop.count_alleles()
+    tajima_D, windows, counts = allel.windowed_tajima_d(pos=pos,ac=ac,size=bin_size,step=step_size)
+    results = [tajima_D,windows,counts]
+    return results
+
+
 
 def nucleotide_div(positions,pop,bin_size,step_size=None):
     # input list of queries retrieved from the results page, window size and step size. 
@@ -91,16 +108,9 @@ def bins(windows,results):
 
 
 # unfinished
-def haplotype_div(pop,windows,step_size=None):
-    pop_array = []
-    for x in pop:
-        lst = ast.literal_eval(x)
-        pop_array.append(lst)
-    for x in 
-    
-# unfinished
-def tajima_d(pop,windows,step_size=None):
-    pop_array = []
-    for x in pop:
-        lst = ast.literal_eval(x)
-        pop_array.append(lst)
+#def haplotype_div(pop,windows,step_size=None):
+#    pop_array = []
+#    for x in pop:
+#        lst = ast.literal_eval(x)
+#        pop_array.append(lst)
+#    for x in pop_array:
