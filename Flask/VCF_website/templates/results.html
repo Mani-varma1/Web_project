@@ -15,11 +15,11 @@
         <tbody>
           {% for row in Results %}
             <tr>
-            <td>{{ row.chrom}}</td>
-            <td>{{ row.rs_val}}</td>
-            <td>{{ row.pos}}</td>
-            <td>{{ row.ref_allele}}</td>
-            <td>{{ row.alt_allele}}</td>
+            <td>{{ row["chrom"]}}</td>
+            <td>{{ row["rs_val"]}}</td>
+            <td>{{ row["pos"]}}</td>
+            <td>{{ row["ref_allele"] }}</td>
+            <td>{{ row["alt_allele"] }}</td>
             </tr>
           {% endfor %}
         </tbody>
@@ -35,9 +35,9 @@
         <tbody>
           {% for row in MXL %}
           <tr>
-              <td>{{ row.rs_val_id}}</td>
-              <td>{{ row.geno_freq}}</td>
-              <td>{{ row.allele_freq}}</td>
+              <td>{{ row["rs_val_id"]}}</td>
+              <td>{{ row["geno_freq"]}}</td>
+              <td>{{ row["allele_freq"]}}</td>
           </tr>
           {% endfor %}
         </tbody>
@@ -62,7 +62,7 @@
                 {% if form.populations.errors %}
                     {{ form.populations(class="form-control form-control-lg is-invalid") }}
                     <div class="invalid-feedback">
-                        {% for error in form1.populations.errors %}
+                        {% for error in form.populations.errors %}
                             <span>{{ error }}</span>
                         {% endfor %}
                     </div>
