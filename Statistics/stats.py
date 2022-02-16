@@ -46,7 +46,7 @@ def haplotype_div(pop,bin_size,step_size=None):
 #     results = allel.moving_tajima_d(ac,size=bin_size,step=step_size)
 #     return results
 
-def tajima_d(positions,pop,bin_size,step_size):
+def tajima_d(positions,pop,bin_size,step_size=None):
     pos = positions
     pop_array = []
     for x in pop:
