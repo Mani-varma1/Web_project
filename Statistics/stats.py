@@ -34,17 +34,17 @@ def haplotype_div(pop,bin_size,step_size=None):
     results = allel.moving_haplotype_diversity(h=pop_hap,size=bin_size,step=step_size)
     return results
 
-def tajima_d(pop,bin_size,step_size=None):
-    # input list of queries retrieved from the results page, window size and step size. 
-    # window size refers to number of variants.
-    pop_array = []
-    for x in pop:
-        lst = ast.literal_eval(x.genotypes)
-        pop_array.append(lst)
-    pop = allel.GenotypeArray(pop_array)
-    ac = pop.count_alleles()
-    results = allel.moving_tajima_d(ac,size=bin_size,step=step_size)
-    return results
+# def tajima_d(pop,bin_size,step_size=None):
+#     # input list of queries retrieved from the results page, window size and step size. 
+#     # window size refers to number of variants.
+#     pop_array = []
+#     for x in pop:
+#         lst = ast.literal_eval(x.genotypes)
+#         pop_array.append(lst)
+#     pop = allel.GenotypeArray(pop_array)
+#     ac = pop.count_alleles()
+#     results = allel.moving_tajima_d(ac,size=bin_size,step=step_size)
+#     return results
 
 def tajima_d(positions,pop,bin_size,step_size):
     pos = positions
