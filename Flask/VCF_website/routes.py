@@ -9,7 +9,7 @@ import csv
 import allel
 import numpy as np
 import json
-
+import VCF_website.genome_stats as gstat
 
 # @app.before_first_request
 # def create_tables():
@@ -39,7 +39,6 @@ def search():
     form1 = SearchPos()
     form2 = SearchRs()
     form3 = SearchGene()
-
     if form1.submit.data and form1.validate_on_submit():
         chromosome_position = {
             "chr": form1.select.data,
@@ -48,11 +47,9 @@ def search():
         }
         return loading(search=chromosome_position)
     elif form2.rs_search.data and form2.validate_on_submit():
-        form2_rs = f"'{form2.rs_val.data}'"
-        return loading(search=form2_rs)
+        return loading(search=form2.rs_val.data)
     elif form3.gene_search.data and form3.validate_on_submit():
-        form3_gene = f"'{form3.gene.data}'"
-        return loading(search=form3_gene)
+        return loading(search=form3.gene.data)
     return render_template('search.html', title='About', form1=form1, form2=form2, form3=form3)
 
 
@@ -86,13 +83,16 @@ def pop_data(results, *end_pos):
     return mxl, gbr, jpt, pjl, yri
 
 
+
+
+
+
+
+
 @app.route("/loading", methods=['GET', 'POST'])
 def loading(search):
     variable = search
-    print(variable)
-    print(type(variable))
-
-    print('HIIIIII')
+    session.clear()
     if isinstance(variable, dict):
         if variable["end_pos"] == None:
             results = query_search.query.filter(query_search.pos.like(variable['start_pos'])).filter(query_search.chrom == '{}'.format(variable["chr"])).all()
@@ -103,36 +103,23 @@ def loading(search):
             results = query_search.query.filter(query_search.pos >= int(variable['start_pos'])).filter(query_search.pos <= int(variable['end_pos'])).filter(query_search.chrom == '{}'.format(variable['chr'])).all()
             print('HIIIIII 1.2')
             mxl, gbr, jpt, pjl, yri = pop_data(results, variable["end_pos"])
-            # session['results'] = json.dumps([i.to_dict() for i in results])
-            # session['mxl'] = json.dumps([i.to_dict() for i in mxl])
+            session['results'] = json.dumps([i.to_dict() for i in results])
+            session['mxl'] = json.dumps([i.to_dict() for i in mxl])
             return redirect(url_for('results', title='Results'))
-
-    elif variable.startswith('rs'):
-        print(' This is working')
     else:
-        # if variable.startswith('rs') == True:
-        #     print('hi var')
-        #     var = True
-        # else:
-        #     var = False
-        # if var:
-        #     print('Hi')
-        #     results = query_search.query.filter(query_search.rs_val.like(variable)).all()
-        #     print(results)
-        #     print('HIIIIII 2.1')
-        #     if not results:
-        #         flash("No result found, please search for another ID", 'info')
-        #         return redirect(url_for('search'))
-        #     mxl, gbr, jpt, pjl, yri = pop_data(results)
-        #     # session['results'] = json.dumps([i.to_dict() for i in results])
-        #     # session['mxl'] = json.dumps([i.to_dict() for i in mxl])
-        #     # print(session['results'])
-        #     return redirect(url_for('results', title='Results'))
-        print('HIIIIII 2.2')
-    #     results = query_search.query.filter(
-    #         query_search.gene_name.like(variable)).all()
-    #     mxl, gbr, jpt, pjl, yri = pop_data(results)
-        return redirect(url_for('results', title='Results', Results=results, MXL=mxl, GBR=gbr, JPT=jpt, PJL=pjl, YRI=yri))
+        if variable.startswith('rs') == True:
+            results = query_search.query.filter(query_search.rs_val.like(variable)).all()
+            if not results:
+                flash("No result found, please search for another ID", 'info')
+                return redirect(url_for('search'))
+            mxl, gbr, jpt, pjl, yri = pop_data(results)
+            session['results'] = json.dumps([i.to_dict() for i in results])
+            session['mxl'] = json.dumps([i.to_dict() for i in mxl])
+            return redirect(url_for('results', title='Results'))
+        else:
+            results = query_search.query.filter(query_search.gene_name.like(variable)).all()
+            mxl, gbr, jpt, pjl, yri = pop_data(results)
+            return redirect(url_for('results', title='Results', Results=results, MXL=mxl, GBR=gbr, JPT=jpt, PJL=pjl, YRI=yri))
 
 
 
@@ -144,7 +131,7 @@ def loading(search):
 def results():
     results = json.loads(session['results'])
     mxl = json.loads(session['mxl'])
-    pop_array = []
+    # pop_array = []
     # temp = []
     # for x in mxl:
     #     temp.append(x['genotypes'])
@@ -158,20 +145,39 @@ def results():
     return render_template('results.html', Results=results, MXL=mxl, form=form)
 
 
-
+## Comment this part
 
 
 @app.route("/stats")
 def stats(pop_sel, stats_sel):
-    results = session['results']
-    print(len(pop_sel))
-    print(type(pop_sel))
-    print(len(stats_sel))
-    print(type(stats_sel))
-    # if "results" in session:
-    #     if len(pop_sel) >= 2 and stats_sel != None:
-    #         print(results)
-    #     else:
+    results = json.loads(session['results'])
+    mxl = json.loads(session['mxl'])
+    mxl_positions = [int(i['pos']) for i in results]
+    # pop_array = []
+    # # for x in mxl:
+    # #     pop_array.append(ast.literal_eval(x['genotypes']))
+    # # gen_arr = allel.GenotypeArray(np.array(pop_array))
+    # # print(gen_arr)
+    mxl_homo = gstat.Homozygosity(mxl)
+
+
+    mxl_haplotype_div = gstat.haplotype_div(mxl,10)
+
+
+    mxl_td_td,mxl_td_win,mxl_td_cts = gstat.tajima_d(positions= mxl_positions,pop= mxl)
+    
+    
+    mxl_nu_di_pi,mxl_nu_di_win,mxl_nu_di_nb, mxl_nu_di_cts = gstat.nucleotide_div(positions=mxl_positions, pop=mxl)
+
+
+    # print(mxl_homo)
+    print(type(mxl_haplotype_div))
+    for i in mxl_haplotype_div:
+        print(i)
+    # print(mxl_td_td,mxl_td_win,mxl_td_cts)
+    # print(mxl_nu_di_pi,mxl_nu_di_win,mxl_nu_di_nb, mxl_nu_di_cts)
+
+
     return render_template('stats.html', stats=stats_sel, populations=pop_sel, results=results)
 
 

@@ -4,8 +4,7 @@ from VCF_website import db
 
 class query_search(db.Model):
     chrom = db.Column(db.String(20), unique=False, nullable=False)
-    rs_val = db.Column(db.String(20), primary_key=True,
-                       unique=True, nullable=False)
+    rs_val = db.Column(db.String(20), primary_key=True, unique=True, nullable=False)
     pos = db.Column(db.String(120), unique=True, nullable=False)
     gene_name = db.Column(db.String(120), unique=False)
     ref_allele = db.Column(db.String(20), unique=False, nullable=False)
