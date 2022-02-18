@@ -1,7 +1,7 @@
 from flask import render_template, url_for, flash, redirect, request, session, make_response
 from io import StringIO
 from werkzeug.wrappers import Response
-from VCF_website import app
+from VCF_website import app,sess
 from VCF_website.forms import ContactForm, SearchPos, SearchRs, SearchGene, PopulationStatistics
 from VCF_website.models import query_search
 import ast
@@ -97,14 +97,16 @@ def loading(search):
         if variable["end_pos"] == None:
             results = query_search.query.filter(query_search.pos.like(variable['start_pos'])).filter(query_search.chrom == '{}'.format(variable["chr"])).all()
             mxl, gbr, jpt, pjl, yri = pop_data(results, variable["end_pos"])
-            print('HIIIIII 1.1')
             return redirect(url_for('results', title='Results', Results=results))
         else:
             results = query_search.query.filter(query_search.pos >= int(variable['start_pos'])).filter(query_search.pos <= int(variable['end_pos'])).filter(query_search.chrom == '{}'.format(variable['chr'])).all()
-            print('HIIIIII 1.2')
             mxl, gbr, jpt, pjl, yri = pop_data(results, variable["end_pos"])
             session['results'] = json.dumps([i.to_dict() for i in results])
             session['mxl'] = json.dumps([i.to_dict() for i in mxl])
+            session['gbr'] = json.dumps([i.to_dict() for i in gbr])
+            session['jpt'] = json.dumps([i.to_dict() for i in jpt])
+            session['pjl'] = json.dumps([i.to_dict() for i in pjl])
+            session['yri'] = json.dumps([i.to_dict() for i in yri])
             return redirect(url_for('results', title='Results'))
     else:
         if variable.startswith('rs') == True:
@@ -112,9 +114,12 @@ def loading(search):
             if not results:
                 flash("No result found, please search for another ID", 'info')
                 return redirect(url_for('search'))
-            mxl, gbr, jpt, pjl, yri = pop_data(results)
             session['results'] = json.dumps([i.to_dict() for i in results])
             session['mxl'] = json.dumps([i.to_dict() for i in mxl])
+            session['gbr'] = json.dumps([i.to_dict() for i in gbr])
+            session['jpt'] = json.dumps([i.to_dict() for i in jpt])
+            session['pjl'] = json.dumps([i.to_dict() for i in pjl])
+            session['yri'] = json.dumps([i.to_dict() for i in yri])
             return redirect(url_for('results', title='Results'))
         else:
             results = query_search.query.filter(query_search.gene_name.like(variable)).all()
@@ -170,15 +175,13 @@ def stats(pop_sel, stats_sel):
     mxl_nu_di_pi,mxl_nu_di_win,mxl_nu_di_nb, mxl_nu_di_cts = gstat.nucleotide_div(positions=mxl_positions, pop=mxl)
 
 
-    # print(mxl_homo)
-    print(type(mxl_haplotype_div))
-    for i in mxl_haplotype_div:
-        print(i)
-    # print(mxl_td_td,mxl_td_win,mxl_td_cts)
-    # print(mxl_nu_di_pi,mxl_nu_di_win,mxl_nu_di_nb, mxl_nu_di_cts)
+    print(mxl_homo)
+    print(mxl_haplotype_div)
+    print(mxl_td_td,mxl_td_win,mxl_td_cts)
+    print(mxl_nu_di_pi,mxl_nu_di_win,mxl_nu_di_nb, mxl_nu_di_cts)
 
 
-    return render_template('stats.html', stats=stats_sel, populations=pop_sel, results=results)
+    return render_template('stats.html', stats=stats_sel, populations=pop_sel, results=results, )
 
 
 """
