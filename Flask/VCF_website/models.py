@@ -64,6 +64,9 @@ class snp_GBR(db.Model):
     rs_val_id = db.Column(db.String, db.ForeignKey('query_search.rs_val'))
     genotypes = db.Column(db.String, unique=False)
 
+    def to_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns if c.name != 'id'}
+
 
 class snp_PJL(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -71,6 +74,9 @@ class snp_PJL(db.Model):
     allele_freq = db.Column(db.String(120), unique=False, nullable=False)
     rs_val_id = db.Column(db.String, db.ForeignKey('query_search.rs_val'))
     genotypes = db.Column(db.String, unique=False)
+
+    def to_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns if c.name != 'id'}
 
 
 class snp_JPT(db.Model):
@@ -80,6 +86,9 @@ class snp_JPT(db.Model):
     rs_val_id = db.Column(db.String, db.ForeignKey('query_search.rs_val'))
     genotypes = db.Column(db.String, unique=False)
 
+    def to_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns if c.name != 'id'}
+
 
 class snp_YRI(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -87,3 +96,6 @@ class snp_YRI(db.Model):
     allele_freq = db.Column(db.String(120), unique=False, nullable=False)
     rs_val_id = db.Column(db.String, db.ForeignKey('query_search.rs_val'))
     genotypes = db.Column(db.String, unique=False)
+
+    def to_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns if c.name != 'id'}
