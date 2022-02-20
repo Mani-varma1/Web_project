@@ -1,15 +1,16 @@
+import code
+import time
 from flask import render_template, url_for, flash, redirect, request, session, make_response
 from io import StringIO
+from numpy import append
 from werkzeug.wrappers import Response
 from VCF_website import app,sess
 from VCF_website.forms import ContactForm, SearchPos, SearchRs, SearchGene, PopulationStatistics
-from VCF_website.models import query_search
+from VCF_website.models import query_search, snp_MXL, snp_GBR, snp_JPT, snp_PJL, snp_YRI
+import VCF_website.genome_stats as gstat
 import ast
 import csv
-import allel
-import numpy as np
 import json
-import VCF_website.genome_stats as gstat
 
 # @app.before_first_request
 # def create_tables():
@@ -57,19 +58,27 @@ def search():
 
 
 
-def pop_data(results, *end_pos):
+def pop_data(results,variable):
     mxl = []
     gbr = []
     jpt = []
     pjl = []
     yri = []
-    if end_pos != None:
-        for x in results:
-            mxl = mxl + (x.mxl)
-            gbr = gbr + x.gbr
-            jpt = jpt + x.jpt
-            pjl = pjl + x.pjl
-            yri = yri + x.yri
+    if isinstance(variable,dict):
+        if variable['end_pos'] != None:
+            mxl = snp_MXL.query.filter(snp_MXL.rs_val_id == query_search.rs_val).filter(query_search.pos >= int(variable['start_pos'])).filter(query_search.pos <= int(variable['end_pos'])).filter(query_search.chrom == '{}'.format(variable['chr'])).all()
+            gbr = snp_GBR.query.filter(snp_GBR.rs_val_id == query_search.rs_val).filter(query_search.pos >= int(variable['start_pos'])).filter(query_search.pos <= int(variable['end_pos'])).filter(query_search.chrom == '{}'.format(variable['chr'])).all()
+            jpt = snp_JPT.query.filter(snp_JPT.rs_val_id == query_search.rs_val).filter(query_search.pos >= int(variable['start_pos'])).filter(query_search.pos <= int(variable['end_pos'])).filter(query_search.chrom == '{}'.format(variable['chr'])).all()
+            pjl = snp_PJL.query.filter(snp_PJL.rs_val_id == query_search.rs_val).filter(query_search.pos >= int(variable['start_pos'])).filter(query_search.pos <= int(variable['end_pos'])).filter(query_search.chrom == '{}'.format(variable['chr'])).all()
+            yri = snp_YRI.query.filter(snp_YRI.rs_val_id == query_search.rs_val).filter(query_search.pos >= int(variable['start_pos'])).filter(query_search.pos <= int(variable['end_pos'])).filter(query_search.chrom == '{}'.format(variable['chr'])).all()
+            print('hi')
+        else:
+            for x in results:
+                mxl = x.mxl
+                gbr = x.gbr
+                jpt = x.jpt
+                pjl = x.pjl
+                yri = x.yri
     else:
         for x in results:
             mxl = x.mxl
@@ -77,10 +86,16 @@ def pop_data(results, *end_pos):
             jpt = x.jpt
             pjl = x.pjl
             yri = x.yri
-        for x in mxl:
-            hom_alt = ast.literal_eval(x.geno_freq)
 
-    return mxl, gbr, jpt, pjl, yri
+
+    session['results'] = json.dumps([i.to_dict() for i in results])
+    session['mxl'] = json.dumps([i.to_dict() for i in mxl])
+    session['gbr'] = json.dumps([i.to_dict() for i in gbr])
+    session['jpt'] = json.dumps([i.to_dict() for i in jpt])
+    session['pjl'] = json.dumps([i.to_dict() for i in pjl])
+    session['yri'] = json.dumps([i.to_dict() for i in yri])
+    
+    return None
 
 
 
@@ -96,35 +111,52 @@ def loading(search):
     if isinstance(variable, dict):
         if variable["end_pos"] == None:
             results = query_search.query.filter(query_search.pos.like(variable['start_pos'])).filter(query_search.chrom == '{}'.format(variable["chr"])).all()
-            mxl, gbr, jpt, pjl, yri = pop_data(results, variable["end_pos"])
-            return redirect(url_for('results', title='Results', Results=results))
-        else:
-            results = query_search.query.filter(query_search.pos >= int(variable['start_pos'])).filter(query_search.pos <= int(variable['end_pos'])).filter(query_search.chrom == '{}'.format(variable['chr'])).all()
-            mxl, gbr, jpt, pjl, yri = pop_data(results, variable["end_pos"])
-            session['results'] = json.dumps([i.to_dict() for i in results])
-            session['mxl'] = json.dumps([i.to_dict() for i in mxl])
-            session['gbr'] = json.dumps([i.to_dict() for i in gbr])
-            session['jpt'] = json.dumps([i.to_dict() for i in jpt])
-            session['pjl'] = json.dumps([i.to_dict() for i in pjl])
-            session['yri'] = json.dumps([i.to_dict() for i in yri])
-            return redirect(url_for('results', title='Results'))
-    else:
-        if variable.startswith('rs') == True:
-            results = query_search.query.filter(query_search.rs_val.like(variable)).all()
+            
             if not results:
                 flash("No result found, please search for another ID", 'info')
                 return redirect(url_for('search'))
-            session['results'] = json.dumps([i.to_dict() for i in results])
-            session['mxl'] = json.dumps([i.to_dict() for i in mxl])
-            session['gbr'] = json.dumps([i.to_dict() for i in gbr])
-            session['jpt'] = json.dumps([i.to_dict() for i in jpt])
-            session['pjl'] = json.dumps([i.to_dict() for i in pjl])
-            session['yri'] = json.dumps([i.to_dict() for i in yri])
+            
+            pop_data(results,variable)
+            
+            return redirect(url_for('results', title='Results', Results=results))
+
+        else:
+            results = query_search.query.filter(query_search.pos >= int(variable['start_pos'])).filter(query_search.pos <= int(variable['end_pos'])).filter(query_search.chrom == '{}'.format(variable['chr'])).all()
+
+            if not results:
+                flash("No result found, please search for another ID", 'info')
+                return redirect(url_for('search'))
+
+
+            start_time = time.time()
+ 
+            pop_data(results,variable)
+
+            print("--- %s seconds pop_data_func() ---" % (time.time() - start_time))
+
             return redirect(url_for('results', title='Results'))
+    else:
+        if variable.startswith('rs') == True:
+            results = query_search.query.filter(query_search.rs_val.like(variable)).all() 
+
+            if not results:
+                flash("No result found, please search for another ID", 'info')
+                return redirect(url_for('search'))
+
+            pop_data(results,variable)
+            return redirect(url_for('results', title='Results'))
+        
         else:
             results = query_search.query.filter(query_search.gene_name.like(variable)).all()
-            mxl, gbr, jpt, pjl, yri = pop_data(results)
-            return redirect(url_for('results', title='Results', Results=results, MXL=mxl, GBR=gbr, JPT=jpt, PJL=pjl, YRI=yri))
+
+            if not results:
+                flash("No result found, please search for another ID", 'info')
+                return redirect(url_for('search'))
+
+            
+            pop_data(results,variable)
+            
+            return redirect(url_for('results', title='Results', Results=results))
 
 
 
@@ -136,13 +168,6 @@ def loading(search):
 def results():
     results = json.loads(session['results'])
     mxl = json.loads(session['mxl'])
-    # pop_array = []
-    # temp = []
-    # for x in mxl:
-    #     temp.append(x['genotypes'])
-
-    # print(temp)
-    # gen_arr = allel.GenotypeArray(np.array(pop_array))
     form = PopulationStatistics()
     if request.method == "POST":
         if form.validate_on_submit():
@@ -150,38 +175,163 @@ def results():
     return render_template('results.html', Results=results, MXL=mxl, form=form)
 
 
+
+
+
+
 ## Comment this part
+
+
+
+
+
+
+
+def get_main_stats(pop,freq_data):
+    homo = gstat.Homozygosity(freq_data)
+    nuc_div = gstat.nuc_div(pop)
+    taj_d = gstat.tajima_d(pop)
+    hap_div = gstat.haplotype_div(pop)
+    return homo,nuc_div,hap_div,taj_d
+
+def get_fstat():
+    pass
+
+
+def win_stats():
+    pass
+
+
+
+
+def decompress(gt_arr):
+    freq_data = []
+    gt_data = []
+    decomp_dict = {'a':'[0, 0]','b':'[0, 1]','c':'[1, 0]','d':'[1,1]'}
+    for item in gt_arr:
+        gt_arr_data = ast.literal_eval(item['genotypes'])
+        freq_data.append(ast.literal_eval(item['geno_freq']))
+
+        snp_data = ""
+        for sample in gt_arr_data:
+            rep = int(sample[0])
+            val = decomp_dict[sample[1]]+','
+            val = rep*val
+            snp_data += val
+
+        gt_data.append(list(ast.literal_eval(snp_data[:-1])))
+
+    return gt_data, freq_data
+
+
 
 
 @app.route("/stats")
 def stats(pop_sel, stats_sel):
+    pop_sel = pop_sel
+    stats_sel = stats_sel
     results = json.loads(session['results'])
-    mxl = json.loads(session['mxl'])
-    mxl_positions = [int(i['pos']) for i in results]
-    # pop_array = []
-    # # for x in mxl:
-    # #     pop_array.append(ast.literal_eval(x['genotypes']))
-    # # gen_arr = allel.GenotypeArray(np.array(pop_array))
-    # # print(gen_arr)
-    mxl_homo = gstat.Homozygosity(mxl)
+    gen_pos = [int(i['pos']) for i in results]
 
 
-    mxl_haplotype_div = gstat.haplotype_div(mxl,10)
+
+    first_col = results[0]
+    last_col = results[-1]
+
+    html_first_col = f"CHR:{first_col['chrom']} Start:{first_col['pos']} - End:{last_col['pos']}"
+    html_gene = [set(i['gene_name']) for i in results if i['gene_name'] != None]
+
+    print(html_first_col)
+    print(html_gene)
 
 
-    mxl_td_td,mxl_td_win,mxl_td_cts = gstat.tajima_d(positions= mxl_positions,pop= mxl)
+
+
+
+
+
+    if 'GBR' in pop_sel:
+        gbr = json.loads(session['gbr'])
+        gbr_gt_data, gbr_freq = decompress(gbr)
+        
+        gbr_homo,gbr_nuc_div,gbr_hap_div,gbr_taj_d = get_main_stats(pop=gbr_gt_data,freq_data =gbr_freq)
+        gbr_stats = [gbr_homo,gbr_nuc_div,gbr_hap_div,gbr_taj_d]
+
+    else:
+        gbr = None
+
+
+    if 'JPT' in pop_sel:
+        jpt = json.loads(session['jpt'])
+        jpt_gt_data, jpt_freq = decompress(jpt)
+        jpt_homo,jpt_nuc_div,jpt_hap_div,jpt_taj_d = get_main_stats(pop=jpt_gt_data,freq_data =jpt_freq)
+        jpt_stats = [jpt_homo,jpt_nuc_div,jpt_hap_div,jpt_taj_d]
+    else:
+        jpt = None
+
     
     
-    mxl_nu_di_pi,mxl_nu_di_win,mxl_nu_di_nb, mxl_nu_di_cts = gstat.nucleotide_div(positions=mxl_positions, pop=mxl)
+    
+    if 'MXL' in pop_sel:
+        mxl = json.loads(session['mxl'])
+        mxl_gt_data, mxl_freq = decompress(mxl)
+        mxl_homo,mxl_nuc_div,mxl_hap_div,mxl_taj_d = get_main_stats(pop=mxl_gt_data,freq_data =mxl_freq)
+        mxl_stats = [mxl_homo,mxl_nuc_div,mxl_hap_div,mxl_taj_d]
+    else:
+        mxl = None
 
 
-    print(mxl_homo)
-    print(mxl_haplotype_div)
-    print(mxl_td_td,mxl_td_win,mxl_td_cts)
-    print(mxl_nu_di_pi,mxl_nu_di_win,mxl_nu_di_nb, mxl_nu_di_cts)
+
+
+    if 'PJL' in pop_sel:
+        pjl = json.loads(session['pjl'])
+        pjl_gt_data, pjl_freq = decompress(pjl)
+        pjl_homo,pjl_nuc_div,pjl_hap_div,pjl_taj_d = get_main_stats(pop=pjl_gt_data,freq_data =pjl_freq)
+        pjl_stats = [pjl_homo,pjl_nuc_div,pjl_hap_div,pjl_taj_d]
+    else:
+        pjl = None
+
+
+
+    if 'YRI' in pop_sel:
+        yri = json.loads(session['yri'])
+        yri_gt_data, yri_freq = decompress(yri)
+        yri_homo,yri_nuc_div,yri_hap_div,yri_taj_d = get_main_stats(pop=yri_gt_data,freq_data =yri_freq)
+        yri_stats = [yri_homo,yri_nuc_div,yri_hap_div,yri_taj_d]
+    else:
+        yri = None
+
+
+
+    overall_stat = []
+
+    if gbr:
+        overall_stat.append(gbr_gt_data())
+    
+    if jpt:
+        overall_stat.append(jpt_gt_data())
+
+    if mxl:
+        temp_mxl = mxl_gt_data
+    
+    if pjl:
+        overall_stat.append(pjl_gt_data)
+
+    if yri:
+        overall_stat.append(yri_gt_data)
+
+    # for i in 
+
+
+
 
 
     return render_template('stats.html', stats=stats_sel, populations=pop_sel, results=results, )
+
+
+
+
+
 
 
 """
