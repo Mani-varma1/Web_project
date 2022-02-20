@@ -14,11 +14,6 @@ class query_search(db.Model):
     jpt = db.relationship('snp_JPT', backref='rs_val', lazy='select')
     pjl = db.relationship('snp_PJL', backref='rs_val', lazy='select')
     yri = db.relationship('snp_YRI', backref='rs_val', lazy='select')
-    # mxl_array = db.relationship('MXL_array', backref='rs_val')
-    # gbr_array = db.relationship('GBR_array', backref='rs_val')
-    # jpt_array = db.relationship('JPT_array', backref='rs_val')
-    # pjl_array = db.relationship('PJL_array', backref='rs_val')
-    # yri_array = db.relationship('YRI_array', backref='rs_val')
 
     # def __init__(chrom, rs_val, pos, re_allele, alt_allele):
     #    self.chrom = chrom
@@ -36,20 +31,6 @@ class query_search(db.Model):
 # class QuerySearchSchema(ma.ModelSchema):
 #     class Meta:
 #         model = QuerySearch
-
-
-# class sample_info(db.Model):
-#    id = db.Column(db.Integer, primary_key=True)
-#    sample_id = db.Column(db.String(20), nullable=False)
-#    population_code = db.Column(db.String(20), nullable=False, unique=False)
-#    superpopulation_code = db.Column(db.String(20), nullable=False, unique=False)
-
-# class genotype_sample(db.Model):
-#    id = db.Column(db.Integer, primary_key=True)
-#    sample_id = db.Column(db.String(20), nullable=False, unique=False)
-#    rs_val = db.Column(db.String(20), unique=True, nullable=False)
-#    genotype = db.Column(db.String(20), nullable=False, unique=False)
-
 
 class snp_MXL(db.Model):
     
@@ -101,23 +82,3 @@ class snp_YRI(db.Model):
     genotypes = db.Column(db.String, unique=False)
     def to_dict(self):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns if c.name != 'id'}
-
-# class MXL_array(db.Model):
-#     rs_val = db.Column(db.String,db.ForeignKey('query_search.rs_val'), primary_key=True)
-#     genotype = db.Column(db.String, unique=False)
-
-# class GBR_array(db.Model):
-#     rs_val = db.Column(db.String,db.ForeignKey('query_search.rs_val'), primary_key=True)
-#     genotype = db.Column(db.String, unique=False)
-
-# class JPT_array(db.Model):
-#     rs_val = db.Column(db.String,db.ForeignKey('query_search.rs_val'), primary_key=True)
-#     genotype = db.Column(db.String, unique=False)
-
-# class PJL_array(db.Model):
-#     rs_val = db.Column(db.String,db.ForeignKey('query_search.rs_val'), primary_key=True)
-#     genotype = db.Column(db.String, unique=False)
-
-# class YRI_array(db.Model):
-#     rs_val = db.Column(db.String,db.ForeignKey('query_search.rs_val'), primary_key=True)
-#     genotype = db.Column(db.String, unique=False)
