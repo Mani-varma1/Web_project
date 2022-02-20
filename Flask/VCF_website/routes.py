@@ -1,19 +1,20 @@
 from flask import render_template, url_for, flash, redirect, request, session, make_response
 from io import StringIO
 from werkzeug.wrappers import Response
-from VCF_website import app,sess
+from VCF_website import app,sess,db
 from VCF_website.forms import ContactForm, SearchPos, SearchRs, SearchGene, PopulationStatistics
-from VCF_website.models import query_search
+from VCF_website.models import query_search, snp_MXL, snp_GBR, snp_JPT, snp_PJL, snp_YRI
 import ast
 import csv
 import allel
 import numpy as np
 import json
 import VCF_website.genome_stats as gstat
+import time
 
-# @app.before_first_request
-# def create_tables():
-# db.create_all()
+@app.before_first_request
+def create_tables():
+    db.create_all()
 
 
 @app.route("/")
@@ -57,19 +58,19 @@ def search():
 
 
 
-def pop_data(results, *end_pos):
+def pop_data(variable, results, *end_pos):
     mxl = []
     gbr = []
     jpt = []
     pjl = []
     yri = []
     if end_pos != None:
-        for x in results:
-            mxl = mxl + (x.mxl)
-            gbr = gbr + x.gbr
-            jpt = jpt + x.jpt
-            pjl = pjl + x.pjl
-            yri = yri + x.yri
+        # for x in results:
+        mxl = snp_MXL.query.filter(snp_MXL.rs_val_id == query_search.rs_val).filter(query_search.pos >= int(variable['start_pos'])).filter(query_search.pos <= int(variable['end_pos'])).filter(query_search.chrom == '{}'.format(variable['chr'])).all()
+        gbr = snp_GBR.query.filter(snp_GBR.rs_val_id == query_search.rs_val).filter(query_search.pos >= int(variable['start_pos'])).filter(query_search.pos <= int(variable['end_pos'])).filter(query_search.chrom == '{}'.format(variable['chr'])).all()
+        jpt = snp_JPT.query.filter(snp_JPT.rs_val_id == query_search.rs_val).filter(query_search.pos >= int(variable['start_pos'])).filter(query_search.pos <= int(variable['end_pos'])).filter(query_search.chrom == '{}'.format(variable['chr'])).all()
+        pjl = snp_PJL.query.filter(snp_PJL.rs_val_id == query_search.rs_val).filter(query_search.pos >= int(variable['start_pos'])).filter(query_search.pos <= int(variable['end_pos'])).filter(query_search.chrom == '{}'.format(variable['chr'])).all()
+        yri = snp_YRI.query.filter(snp_YRI.rs_val_id == query_search.rs_val).filter(query_search.pos >= int(variable['start_pos'])).filter(query_search.pos <= int(variable['end_pos'])).filter(query_search.chrom == '{}'.format(variable['chr'])).all()
     else:
         for x in results:
             mxl = x.mxl
@@ -77,9 +78,6 @@ def pop_data(results, *end_pos):
             jpt = x.jpt
             pjl = x.pjl
             yri = x.yri
-        for x in mxl:
-            hom_alt = ast.literal_eval(x.geno_freq)
-
     return mxl, gbr, jpt, pjl, yri
 
 
@@ -95,18 +93,24 @@ def loading(search):
     session.clear()
     if isinstance(variable, dict):
         if variable["end_pos"] == None:
-            results = query_search.query.filter(query_search.pos.like(variable['start_pos'])).filter(query_search.chrom == '{}'.format(variable["chr"])).all()
+            results = snp_MXL.query.filter(query_search.pos.like(variable['start_pos'])).filter(query_search.chrom == '{}'.format(variable["chr"])).all()
             mxl, gbr, jpt, pjl, yri = pop_data(results, variable["end_pos"])
             return redirect(url_for('results', title='Results', Results=results))
         else:
+            start_time = time.time() 
             results = query_search.query.filter(query_search.pos >= int(variable['start_pos'])).filter(query_search.pos <= int(variable['end_pos'])).filter(query_search.chrom == '{}'.format(variable['chr'])).all()
-            mxl, gbr, jpt, pjl, yri = pop_data(results, variable["end_pos"])
+            print("--- %s seconds ---" % (time.time() - start_time))
+            print(results)
+            mxl, gbr, jpt, pjl, yri = pop_data(variable, results, variable["end_pos"])
+            print(gbr)
+            print("--- %s seconds ---" % (time.time() - start_time))            
             session['results'] = json.dumps([i.to_dict() for i in results])
             session['mxl'] = json.dumps([i.to_dict() for i in mxl])
             session['gbr'] = json.dumps([i.to_dict() for i in gbr])
             session['jpt'] = json.dumps([i.to_dict() for i in jpt])
             session['pjl'] = json.dumps([i.to_dict() for i in pjl])
             session['yri'] = json.dumps([i.to_dict() for i in yri])
+            print("--- %s seconds ---" % (time.time() - start_time))           
             return redirect(url_for('results', title='Results'))
     else:
         if variable.startswith('rs') == True:
