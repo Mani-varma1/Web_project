@@ -65,7 +65,6 @@ def pop_data(variable, results, *end_pos):
     pjl = []
     yri = []
     if end_pos != None:
-        # for x in results:
         mxl = snp_MXL.query.filter(snp_MXL.rs_val_id == query_search.rs_val).filter(query_search.pos >= int(variable['start_pos'])).filter(query_search.pos <= int(variable['end_pos'])).filter(query_search.chrom == '{}'.format(variable['chr'])).all()
         gbr = snp_GBR.query.filter(snp_GBR.rs_val_id == query_search.rs_val).filter(query_search.pos >= int(variable['start_pos'])).filter(query_search.pos <= int(variable['end_pos'])).filter(query_search.chrom == '{}'.format(variable['chr'])).all()
         jpt = snp_JPT.query.filter(snp_JPT.rs_val_id == query_search.rs_val).filter(query_search.pos >= int(variable['start_pos'])).filter(query_search.pos <= int(variable['end_pos'])).filter(query_search.chrom == '{}'.format(variable['chr'])).all()
@@ -97,13 +96,8 @@ def loading(search):
             mxl, gbr, jpt, pjl, yri = pop_data(results, variable["end_pos"])
             return redirect(url_for('results', title='Results', Results=results))
         else:
-            start_time = time.time() 
             results = query_search.query.filter(query_search.pos >= int(variable['start_pos'])).filter(query_search.pos <= int(variable['end_pos'])).filter(query_search.chrom == '{}'.format(variable['chr'])).all()
-            print("--- %s seconds ---" % (time.time() - start_time))
-            print(results)
-            mxl, gbr, jpt, pjl, yri = pop_data(variable, results, variable["end_pos"])
-            print(gbr)
-            print("--- %s seconds ---" % (time.time() - start_time))            
+            mxl, gbr, jpt, pjl, yri = pop_data(variable, results, variable["end_pos"])        
             session['results'] = json.dumps([i.to_dict() for i in results])
             session['mxl'] = json.dumps([i.to_dict() for i in mxl])
             session['gbr'] = json.dumps([i.to_dict() for i in gbr])
