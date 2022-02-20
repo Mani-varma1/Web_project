@@ -104,7 +104,6 @@ def loading(search):
             session['jpt'] = json.dumps([i.to_dict() for i in jpt])
             session['pjl'] = json.dumps([i.to_dict() for i in pjl])
             session['yri'] = json.dumps([i.to_dict() for i in yri])
-            print("--- %s seconds ---" % (time.time() - start_time))           
             return redirect(url_for('results', title='Results'))
     else:
         if variable.startswith('rs') == True:
