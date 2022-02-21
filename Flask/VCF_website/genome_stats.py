@@ -4,14 +4,13 @@ import allel
 import ast
 import pandas as pd
 import numpy as np
-
+import itertools
 def Homozygosity(freq_data):
     # input a list of dictionaries retrieved from search query. Each item should
     # correspond to a single rs ID. 
     total_hom = 0
     total_gen = 0
     for x in freq_data:
-        print(x)
         total_hom += int(x['hom_ref']) + int(x['hom_alt'])
         total_gen += int(x['hom_ref']) + int(x['hom_alt']) + int(x['het'])
     obs_homozygosity = total_hom/total_gen
@@ -58,6 +57,26 @@ def tajima_d(pop):
 
 
 
+def hudson_fst(pop1,pop2):
+    pop1_gt = np.array(pop1)
+    pop2_gt = np.array(pop2)
+    pop1 = allel.GenotypeArray(pop1_gt)
+    pop2 = allel.GenotypeArray(pop2_gt)
+    ac1 = pop1.count_alleles()
+    ac2 = pop2.count_alleles()
+    num, den = allel.hudson_fst(ac1, ac2)
+    fst = np.sum(num) / np.sum(den)
+    return fst
+
+def get_fstat(paris,gt_dict):
+    combos = itertools.permutations(paris,2)
+    lst = []
+    for i in combos:
+        pair = f'{i[0]}:{i[1]}'
+        fst = hudson_fst(gt_dict[i[0]],gt_dict[i[1]])
+        lst.append([pair,fst])
+    
+    return lst
 
 
 
@@ -66,10 +85,8 @@ def tajima_d(pop):
 
 def win_tajima_d(positions,pop,bin_size=100,step_size=None):
     pos = np.array(positions)
-    pop_array = []
-    for x in pop:
-        pop_array.append(ast.literal_eval(x['genotypes']))
-    pop = allel.GenotypeArray(pop_array)
+    pop_gt = np.array(pop)
+    pop = allel.GenotypeArray(pop_gt)
     ac = pop.count_alleles()
     win_tajima_D, windows, counts = allel.windowed_tajima_d(pos=pos,ac=ac,size=bin_size,step=step_size)
     
@@ -81,10 +98,8 @@ def win_tajima_d(positions,pop,bin_size=100,step_size=None):
 def moving_haplotype_div(pop,bin_size=100,step_size=None):
     # input list of queries retrieved from the results page, window size and step size. 
     # window size refers to number of variants.
-    pop_array = []
-    for x in pop:
-        pop_array.append(ast.literal_eval(x['genotypes']))
-    pop = allel.GenotypeArray(np.array(pop_array))
+    pop_gt = np.array(pop)
+    pop = allel.GenotypeArray(pop_gt)
     pop_hap = pop.to_haplotypes()
     moving_hap = allel.moving_haplotype_diversity(h=pop_hap,size=bin_size,step=step_size)
     return moving_hap
@@ -97,15 +112,31 @@ def win_nuc_div(positions,pop,bin_size=100,step_size=None):
     # input list of queries retrieved from the results page, window size and step size. 
     # window size and step size refers to number of nucleotides. produces a list of 4 arrays
     pos = np.array(positions)
-    pop_array = []
-    for x in pop:
-        pop_array.append(ast.literal_eval(x['genotypes']))
-    pop = positions
-    pop = allel.GenotypeArray(pop_array)
+    pop_gt = np.array(pop)
+    pop = allel.GenotypeArray(pop_gt)
     ac = pop.count_alleles()
     win_pi, windows, n_bases, counts = allel.windowed_diversity(pos,ac,size=bin_size,step=step_size)
     
     return win_pi,windows,n_bases,counts
+
+
+def win_hudson_fst(positions,pop1,pop2,bin_size=100,step_size=None):
+    pop1_gt = np.array(pop1)
+    pop2_gt = np.array(pop2)
+    pop1 = allel.GenotypeArray(pop1_gt)
+    pop2 = allel.GenotypeArray(pop2_gt)
+    ac1 = pop1.count_alleles()
+    ac2 = pop2.count_alleles()
+    win_fst, win, counts = allel.windowed_hudson_fst(positions,ac1, ac2,bin_size=bin_size,step_size=step_size)
+    return win_fst, win, counts
+
+
+
+
+
+
+
+
 
 
 
@@ -243,3 +274,6 @@ def obs_vs_het_chi (pop_freq):
             E.append(Equ)
     O_E = list(zip(C, E, ))
     return O_E
+
+
+
