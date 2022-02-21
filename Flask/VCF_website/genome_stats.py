@@ -90,7 +90,7 @@ def win_tajima_d(positions,pop,bin_size=100,step_size=None):
     ac = pop.count_alleles()
     win_tajima_D, windows, counts = allel.windowed_tajima_d(pos=pos,ac=ac,size=bin_size,step=step_size)
     
-    return win_tajima_D,windows,counts
+    return win_tajima_D, windows, counts
 
 
 
@@ -117,7 +117,7 @@ def win_nuc_div(positions,pop,bin_size=100,step_size=None):
     ac = pop.count_alleles()
     win_pi, windows, n_bases, counts = allel.windowed_diversity(pos,ac,size=bin_size,step=step_size)
     
-    return win_pi,windows,n_bases,counts
+    return win_pi, windows, n_bases, counts
 
 
 def win_hudson_fst(positions,pop1,pop2,bin_size=100,step_size=None):
