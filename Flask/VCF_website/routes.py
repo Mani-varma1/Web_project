@@ -1,4 +1,3 @@
-import code
 import time
 from flask import render_template, url_for, flash, redirect, request, session, make_response
 from io import StringIO
