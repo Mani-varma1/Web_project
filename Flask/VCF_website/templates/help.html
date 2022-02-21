@@ -1,0 +1,26 @@
+{% extends "layout_help.html" %}
+{% block content %}
+    <h2> Overview</h2>
+    <div class="line"></div>
+
+    <h3>Architecture</h3>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+
+    <div class="line"></div>
+
+    <section id="database-schema">
+    <h3>Database</h3>
+    <p>As a database, SQLite3 is used because it is suitable for non-production environments. 
+        Connectivity to the database is implemented using SQLAlchemy-Flask, an open source SQL toolkit and object-relational mapper (ORM) for Python. Multiple tables are used to store the data, which are joined with the relationships shown in the figure below.</p> 
+        
+        <p>SQLAlchemy was selected to be used because it provides a high-level approach that is simple to implement and helps in developing code quicker. SQLAlchemy, due to its ORM capabilities, acts as a database abstraction layer. This layer sits as an intermediary between the app and the database engine. It allows defining regular Python objects and methods and translates them into low-level SQL database instructions.
+        .</p>
+        <img src="{{url_for('static', filename='help_files/popgen_database_diagram.png')}}" align="middle" />
+    </section>
+    <div class="line"></div>
+    <section id="user-experience">
+        <h3>Lorem Ipsum Dolor</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+    </section>
+
+    {% endblock content %}

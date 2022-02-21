@@ -221,6 +221,9 @@ def contact():
         return redirect(url_for('home'))
     return render_template('contact.html', title='Contact', form=form)
 
+@app.route("/help")
+def help():
+    return render_template('help.html')
 
 # def save_picture(form_picture):
 #     random_hex = secrets.token_hex(8)
