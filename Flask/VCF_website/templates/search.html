@@ -1,9 +1,9 @@
 {% extends "layout.html" %}
-{% block content %}
-    <h1 style="margin-top:-5%;">Search Page</h1>
+{% block search %}
+    <h1 style="border-top: 150px;">Search Page</h1>
         <form novalidate="novalidate" method="POST" action="">
             {{ form1.hidden_tag() }}
-            <div class="content-section mt-3">
+            <div class="content-section mt-5">
                 <fieldset class="form-group ">
                     <div class="form-group">
                         {{ form1.select.label(class="form-control-label mb-1") }}
@@ -99,4 +99,4 @@
                 </fieldset>
             </div>
         </form>
-{% endblock content %}
+{% endblock search %}
