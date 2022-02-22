@@ -73,6 +73,7 @@ def get_fstat(paris,gt_dict):
     lst = []
     for i in combos:
         pair = f'{i[0]}:{i[1]}'
+        print(pair)
         fst = hudson_fst(gt_dict[i[0]],gt_dict[i[1]])
         lst.append([pair,fst])
     

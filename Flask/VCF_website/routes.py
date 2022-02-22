@@ -261,15 +261,15 @@ def decompress(gt_arr):
 
 
 
-def win_pi_stats(positions,pop,bin_size,step_size=None):
-    win_pi, pi_windows, nb, cts_pi = gstat.win_nuc_div(positions,pop,bin_size=bin_size,step_size=None)
+def win_pi_stats(positions,pop,bin_size,step_size):
+    win_pi, pi_windows, nb, cts_pi = gstat.win_nuc_div(positions=positions,pop=pop,bin_size=bin_size,step_size=step_size)
     return win_pi, pi_windows, nb, cts_pi
 
 def win_taj_stats(positions,pop,bin_size,step_size=None):
-    win_tajima_D, win_taj, cts_taj = gstat.win_tajima_d(positions,pop,bin_size=bin_size,step_size=None)
+    win_tajima_D, win_taj, cts_taj = gstat.win_tajima_d(positions=positions,pop=pop,bin_size=bin_size,step_size=step_size)
     return win_tajima_D,win_taj,cts_taj
 
-def moving_haplotype_div(pop,bin_size=100,step_size=None):
+def moving_haplotype_div(pop,bin_size,step_size):
     moving_hap = gstat.moving_haplotype_div(pop=pop,bin_size=bin_size,step_size=step_size)
     return moving_hap
 
@@ -284,8 +284,16 @@ def win_fst_stats(positions,pop,bin_size,step_size=None):
 
 @app.route("/stats/<pops>/<stats>")
 def stats(pops, stats):
+    try:
+        sel_pops = ast.literal_eval(pops)
+        stats = ast.literal_eval(stats)
+    except Exception:
+        flash ('Please select the Stats from this page', 'info')
+        return redirect(url_for('results'))
+    
     results = json.loads(session['results'])
     gen_pos = [int(i['pos']) for i in results]
+    print(gen_pos)
 
     first_col = results[0]
     last_col = results[-1]
@@ -296,7 +304,7 @@ def stats(pops, stats):
 
     """Summary Stats for each population"""
     """ GBR"""
-    if 'GBR' in pops:
+    if 'GBR' in sel_pops:
         gbr = json.loads(session['gbr'])
         gbr_gt_data, gbr_freq = decompress(gbr)
 
@@ -317,7 +325,7 @@ def stats(pops, stats):
         gbr = None
 
     """JPT"""
-    if 'JPT' in pops:
+    if 'JPT' in sel_pops:
         jpt = json.loads(session['jpt'])
         jpt_gt_data, jpt_freq = decompress(jpt)
 
@@ -341,7 +349,7 @@ def stats(pops, stats):
     
     
     """MXL"""
-    if 'MXL' in pops:
+    if 'MXL' in sel_pops:
         mxl = json.loads(session['mxl'])
         mxl_gt_data, mxl_freq = decompress(mxl)
         """Get homozygositym nucleotide diversity, haplotype diversity, and Tajimas D"""
@@ -363,7 +371,7 @@ def stats(pops, stats):
 
 
 
-    if 'PJL' in pops:
+    if 'PJL' in sel_pops:
         pjl = json.loads(session['pjl'])
         pjl_gt_data, pjl_freq = decompress(pjl)
         """Get homozygositym nucleotide diversity, haplotype diversity, and Tajimas D"""
@@ -384,7 +392,7 @@ def stats(pops, stats):
 
 
 
-    if 'YRI' in pops:
+    if 'YRI' in sel_pops:
         yri = json.loads(session['yri'])
         yri_gt_data, yri_freq = decompress(yri)
         """Get homozygositym nucleotide diversity, haplotype diversity, and Tajimas D"""
@@ -431,15 +439,13 @@ def stats(pops, stats):
     
 
 
-    all_fstat = gstat.get_fstat(paris=pops, gt_dict = gt_dict)
-    all_pops =[gt_dict[i] for i in pops]
-    
-    print(all_pops)
+    all_fstat = gstat.get_fstat(paris=sel_pops, gt_dict = gt_dict)
+    all_pops =[gt_dict[i] for i in sel_pops]
 
 
 
 
-    return render_template('stats.html', stats=stats, populations=pops, results=results, )
+    return render_template('stats.html', stats=stats, populations=sel_pops, results=results, )
 
 
 
