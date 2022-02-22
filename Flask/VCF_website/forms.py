@@ -1,8 +1,9 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, SelectField, IntegerField, SelectMultipleField
-from wtforms.validators import DataRequired, Length, Email, Optional, ValidationError,InputRequired, Regexp
+from wtforms.validators import DataRequired, Length, Email, Optional, ValidationError, Regexp
 from markupsafe import Markup
 from wtforms.widgets.core import html_params, ListWidget, CheckboxInput
+
 
 class ContactForm(FlaskForm):
     name = StringField(label='Name', validators=[DataRequired()])
@@ -93,17 +94,23 @@ class SearchGene(FlaskForm):
 
 
 
+
+
+
+
+
+
 class MultiCheckboxField(SelectMultipleField):
     widget = ListWidget(prefix_label=False)
     option_widget =CheckboxInput()
 
 class PopulationStatistics(FlaskForm):
-    choices_stats = [('Heterozygosity','stats for het'),('Haplotype','stats for hap'),('Tajimas_D','stats for taj_d'),('FST','stats for hap')]
+    choices_stats = [('Heterozygosity','Heterozygosity'),('Haplotype','Haplotype'),('Tajimas_D','Tajimas_D'),('Fst','Fst')]
     stats = MultiCheckboxField('Select Statistics', choices=choices_stats, validators=[DataRequired(message="Please select atleast one statistic")])
-    choices_pop = [('GBR','GBR'),('MXL','MXL'),('POP3','POP3'),('POP4','POP3'),('POP5','POP5')]
-    populations = MultiCheckboxField('Select population', choices=choices_pop, validators=[DataRequired(message="Please select atleast two populations")])
+    choices_pop = [('GBR','GBR'),('JPT','JPT'),('MXL','MXL'),('PJL','PJL'),('YRI','YRI')]
+    populations = MultiCheckboxField('Select population', choices=choices_pop, validators=[DataRequired(message="Please select a population")])
     pop_stat = SubmitField("Search")
 
-    def validate_populations(self, populations):
-        if len(populations.data) <= 1:
-            raise ValidationError('Need atleast two populations')
+    def validate_populations(self,populations):
+        if ('Fst' in  self.stats.data) and (len(populations.data)<2):
+            raise ValidationError('Need atleast two populations for FST')
