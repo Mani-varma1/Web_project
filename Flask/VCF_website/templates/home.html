@@ -1,13 +1,88 @@
-{% extends "layout.html" %}
+{% extends "layout.html" %} 
 {% block content %}
-      <article class="media content-section">
-        <div class="media-body">
-          <div class="article-metadata">
-            <a class="mr-2" href="#">Place Holder</a>
-            <small class="text-muted">28/01/2022</small>
+    <header class="bgimg-1 w3-display-container w3-grayscale-min" id="home">
+      <div class="w3-display-left w3-text-Black" style="padding:48px">
+        <span class="w3-jumbo w3-hide-small">Population Genomics</span><br>
+        <span class="w3-xxlarge w3-hide-large w3-hide-medium">Population Genomics</span><br>
+        <span class="w3-large">Search for variation across chromosomes and perform basic</span>
+        <p><a href="{{ url_for('search') }}"
+            class="w3-button w3-black w3-padding-large w3-large w3-margin-top w3-opacity w3-hover-opacity-off">Search For
+            SNPs</a></p>
+      </div>
+    </header>
+
+    <div class="w3-container" style="padding:128px 16px" id="team">
+      <h3 class="w3-center">THE TEAM</h3>
+      <p class="w3-center w3-large">The ones who Created this Web App</p>
+      <div class="w3-row-padding w3-grayscale" style="margin-top:64px">
+    
+        <div class="w3-col l2.5 m2 w3-margin-bottom">
+          <div class="w3-card">
+            <img src="/w3images/team2.jpg" alt="Github Pic" style="width:100%">
+            <div class="w3-container">
+              <h3>Alexandra</h3>
+              <p class="w3-opacity">Data Collection and Documentation </p>
+              <p><button class="w3-button w3-light-grey w3-block"><i class="fa fa-address-book"></i>
+                  Github</button></p>
+            </div>
           </div>
-          <h2><a class="article-title" href="#">Population Genomices</a></h2>
-          <p class="article-content">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Rerum, libero?</p>
         </div>
-      </article>
+        <div class="w3-col l2.5 m2 w3-margin-bottom">
+          <div class="w3-card">
+            <img src="/w3images/team1.jpg" alt="Github Pic" style="width:100%">
+            <div class="w3-container">
+              <h3>Harry</h3>
+              <p class="w3-opacity">Front End Dev</p>
+              <p><button class="w3-button w3-light-grey w3-block"><i class="fa fa-address-book"></i>
+                  Github</button></p>
+            </div>
+          </div>
+        </div>
+        <div class="w3-col l2.5 m2 w3-margin-bottom">
+          <div class="w3-card">
+            <img src="/w3images/team3.jpg" alt="Github Pic" style="width:100%">
+            <div class="w3-container">
+              <h3>Laavanya</h3>
+              <p class="w3-opacity">Statistician and data visualisation</p>
+              <p><button class="w3-button w3-light-grey w3-block"><i class="fa fa-address-book"></i>
+                  Github</button></p>
+            </div>
+          </div>
+        </div>
+        <div class="w3-col l2.5 m2 w3-margin-bottom">
+          <div class="w3-card">
+            <img src="/w3images/team3.jpg" alt="Github Pic" style="width:100%">
+            <div class="w3-container">
+              <h3>Waleed</h3>
+              <p class="w3-opacity">Database Engineer</p>
+              <p><button class="w3-button w3-light-grey w3-block"><i class="fa fa-address-book"></i>
+                  Github</button></p>
+            </div>
+          </div>
+        </div>
+        <div class="w3-col l2.5 m2 w3-margin-bottom">
+          <div class="w3-card">
+            <img src="/w3images/team4.jpg" alt="Github Pic" style="width:100%">
+            <div class="w3-container">
+              <h3>Mani</h3>
+              <p class="w3-opacity">Backend Dev</p>
+              <p><button class="w3-button w3-light-grey w3-block"><i class="fa fa-address-book"></i>
+                  Github</button></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+    
+    
+    
+    
+    <!-- Footer -->
+    <footer class="w3-center w3-black w3-padding-64">
+    
+      <p>Powered by: <span class="w3-hover-text-green">Caffine Overdose and Slepless Nights</span></p>
+    </footer>
 {% endblock content %}
