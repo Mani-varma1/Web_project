@@ -1,5 +1,5 @@
 {% extends "layout.html" %}
-{% block content %}
+{% block search %}
     {% for choice in stats %}
         <h1> {{choice}} </h1>
     {% endfor %}
@@ -53,4 +53,4 @@
         {% endif %}
         <a href="/download">Download</a>
     </div>
-{% endblock content %}
+{% endblock search %}
