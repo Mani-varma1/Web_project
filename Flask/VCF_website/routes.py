@@ -303,6 +303,15 @@ def stats(pop_sel, stats_sel):
         mxl_homo, mxl_nuc_div, mxl_hap_div, mxl_taj_d = get_main_stats(pop=mxl_gt_data,freq_data =mxl_freq)
         mxl_stats = [mxl_homo, mxl_nuc_div, mxl_hap_div, mxl_taj_d]
 
+        #store the data into a session to use in the download
+        
+        #if mxl_stats:
+         #   print(mxl_stats)
+        #else:
+         #   mxl_stats = None
+
+        #session['download_mxl_stats'] = mxl_stats
+
         """Windowed Satats"""
         """PI"""
         mxl_win_pi, mxl_pi_windows, mxl_nb, mxl_cts_pi= win_pi_stats(positions=gen_pos,pop=mxl_gt_data,bin_size=10,step_size=None)
@@ -403,6 +412,11 @@ test_down = [{'chrom': '22', 'rs_val': 'rs587698813', 'pos': '16051164',
 
 @app.route('/download')
 def download():
+    #load the data that were created from route /stats
+    #download_mxl_stats = json.loads(session['download_mxl_stats'])
+    #print(download_mxl_stats)
+    #return "Test Session" + download_mxl_stats
+
     si = StringIO()
     fields = [
         'chrom',
