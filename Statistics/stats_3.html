@@ -1,0 +1,15 @@
+ <div id='chart1' class='chart1'”></div>
+
+<script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+<script type='text/javascript'>
+  var graphs = {{graph1JSON | safe}};
+  Plotly.plot('chart1',graphs,{});
+</script>
+
+    <div id='chart2' class='chart2'”></div>
+
+<script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+<script type='text/javascript'>
+  var graphs = {{graph2JSON | safe}};
+  Plotly.plot('chart2',graphs,{});
+</script>
