@@ -14,7 +14,7 @@ def Homozygosity(freq_data):
         total_hom += int(x['hom_ref']) + int(x['hom_alt'])
         total_gen += int(x['hom_ref']) + int(x['hom_alt']) + int(x['het'])
     obs_homozygosity = total_hom/total_gen
-    return obs_homozygosity
+    return round(obs_homozygosity,3)
 
 
 
@@ -31,7 +31,7 @@ def nuc_div(pop):
     h = pop.to_haplotypes()
     pi= allel.haplotype_diversity(h=h)
     
-    return pi
+    return round(pi,2)
 
 
 
@@ -41,17 +41,17 @@ def haplotype_div(pop):
     h = pop.to_haplotypes()
     hd= allel.haplotype_diversity(h=h)
     
-    return hd
+    return round(hd,2)
 
 
 
-def tajima_d(pop):
+def tajima_d(pop, pos):
     pop_gt = np.array(pop)
     pop = allel.GenotypeArray(pop_gt)
     ac = pop.count_alleles()
-    D= allel.tajima_d(ac=ac)
+    D= allel.tajima_d(ac=ac, pos=pos)
     
-    return D
+    return round(D,2)
 
 
 
@@ -66,14 +66,13 @@ def hudson_fst(pop1,pop2):
     ac2 = pop2.count_alleles()
     num, den = allel.hudson_fst(ac1, ac2)
     fst = np.sum(num) / np.sum(den)
-    return fst
+    return round(fst,2)
 
 def get_fstat(paris,gt_dict):
     combos = itertools.permutations(paris,2)
     lst = []
     for i in combos:
         pair = f'{i[0]}:{i[1]}'
-        print(pair)
         fst = hudson_fst(gt_dict[i[0]],gt_dict[i[1]])
         lst.append([pair,fst])
     
@@ -83,21 +82,42 @@ def get_fstat(paris,gt_dict):
 
 
 
-def get_main_stats(pop,freq_data):
+def get_main_stats(pop,freq_data,pos):
     homo = Homozygosity(freq_data)
     nd = nuc_div(pop)
-    taj_d = tajima_d(pop)
+    taj_d = tajima_d(pop,pos=pos)
     hap_div = haplotype_div(pop)
     return homo,nd,hap_div,taj_d
 
 
-def overall_stats(all_pops_array):
+def overall_stats_gtd(all_pops_array):
     for i,ele in enumerate(all_pops_array):
         ele = np.array(ele)
         if i == 0:
             all_pop_arr = ele
         else:
             all_pop_arr = np.hstack((all_pop_arr,ele))
+    return all_pop_arr
+
+def overall_stats_cts(all_pop):
+    full_pop_data = []
+    if len(full_pop_data) == 0:
+        frq_lst = all_pop[0]
+        """In place update of the dictionary from """
+        for dt in frq_lst:
+            for k,v in dt.items():
+                dt.update({k: int(v)})
+        for i in frq_lst:
+            full_pop_data.append(i)
+    frq_lst = all_pop[1:]
+    for i in frq_lst:
+        for main,sub in zip(full_pop_data,i):
+            main['hom_ref'] += int(sub['hom_ref'])
+            main['het'] += int(sub['het'])
+            main['hom_alt'] += int(sub['hom_alt'])
+
+    return full_pop_data
+
 
     
 
