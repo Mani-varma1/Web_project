@@ -6,35 +6,40 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: "Raleway", sans-serif
+  font-family: "Raleway", sans-serif;
 }
 
 body,
 html {
-    height: 100%;
-    line-height: 1.8;
+  height: 100%;
+  line-height: 1.8;
+}
+
+a {
+  color: #333;
+}
+
+.col-container {
+  display: table;
+  width: 100%;
 }
 
 /* Full height image header */
 .bgimg-1 {
-    background-position: center;
-    background-size: cover;
-    background-color: bisque;
-    background-image: url("../static/profile_pics/background.jpg");
-    min-height: 100%;
+  background-position: center;
+  background-size: cover;
+  background-color: bisque;
+  background-image: url("../static/profile_pics/background.jpg");
+  min-height: 100%;
 }
 
 .w3-bar .w3-button {
-    padding: 16px;
+  padding: 8px;
 }
-
 
 .bg-steel {
-  background-color: #5f788a;
+  background-color: rgba(10, 10, 10, 0);
 }
-
-
-
 
 .content-section {
   background: #ffffff;
@@ -45,7 +50,7 @@ html {
 }
 
 .article-title {
-  color: #444444;
+  color: rgb(175, 26, 26);
 }
 
 a.article-title:hover {
@@ -60,13 +65,13 @@ a.article-title:hover {
 .article-img {
   height: 65px;
   width: 65px;
-  margin-right: 16px;
+  margin-right: 32px;
 }
 
 .article-metadata {
   padding-bottom: 1px;
   margin-bottom: 4px;
-  border-bottom: 1px solid #e3e3e3
+  border-bottom: 1px solid #e3e3e3;
 }
 
 .article-metadata a:hover {
@@ -98,3 +103,10 @@ a.article-title:hover {
   margin-bottom: 10%;
 }
 
+.center {
+  display: table-row-group;
+  margin-left: 0%;
+  margin-right: 0%;
+  width: 80%;
+  margin: auto;
+}
