@@ -127,7 +127,44 @@ def loading(search):
 
             return redirect(url_for('results', title='Results'))
     else:
-        if variable.startswith('rs') == True:
+        """For Multi rsid or gene list, gene limited to just 5. if conditions not met
+            redirects to search with a flashed message
+        """
+        if ',' in variable:
+            try:
+                
+                variable = [i.strip() for i in variable.split(',')]
+                rs_lst = []
+                gene_lst=[]
+                for i in variable:
+                    if i.startswith('rs') and isinstance(int(i[2:]),int):
+                        print(i)
+                        print('hi')
+                        rs_lst.append(i)
+                    elif len(variable)<=5:
+                        gene_lst.append(i)
+                    elif len(variable)>5:
+                        flash("Sorry Only 5 genes allowed", 'danger')
+                        return redirect(url_for('search'))
+                    else:
+                        raise Exception
+                if len(rs_lst)>0 and len(gene_lst)>0:
+                    raise Exception
+                else:
+                    if len(rs_lst) != 0:
+                        print(' DO query')
+                        return '<h1>Temp RS Holder</h1>'
+                    else:
+                        print('Do query')
+                        return '<h1>Temp GENE Holder</h1>'  
+            except Exception:
+                flash("Sorry please check your format and try again", 'danger')
+                return redirect(url_for('search'))
+
+
+        
+
+        elif variable.startswith('rs') == True:
             results = query_search.query.filter(query_search.rs_val.like(variable)).all() 
 
             if not results:
@@ -135,8 +172,11 @@ def loading(search):
                 return redirect(url_for('search'))
 
             pop_data(results,variable)
+
             return redirect(url_for('results', title='Results'))
         
+
+
         else:
             results = query_search.query.filter(query_search.gene_name.like(variable)).all()
 
@@ -161,10 +201,24 @@ def loading(search):
 def results():
     results = json.loads(session['results'])
     mxl = json.loads(session['mxl'])
+
+    for i in mxl:
+        gf = ast.literal_eval(i['geno_freq'])
+        gf_sum = sum(gf.values())
+        gf_var = f"Hom-Ref:{round(gf['hom_ref']/gf_sum,2)}      Het:{round(gf['het']/gf_sum,2)}     Hom-Alt:{round(gf['hom_alt']/gf_sum,2)}"
+
+
+        af = ast.literal_eval(i['allele_freq'])
+        af_sum = sum(af.values())
+        af_var = f"REF:{round(af['ref']/af_sum,2)}      ALT:{round(af['alt']/af_sum,2)}"
+
+        i['geno_freq'] = gf_var
+        i['allele_freq'] = af_var 
+
     form = PopulationStatistics()
     if request.method == "POST":
         if form.validate_on_submit():
-            return stats(pop_sel=form.populations.data, stats_sel=form.stats.data)
+            return redirect(url_for('stats',pops=form.populations.data, stats=form.stats.data))
     return render_template('results.html', Results=results, MXL=mxl, form=form)
 
 
@@ -203,28 +257,19 @@ def decompress(gt_arr):
 
 
 
-def get_main_stats(pop,freq_data):
-    homo = gstat.Homozygosity(freq_data)
-    nuc_div = gstat.nuc_div(pop)
-    taj_d = gstat.tajima_d(pop)
-    hap_div = gstat.haplotype_div(pop)
-    return homo,nuc_div,hap_div,taj_d
 
 
 
 
-
-
-
-def win_pi_stats(positions,pop,bin_size,step_size=None):
-    win_pi, pi_windows, nb, cts_pi = gstat.win_nuc_div(positions,pop,bin_size=bin_size,step_size=None)
+def win_pi_stats(positions,pop,bin_size,step_size):
+    win_pi, pi_windows, nb, cts_pi = gstat.win_nuc_div(positions=positions,pop=pop,bin_size=bin_size,step_size=step_size)
     return win_pi, pi_windows, nb, cts_pi
 
 def win_taj_stats(positions,pop,bin_size,step_size=None):
-    win_tajima_D, win_taj, cts_taj = gstat.win_tajima_d(positions,pop,bin_size=bin_size,step_size=None)
+    win_tajima_D, win_taj, cts_taj = gstat.win_tajima_d(positions=positions,pop=pop,bin_size=bin_size,step_size=step_size)
     return win_tajima_D,win_taj,cts_taj
 
-def moving_haplotype_div(pop,bin_size=100,step_size=None):
+def moving_haplotype_div(pop,bin_size,step_size):
     moving_hap = gstat.moving_haplotype_div(pop=pop,bin_size=bin_size,step_size=step_size)
     return moving_hap
 
@@ -237,10 +282,18 @@ def win_fst_stats(positions,pop,bin_size,step_size=None):
 
 
 
-@app.route("/stats")
-def stats(pop_sel, stats_sel):
+@app.route("/stats/<pops>/<stats>")
+def stats(pops, stats):
+    try:
+        sel_pops = ast.literal_eval(pops)
+        stats = ast.literal_eval(stats)
+    except Exception:
+        flash ('Please select the Stats from this page', 'info')
+        return redirect(url_for('results'))
+    
     results = json.loads(session['results'])
     gen_pos = [int(i['pos']) for i in results]
+    print(gen_pos)
 
     first_col = results[0]
     last_col = results[-1]
@@ -251,12 +304,12 @@ def stats(pop_sel, stats_sel):
 
     """Summary Stats for each population"""
     """ GBR"""
-    if 'GBR' in pop_sel:
+    if 'GBR' in sel_pops:
         gbr = json.loads(session['gbr'])
         gbr_gt_data, gbr_freq = decompress(gbr)
 
         """Get homozygositym nucleotide diversity, haplotype diversity, and Tajimas D"""        
-        gbr_homo, gbr_nuc_div, gbr_hap_div, gbr_taj_d = get_main_stats(pop=gbr_gt_data,freq_data =gbr_freq)
+        gbr_homo, gbr_nuc_div, gbr_hap_div, gbr_taj_d = gstat.get_main_stats(pop=gbr_gt_data,freq_data =gbr_freq)
         gbr_stats = [gbr_homo, gbr_nuc_div, gbr_hap_div, gbr_taj_d]
 
         """Windowed Satats"""
@@ -272,12 +325,12 @@ def stats(pop_sel, stats_sel):
         gbr = None
 
     """JPT"""
-    if 'JPT' in pop_sel:
+    if 'JPT' in sel_pops:
         jpt = json.loads(session['jpt'])
         jpt_gt_data, jpt_freq = decompress(jpt)
 
         """Get homozygositym nucleotide diversity, haplotype diversity, and Tajimas D"""
-        jpt_homo, jpt_nuc_div, jpt_hap_div, jpt_taj_d = get_main_stats(pop=jpt_gt_data,freq_data =jpt_freq)
+        jpt_homo, jpt_nuc_div, jpt_hap_div, jpt_taj_d = gstat.get_main_stats(pop=jpt_gt_data,freq_data =jpt_freq)
         jpt_stats = [jpt_homo, jpt_nuc_div, jpt_hap_div, jpt_taj_d]
 
         """Windowed Satats"""
@@ -296,11 +349,11 @@ def stats(pop_sel, stats_sel):
     
     
     """MXL"""
-    if 'MXL' in pop_sel:
+    if 'MXL' in sel_pops:
         mxl = json.loads(session['mxl'])
         mxl_gt_data, mxl_freq = decompress(mxl)
         """Get homozygositym nucleotide diversity, haplotype diversity, and Tajimas D"""
-        mxl_homo, mxl_nuc_div, mxl_hap_div, mxl_taj_d = get_main_stats(pop=mxl_gt_data,freq_data =mxl_freq)
+        mxl_homo, mxl_nuc_div, mxl_hap_div, mxl_taj_d = gstat.get_main_stats(pop=mxl_gt_data,freq_data =mxl_freq)
         mxl_stats = [mxl_homo, mxl_nuc_div, mxl_hap_div, mxl_taj_d]
 
         """Windowed Satats"""
@@ -318,11 +371,11 @@ def stats(pop_sel, stats_sel):
 
 
 
-    if 'PJL' in pop_sel:
+    if 'PJL' in sel_pops:
         pjl = json.loads(session['pjl'])
         pjl_gt_data, pjl_freq = decompress(pjl)
         """Get homozygositym nucleotide diversity, haplotype diversity, and Tajimas D"""
-        pjl_homo, pjl_nuc_div, pjl_hap_div, pjl_taj_d = get_main_stats(pop=pjl_gt_data,freq_data =pjl_freq)
+        pjl_homo, pjl_nuc_div, pjl_hap_div, pjl_taj_d = gstat.get_main_stats(pop=pjl_gt_data,freq_data =pjl_freq)
         pjl_stats = [pjl_homo, pjl_nuc_div, pjl_hap_div, pjl_taj_d]
 
         """Windowed Satats"""
@@ -339,11 +392,11 @@ def stats(pop_sel, stats_sel):
 
 
 
-    if 'YRI' in pop_sel:
+    if 'YRI' in sel_pops:
         yri = json.loads(session['yri'])
         yri_gt_data, yri_freq = decompress(yri)
         """Get homozygositym nucleotide diversity, haplotype diversity, and Tajimas D"""
-        yri_homo,yri_nuc_div,yri_hap_div,yri_taj_d = get_main_stats(pop=yri_gt_data,freq_data =yri_freq)
+        yri_homo,yri_nuc_div,yri_hap_div,yri_taj_d = gstat.get_main_stats(pop=yri_gt_data,freq_data =yri_freq)
         yri_stats = [yri_homo,yri_nuc_div,yri_hap_div,yri_taj_d]
 
         """Windowed Satats"""
@@ -361,31 +414,43 @@ def stats(pop_sel, stats_sel):
 
 
     gt_dict = {}
+    gt_freq = {}
 
     if gbr:
         gt_dict['GBR'] = gbr_gt_data
+        gt_freq['GBR'] = gbr_freq
     
     if jpt:
         gt_dict['JPT'] = jpt_gt_data
+        gt_freq['JPT'] = jpt_freq
 
     if mxl:
         gt_dict['MXL'] = mxl_gt_data
+        gt_freq['MXL'] = mxl_freq
     
     if pjl:
         gt_dict['PJL'] =pjl_gt_data
+        gt_freq['PJL'] = pjl_freq
 
     if yri:
         gt_dict['YRI'] = pjl_gt_data
+        gt_freq['YRI'] = yri_freq
 
     
 
 
-    all_fstat = gstat.get_fstat(paris=pop_sel, gt_dict = gt_dict)
+    all_fstat = gstat.get_fstat(paris=sel_pops, gt_dict = gt_dict)
+    all_pops =[gt_dict[i] for i in sel_pops]
 
 
 
 
-    return render_template('stats.html', stats=stats_sel, populations=pop_sel, results=results, )
+    return render_template('stats.html', stats=stats, populations=sel_pops, results=results, )
+
+
+
+
+
 
 
 

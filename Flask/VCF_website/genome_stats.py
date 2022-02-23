@@ -73,6 +73,7 @@ def get_fstat(paris,gt_dict):
     lst = []
     for i in combos:
         pair = f'{i[0]}:{i[1]}'
+        print(pair)
         fst = hudson_fst(gt_dict[i[0]],gt_dict[i[1]])
         lst.append([pair,fst])
     
@@ -80,6 +81,29 @@ def get_fstat(paris,gt_dict):
 
 
 
+
+
+def get_main_stats(pop,freq_data):
+    homo = Homozygosity(freq_data)
+    nd = nuc_div(pop)
+    taj_d = tajima_d(pop)
+    hap_div = haplotype_div(pop)
+    return homo,nd,hap_div,taj_d
+
+
+def overall_stats(all_pops_array):
+    for i,ele in enumerate(all_pops_array):
+        ele = np.array(ele)
+        if i == 0:
+            all_pop_arr = ele
+        else:
+            all_pop_arr = np.hstack((all_pop_arr,ele))
+
+    
+
+    
+    
+    
 
 
 
