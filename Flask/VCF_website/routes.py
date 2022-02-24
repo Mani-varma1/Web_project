@@ -563,3 +563,9 @@ def contact():
         return redirect(url_for('home'))
     return render_template('contact.html', title='Contact', form=form)
 
+
+@app.route("/help", methods=['GET', 'POST'])
+def help():
+    return render_template('help.html', title='Help')
+
+
