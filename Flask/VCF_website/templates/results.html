@@ -1,12 +1,43 @@
 {% extends "layout.html" %}
-{% block content %}
-<h1> Results </h1>
+{% block search %}
+  <style>
+    /* Style the tab */
+  .tab {
+    overflow: hidden;
+    border: 1px solid #ccc;
+    background-color: #f1f1f1;
+  }
+
+  /* Style the buttons inside the tab */
+  .tab button {
+    background-color: inherit;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+    font-size: 17px;
+  }
+
+  /* Change background color of buttons on hover */
+  .tab button:hover {
+    background-color: #ddd;
+  }
+
+  /* Create an active/current tablink class */
+  .tab button.active {
+    background-color: #ccc;
+  }
+  </style>
+  <h1> Results </h1>
   <div class="container col-md-15 col-md-offset-55">
     <table id="example" class="table table-striped table-bordered" style="width:100%">
         <thead>
             <tr>
                 <th>Chromosome</th>
                 <th>RS ID</th>
+                <th>Gene Name</th>
                 <th>Position</th>
                 <th>Reference allele</th>
                 <th>Alternate allele</th>
@@ -17,31 +48,159 @@
             <tr>
             <td>{{ row["chrom"]}}</td>
             <td>{{ row["rs_val"]}}</td>
+            <td>{{ row["gene_name"]}}</td>
             <td>{{ row["pos"]}}</td>
             <td>{{ row["ref_allele"] }}</td>
-            <td>{{ row["alt_allele"] }}</td>
+            <td>{{ row["alt_allele"] }} </td>
             </tr>
           {% endfor %}
         </tbody>
     </table>
-    <table id="example" class="table table-striped table-bordered" style="width:100%">
+
+    <!-- Tab links -->
+    <div class="tab">
+      <button class="tablinks" onclick="openCity(event, 'GBR')" id="defaultOpen">GBR</button>
+      <button class="tablinks" onclick="openCity(event, 'JPT')">JPT</button>
+      <button class="tablinks" onclick="openCity(event, 'MXL')">MXL</button>
+      <button class="tablinks" onclick="openCity(event, 'PJL')">PJL</button>
+      <button class="tablinks" onclick="openCity(event, 'YRI')">YRI</button>
+    </div>
+
+    <!-- Tab content -->
+    <div id="GBR" class="tabcontent">
+      <table id="example" class="table table-striped table-bordered" style="width:100%">
         <thead>
-            <tr>
-                <th>RS ID</th>
-                <th>genotypes</th>
-                <th>allele frequency</th>
-            </tr>
+          <tr>
+            <th>RS ID</th>
+            <th>genotypes</th>
+            <th>allele frequency</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in GBR %}
+          <tr>
+            <td>{{ row["rs_val_id"]}}</td>
+            <td>
+              <pre>{{ row["geno_freq"]}}</pre>
+            </td>
+            <td>
+              <pre>{{ row["allele_freq"]}}</pre>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+
+
+    <div id="JPT" class="tabcontent">
+      <table id="example" class="table table-striped table-bordered" style="width:100%">
+        <thead>
+          <tr>
+            <th>RS ID</th>
+            <th>genotypes</th>
+            <th>allele frequency</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in JPT %}
+          <tr>
+            <td>{{ row["rs_val_id"]}}</td>
+            <td>
+              <pre>{{ row["geno_freq"]}}</pre>
+            </td>
+            <td>
+              <pre>{{ row["allele_freq"]}}</pre>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <div id="MXL" class="tabcontent">
+      <table id="example" class="table table-striped table-bordered" style="width:100%">
+        <thead>
+          <tr>
+            <th>RS ID</th>
+            <th>genotypes</th>
+            <th>allele frequency</th>
+          </tr>
         </thead>
         <tbody>
           {% for row in MXL %}
           <tr>
-              <td>{{ row["rs_val_id"]}}</td>
-              <td>{{ row["geno_freq"]}}</td>
-              <td>{{ row["allele_freq"]}}</td>
+            <td>{{ row["rs_val_id"]}}</td>
+            <td>
+              <pre>{{ row["geno_freq"]}}</pre>
+            </td>
+            <td>
+              <pre>{{ row["allele_freq"]}}</pre>
+            </td>
           </tr>
           {% endfor %}
         </tbody>
-    </table>
+      </table>
+    </div>
+
+    <div id="PJL" class="tabcontent">
+      <table id="example" class="table table-striped table-bordered" style="width:100%">
+        <thead>
+          <tr>
+            <th>RS ID</th>
+            <th>genotypes</th>
+            <th>allele frequency</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in PJL %}
+          <tr>
+            <td>{{ row["rs_val_id"]}}</td>
+            <td>
+              <pre>{{ row["geno_freq"]}}</pre>
+            </td>
+            <td>
+              <pre>{{ row["allele_freq"]}}</pre>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <div id="YRI" class="tabcontent">
+      <table id="example" class="table table-striped table-bordered" style="width:100%">
+        <thead>
+          <tr>
+            <th>RS ID</th>
+            <th>genotypes</th>
+            <th>allele frequency</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in MXL %}
+          <tr>
+            <td>{{ row["rs_val_id"]}}</td>
+            <td>
+              <pre>{{ row["geno_freq"]}}</pre>
+            </td>
+            <td>
+              <pre>{{ row["allele_freq"]}}</pre>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+
+
+
+
+
+
+
     <a href="/download">Download</a>
   </div>
   <form novalidate="novalidate" method="POST" action="">
@@ -73,31 +232,48 @@
               {{ form.pop_stat(class="btn btn-outline-info mt-3") }}
           </div>
   </form>
-  <br>
-{% endblock content %}
+  <script>
+    function openCity(evt, cityName) {
+      var i, tabcontent, tablinks;
+      tabcontent = document.getElementsByClassName("tabcontent");
+      for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+      }
+      tablinks = document.getElementsByClassName("tablinks");
+      for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+      }
+      document.getElementById(cityName).style.display = "block";
+      evt.currentTarget.className += " active";
+    }
+
+    // Get the element with id="defaultOpen" and click on it
+    document.getElementById("defaultOpen").click();
+  </script>
+{% endblock search %}
 {% block carousel%}
-<div class="change-width">
-  <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
-      <div class="carousel-inner">
-        <div class="carousel-item active">
-          <img src="..\static\profile_pics\198663.jpg" class="d-block w-100" alt="...">
+  <div class="change-width">
+    <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <img src="..\static\profile_pics\198663.jpg" class="d-block w-100" alt="...">
+          </div>
+          <div class="carousel-item">
+            <img src="..\static\profile_pics\wallpaper.jpg" class="d-block w-100" alt="...">
+          </div>
+          <div class="carousel-item">
+            <img src="..\static\profile_pics\outer space gods 2560x1440 wallpaper_www.wallpaperhi.com_7.jpg" class="d-block w-100" alt="...">
+          </div>
         </div>
-        <div class="carousel-item">
-          <img src="..\static\profile_pics\wallpaper.jpg" class="d-block w-100" alt="...">
-        </div>
-        <div class="carousel-item">
-          <img src="..\static\profile_pics\outer space gods 2560x1440 wallpaper_www.wallpaperhi.com_7.jpg" class="d-block w-100" alt="...">
-        </div>
-      </div>
-      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-      </button>
-      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-      </button>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+    </div>
   </div>
-</div>
 
 {% endblock carousel %}

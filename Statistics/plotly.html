@@ -1,0 +1,65 @@
+{% if graph1JSON_CHECK %}
+
+<div id='chart1' class='chart1'”></div>
+
+<script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+<script type='text/javascript'>
+  var graphs = {{graph1JSON | safe}};
+  Plotly.plot('chart1',graphs,{});
+</script>
+{% endif %}
+
+{% if graph2JSON_CHECK %}
+    <div id='chart2' class='chart2'”></div>
+
+<script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+<script type='text/javascript'>
+  var graphs = {{graph2JSON | safe}};
+  Plotly.plot('chart2',graphs,{});
+</script>
+{% endif %}
+
+{% if graph3JSON_CHECK %}
+
+    <div id='chart3' class='chart3'”></div>
+
+<script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+<script type='text/javascript'>
+  var graphs = {{graph3JSON | safe}};
+  Plotly.plot('chart3',graphs,{});
+</script>
+{% endif %}
+
+
+{% if graph4JSON_CHECK %}
+
+    <div id='chart4' class='chart4'”></div>
+
+<script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+<script type='text/javascript'>
+  var graphs = {{graph4JSON | safe}};
+  Plotly.plot('chart4',graphs,{});
+</script>
+{% endif %}
+
+{% if graph5JSON_CHECK %}
+    <div id='chart5' class='chart5'”></div>
+
+<script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+<script type='text/javascript'>
+  var graphs = {{graph5JSON | safe}};
+  Plotly.plot('chart5',graphs,{});
+</script>
+{% endif %}
+
+
+{% if graph6JSON_CHECK %}
+    <div id='chart6' class='chart6'”></div>
+
+<script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+<script type='text/javascript'>
+  var graphs = {{graph6JSON | safe}};
+  Plotly.plot('chart6',graphs,{});
+</script>
+
+{% endif %}

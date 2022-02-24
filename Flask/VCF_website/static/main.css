@@ -1,77 +1,71 @@
-body {
-  background: #fafafa;
-  color: #333333;
-  margin-top: 8rem;
-}
 
+body,
 h1,
 h2,
 h3,
 h4,
 h5,
 h6 {
-  color: #444444;
-  text-align: center;
+  font-family: "Raleway", sans-serif;
 }
 
-.container {
-  width: 100%; /* i'm assuming full width */
-  height: 40px; /* change it to desired width */
+body,
+html {
+  height: 100%;
+  line-height: 1.8;
 }
 
-.POPgen-logos {
-  display: inline-box;
-  vertical-align: top;
-  width: 50px;
-  height: 50px;
-  margin-right: 20px;
+a {
+  color: #333;
+}
+
+.col-container {
+  display: table;
+  width: 100%;
+}
+
+/* Full height image header */
+.bgimg-1 {
+  background-position: center;
+  background-size: cover;
+  background-color: bisque;
+  background-image: url("../static/profile_pics/background.jpg");
+  min-height: 100%;
+}
+
+.w3-bar .w3-button {
+  padding: 8px;
 }
 
 .bg-steel {
-  background-color: #536e81;
-}
-
-.site-header .navbar-nav .nav-link {
-  color: #cbd5db;
-}
-
-.site-header .navbar-nav .nav-link:hover {
-  color: #050303;
-}
-
-.site-header .navbar-nav .nav-link.active {
-  font-weight: 500;
+  background-color: rgba(10, 10, 10, 0);
 }
 
 .content-section {
   background: #ffffff;
-  padding: 15px 25px;
-  border: 2px solid #867777;
-  border-radius: 3px;
-  margin-bottom: 25px;
-}
-
-.center-content {
-  margin: auto;
+  padding: 10px 20px;
+  border: 5px solid #dddddd;
+  border-radius: 15px;
+  margin-bottom: 20px;
 }
 
 .article-title {
-  color: #444444;
+  color: rgb(175, 26, 26);
 }
 
 a.article-title:hover {
-  color: #000000;
+  color: #428bca;
   text-decoration: none;
 }
 
 .article-content {
-  margin: auto;
+  white-space: pre-line;
 }
 
 .article-img {
   height: 65px;
   width: 65px;
-  margin-right: 16px;
+  margin-right: 32px;
 }
 
 .article-metadata {
@@ -109,131 +103,10 @@ a.article-title:hover {
   margin-bottom: 10%;
 }
 
-.media-content-section {
+.center {
+  display: table-row-group;
+  margin-left: 0%;
+  margin-right: 0%;
+  width: 80%;
   margin: auto;
-}
-
-.row {
-  content: "";
-  clear: both;
-  display: table;
-}
-
-.column {
-  float: left;
-  width: 50%;
-  padding: 5px;
-}
-
-body {
-  margin-top: 20px;
-}
-.py-5 {
-  padding-top: 3rem !important;
-  padding-bottom: 3rem !important;
-}
-.pt-5 {
-  padding-top: 3rem !important;
-}
-.my-5 {
-  margin-top: 3rem !important;
-  margin-bottom: 3rem !important;
-}
-.border-0 {
-  border: 0 !important;
-}
-.position-relative {
-  position: relative !important;
-}
-.shadow-lg {
-  box-shadow: 0 1rem 3rem rgb(0 0 0 / 18%) !important;
-}
-.card {
-  position: relative;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-flex-direction: column;
-  flex-direction: column;
-  min-width: 0;
-  word-wrap: break-word;
-  background-color: #fff;
-  background-clip: border-box;
-  border: 1px solid rgba(0, 0, 0, 0.125);
-  border-radius: 0.25rem;
-}
-
-.member-profile {
-  top: -50px;
-  left: 0;
-}
-.text-center {
-  text-align: center !important;
-}
-.w-100 {
-  width: 100% !important;
-}
-.position-absolute {
-  position: absolute !important;
-}
-
-.member-profile img {
-  width: 100px;
-  height: 100px;
-}
-.rounded-circle {
-  border-radius: 50% !important;
-}
-.mx-auto {
-  margin-right: auto !important;
-  margin-left: auto !important;
-}
-.shadow-sm {
-  box-shadow: 0 0.125rem 0.25rem rgb(0 0 0 / 8%) !important;
-}
-
-.row.justify-content-center {
-  column-count: 5;
-}
-
-.button1 {
-  background-color: #536e81;
-  background-image: linear-gradient(to bottom right, #4de2fc, #1100ff, #ff00f2);
-  border: 0;
-  border-radius: 0.25rem;
-  box-sizing: border-box;
-  color: #fff;
-  cursor: pointer;
-  font-family: ui-sans-serif, system-ui, -apple-system, system-ui, "Segoe UI",
-    Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif,
-    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  font-size: 1.125rem; /* 18px */
-  font-weight: 600;
-  line-height: 1.75rem; /* 28px */
-  padding: 1rem 1.25rem;
-  text-align: center;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
-}
-
-.button1:hover {
-  box-shadow: none;
-}
-
-@media (min-width: 1024px) {
-  .button1 {
-    font-size: 1.5rem; /* 24px */
-    padding: 1rem 1.5rem;
-    line-height: 2rem; /* 32px */
-  }
-}
-
-.footer {
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  background-color: #536e81;
-  color: white;
-  text-align: center;
 }
