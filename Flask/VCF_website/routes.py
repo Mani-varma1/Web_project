@@ -64,22 +64,38 @@ def pop_data(results,variable):
             jpt = snp_JPT.query.filter(snp_JPT.rs_val_id == query_search.rs_val).filter(query_search.pos >= int(variable['start_pos'])).filter(query_search.pos <= int(variable['end_pos'])).filter(query_search.chrom == '{}'.format(variable['chr'])).all()
             pjl = snp_PJL.query.filter(snp_PJL.rs_val_id == query_search.rs_val).filter(query_search.pos >= int(variable['start_pos'])).filter(query_search.pos <= int(variable['end_pos'])).filter(query_search.chrom == '{}'.format(variable['chr'])).all()
             yri = snp_YRI.query.filter(snp_YRI.rs_val_id == query_search.rs_val).filter(query_search.pos >= int(variable['start_pos'])).filter(query_search.pos <= int(variable['end_pos'])).filter(query_search.chrom == '{}'.format(variable['chr'])).all()
-            print('hi')
         else:
-            for x in results:
-                mxl = x.mxl
-                gbr = x.gbr
-                jpt = x.jpt
-                pjl = x.pjl
-                yri = x.yri
-    else:
-        for x in results:
-            mxl = x.mxl
-            gbr = x.gbr
-            jpt = x.jpt
-            pjl = x.pjl
-            yri = x.yri
-
+            mxl = snp_MXL.query.filter(snp_MXL.rs_val_id == query_search.rs_val).filter(query_search.pos.like(variable['start_pos'])).filter(query_search.chrom == '{}'.format(variable["chr"])).all()
+            gbr = snp_GBR.query.filter(snp_GBR.rs_val_id == query_search.rs_val).filter(query_search.pos.like(variable['start_pos'])).filter(query_search.chrom == '{}'.format(variable["chr"])).all()
+            jpt = snp_JPT.query.filter(snp_JPT.rs_val_id == query_search.rs_val).filter(query_search.pos.like(variable['start_pos'])).filter(query_search.chrom == '{}'.format(variable["chr"])).all()
+            pjl = snp_PJL.query.filter(snp_PJL.rs_val_id == query_search.rs_val).filter(query_search.pos.like(variable['start_pos'])).filter(query_search.chrom == '{}'.format(variable["chr"])).all()
+            yri = snp_YRI.query.filter(snp_YRI.rs_val_id == query_search.rs_val).filter(query_search.pos.like(variable['start_pos'])).filter(query_search.chrom == '{}'.format(variable["chr"])).all()
+    elif isinstance(variable,list):
+            if variable[0].startswith('rs') and isinstance(int((variable[0])[2:]),int):
+                mxl = snp_MXL.query.filter(snp_MXL.rs_val_id == query_search.rs_val).filter(query_search.rs_val.in_(variable)).all()
+                gbr = snp_GBR.query.filter(snp_GBR.rs_val_id == query_search.rs_val).filter(query_search.rs_val.in_(variable)).all() 
+                jpt = snp_JPT.query.filter(snp_JPT.rs_val_id == query_search.rs_val).filter(query_search.rs_val.in_(variable)).all() 
+                pjl = snp_PJL.query.filter(snp_PJL.rs_val_id == query_search.rs_val).filter(query_search.rs_val.in_(variable)).all() 
+                yri = snp_YRI.query.filter(snp_YRI.rs_val_id == query_search.rs_val).filter(query_search.rs_val.in_(variable)).all() 
+            else:
+                mxl = snp_MXL.query.filter(snp_MXL.rs_val_id == query_search.rs_val).filter(query_search.gene_name.in_(variable)).all()
+                gbr = snp_GBR.query.filter(snp_GBR.rs_val_id == query_search.rs_val).filter(query_search.gene_name.in_(variable)).all() 
+                jpt = snp_JPT.query.filter(snp_JPT.rs_val_id == query_search.rs_val).filter(query_search.gene_name.in_(variable)).all() 
+                pjl = snp_PJL.query.filter(snp_PJL.rs_val_id == query_search.rs_val).filter(query_search.gene_name.in_(variable)).all() 
+                yri = snp_YRI.query.filter(snp_YRI.rs_val_id == query_search.rs_val).filter(query_search.gene_name.in_(variable)).all() 
+    elif isinstance(variable,str):
+        if variable.startswith('rs') == True:
+            mxl = snp_MXL.query.filter(snp_MXL.rs_val_id == query_search.rs_val).filter(query_search.rs_val.like(variable)).all()
+            gbr = snp_GBR.query.filter(snp_GBR.rs_val_id == query_search.rs_val).filter(query_search.rs_val.like(variable)).all() 
+            jpt = snp_JPT.query.filter(snp_JPT.rs_val_id == query_search.rs_val).filter(query_search.rs_val.like(variable)).all() 
+            pjl = snp_PJL.query.filter(snp_PJL.rs_val_id == query_search.rs_val).filter(query_search.rs_val.like(variable)).all() 
+            yri = snp_YRI.query.filter(snp_YRI.rs_val_id == query_search.rs_val).filter(query_search.rs_val.like(variable)).all()
+        else:
+            mxl = snp_MXL.query.filter(snp_MXL.rs_val_id == query_search.rs_val).filter(query_search.gene_name.like(variable)).all()
+            gbr = snp_GBR.query.filter(snp_GBR.rs_val_id == query_search.rs_val).filter(query_search.gene_name.like(variable)).all() 
+            jpt = snp_JPT.query.filter(snp_JPT.rs_val_id == query_search.rs_val).filter(query_search.gene_name.like(variable)).all() 
+            pjl = snp_PJL.query.filter(snp_PJL.rs_val_id == query_search.rs_val).filter(query_search.gene_name.like(variable)).all() 
+            yri = snp_YRI.query.filter(snp_YRI.rs_val_id == query_search.rs_val).filter(query_search.gene_name.like(variable)).all()
 
     session['results'] = json.dumps([i.to_dict() for i in results])
     session['mxl'] = json.dumps([i.to_dict() for i in mxl])
@@ -152,11 +168,13 @@ def loading(search):
                     raise Exception
                 else:
                     if len(rs_lst) != 0:
-                        print(' DO query')
-                        return '<h1>Temp RS Holder</h1>'
+                        results = query_search.query.filter(query_search.rs_val.in_(rs_lst)).all()
+                        pop_data(results,rs_lst)
+                        return redirect(url_for('results', title='Results'))
                     else:
-                        print('Do query')
-                        return '<h1>Temp GENE Holder</h1>'  
+                        results = query_search.query.filter(query_search.gene_name.in_(gene_lst)).all()
+                        pop_data(results,gene_lst)
+                        return redirect(url_for('results', title='Results')) 
             except Exception:
                 flash("Sorry please check your format and try again", 'danger')
                 return redirect(url_for('search'))
