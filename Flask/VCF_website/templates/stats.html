@@ -1,56 +1,233 @@
 {% extends "layout.html" %}
-{% block search %}
-    {% for choice in stats %}
-        <h1> {{choice}} </h1>
-    {% endfor %}
-    {% for choice in populations %}
-        <h1> {{choice}} </h1>
-    {% endfor %}
-    <br>
-    <br>
-    <div class="container col-md-15 col-md-offset-55">
-        {% if Results %}
-            <table id="example" class="table table-striped table-bordered" style="width:100%">
-                <thead>
-                    <tr>
-                        <th>Chromosome</th>
-                        <th>RS ID</th>
-                        <th>Position</th>
-                        <th>Reference allele</th>
-                        <th>Alternate allele</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for row in Results %}
-                    <tr>
-                        <td>{{ row.chrom}}</td>
-                        <td>{{ row.rs_val}}</td>
-                        <td>{{ row.pos}}</td>
-                        <td>{{ row.ref_allele}}</td>
-                        <td>{{ row.alt_allele}}</td>
-                    </tr>
+{% block content %}
+    <div class="w3-container col-md-20 col-md-offset-55" style="margin-top: 100px">
+        <table id="example" class="table table-striped table-bordered" style="width:100%">
+            <thead>
+                <tr>
+                    <th>LOCATION</th>
+                    <th>Genes</th>
+                    {% for key,value in all_stats.items() %}
+                        <th>{{ key }}</th>
                     {% endfor %}
-                </tbody>
-            </table>
-            <!-- <table id="example" class="table table-striped table-bordered" style="width:100%">
-                <thead>
-                    <tr>
-                        <th>RS ID</th>
-                        <th>genotypes</th>
-                        <th>allele frequency</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for row in MXL %}
-                    <tr>
-                        <td>{{ row.rs_val_id}}</td>
-                        <td>{{ row.geno_freq}}</td>
-                        <td>{{ row.allele_freq}}</td>
-                    </tr>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#"></a>{{ html_first_col}}</a></td>
+                    {% if html_gene %}
+                        <td>{{ html_gene }}</td>
+                    {% endif %}
+                    {% if not html_gene %}
+                        <td> None </td>
+                    {% endif %}
+                    {% for key,value in all_stats.items() %}
+                        <td>{{ value }}</td>
                     {% endfor %}
-                </tbody>
-            </table> -->
-        {% endif %}
-        <a href="/download">Download</a>
+                </tr>
+            </tbody>
+        </table>
     </div>
-{% endblock search %}
+
+    <br>
+    <br>
+    <div class="container">
+        <table  class="table table-striped table-bordered" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Population</th>
+                    <th>Observed Homozygosity</th>
+                    <th>Nucleotide diversity</th>
+                    <th>Haplotide Diversity</th>
+                    <th>Tajimas D</th>
+                    <th colspan="4", style="text-align: center;">FST</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    {% for i in pop_stats %}
+                        {% if 'GBR' in i %}
+                    
+                            {% for e in i %}
+                                <td rowspan="4"> {{ e }} </td>
+                            {% endfor %}
+    
+                        {% endif %}
+                    {% endfor %}
+                </tr>
+                <tr>
+                    {% for key,value in all_fstat.items() %}
+                        {% if key.startswith("GBR") %}
+                            <td>
+                                {{ key }} : {{ value }}
+                            </td>
+                        {% endif %}
+                    {% endfor %}
+                </tr>
+            </tbody>
+
+            <tbody>
+                <tr>
+                    {% for i in pop_stats %}
+                        {% if 'JPT' in i %}
+                    
+                            {% for e in i %}
+                                <td rowspan="4"> {{ e }} </td>
+                            {% endfor %}
+    
+                        {% endif %}
+                    {% endfor %}
+                </tr>
+                <tr>
+                    {% for key,value in all_fstat.items() %}
+                        {% if key.startswith("JPT") %}
+                            <td>
+                                {{ key }} : {{ value }}
+                            </td>
+                        {% endif %}
+                    {% endfor %}
+                </tr>
+            </tbody>
+
+            <tbody>
+                <tr>
+                    {% for i in pop_stats %}
+                        {% if 'MXL' in i %}
+                    
+                            {% for e in i %}
+                                <td rowspan="4"> {{ e }} </td>
+                            {% endfor %}
+    
+                        {% endif %}
+                    {% endfor %}
+                </tr>
+                <tr>
+                    {% for key,value in all_fstat.items() %}
+                        {% if key.startswith("MXL") %}
+                            <td>
+                                {{ key }} : {{ value }}
+                            </td>
+                        {% endif %}
+                    {% endfor %}
+                </tr>
+            </tbody>
+
+
+
+            <tbody>
+                <tr>
+                    {% for i in pop_stats %}
+                        {% if 'PJL' in i %}
+                    
+                            {% for e in i %}
+                                <td rowspan="4"> {{ e }} </td>
+                            {% endfor %}
+                        {% endif %}
+                    {% endfor %}
+                </tr>
+                <tr>
+                    {% for key,value in all_fstat.items() %}
+                        {% if key.startswith("PJL") %}
+                            <td>
+                                {{ key }} : {{ value }}
+                            </td>
+                        {% endif %}
+                    {% endfor %}
+                </tr>
+            </tbody>
+
+
+            <tbody>
+                <tr>
+                    {% for i in pop_stats %}
+                        {% if 'YRI' in i %}
+                    
+                            {% for e in i %}
+                                <td rowspan="4"> {{ e }} </td>
+                            {% endfor %}
+    
+                        {% endif %}
+                    {% endfor %}
+                </tr>
+                <tr>
+                    {% for key,value in all_fstat.items() %}
+                        {% if key.startswith("YRI") %}
+                            <td>
+                                {{ key }} : {{ value }}
+                            </td>
+                        {% endif %}
+                    {% endfor %}
+                </tr>
+            </tbody>
+        </table>
+
+
+
+
+        {% if nuc_div_plot1 %}
+            <div id='chart1' class='chart1' ”></div>
+            
+            <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+            <script type='text/javascript'>
+                var graphs = {{ nuc_div_plot1 | safe}};
+                Plotly.plot('chart1', graphs, {});
+            </script>
+        {% endif %}
+        
+        {% if nuc_div_plot2 %}
+            <div id='chart2' class='chart2' ”></div>
+            
+            <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+            <script type='text/javascript'>
+                var graphs = {{ nuc_div_plot2 | safe}};
+                Plotly.plot('chart2', graphs, {});
+            </script>
+        {% endif %}
+        
+        {% if hap_div_plot1 %}
+        
+            <div id='chart3' class='chart3' ”></div>
+            
+            <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+            <script type='text/javascript'>
+                var graphs = {{ hap_div_plot1 | safe}};
+                Plotly.plot('chart3', graphs, {});
+            </script>
+        {% endif %}
+        
+        
+        {% if hap_div_plot2 %}
+        
+            <div id='chart4' class='chart4' ”></div>
+            
+            <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+            <script type='text/javascript'>
+                var graphs = {{ hap_div_plot2 | safe}};
+                Plotly.plot('chart4', graphs, {});
+            </script>
+        {% endif %}
+        
+        {% if taj_d_plot1 %}
+            <div id='chart5' class='chart5' ”></div>
+            
+            <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+            <script type='text/javascript'>
+                var graphs = {{ taj_d_plot1 | safe}};
+                Plotly.plot('chart5', graphs, {});
+            </script>
+        {% endif %}
+        
+        
+        {% if taj_d_plot2 %}
+        <div id='chart6' class='chart6' ”></div>
+        
+        <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+        <script type='text/javascript'>
+            var graphs = {{ taj_d_plot2 | safe}};
+            Plotly.plot('chart6', graphs, {});
+        </script>
+        
+        {% endif %}
+
+{% endblock content %}
+
+

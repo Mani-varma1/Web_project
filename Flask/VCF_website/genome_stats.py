@@ -1,5 +1,9 @@
 # Stats script
 from scipy.stats import bartlett, chisquare
+import plotly.graph_objects as go
+import plotly
+import json
+import plotly.express as px
 import allel
 import ast
 import pandas as pd
@@ -14,7 +18,7 @@ def Homozygosity(freq_data):
         total_hom += int(x['hom_ref']) + int(x['hom_alt'])
         total_gen += int(x['hom_ref']) + int(x['hom_alt']) + int(x['het'])
     obs_homozygosity = total_hom/total_gen
-    return obs_homozygosity
+    return round(obs_homozygosity,3)
 
 
 
@@ -31,7 +35,7 @@ def nuc_div(pop):
     h = pop.to_haplotypes()
     pi= allel.haplotype_diversity(h=h)
     
-    return pi
+    return round(pi,3)
 
 
 
@@ -41,17 +45,17 @@ def haplotype_div(pop):
     h = pop.to_haplotypes()
     hd= allel.haplotype_diversity(h=h)
     
-    return hd
+    return round(hd,3)
 
 
 
-def tajima_d(pop):
+def tajima_d(pop, pos):
     pop_gt = np.array(pop)
     pop = allel.GenotypeArray(pop_gt)
     ac = pop.count_alleles()
-    D= allel.tajima_d(ac=ac)
+    D= allel.tajima_d(ac=ac, pos=pos)
     
-    return D
+    return round(D,3)
 
 
 
@@ -66,14 +70,13 @@ def hudson_fst(pop1,pop2):
     ac2 = pop2.count_alleles()
     num, den = allel.hudson_fst(ac1, ac2)
     fst = np.sum(num) / np.sum(den)
-    return fst
+    return round(fst,3)
 
 def get_fstat(paris,gt_dict):
     combos = itertools.permutations(paris,2)
     lst = []
     for i in combos:
         pair = f'{i[0]}:{i[1]}'
-        print(pair)
         fst = hudson_fst(gt_dict[i[0]],gt_dict[i[1]])
         lst.append([pair,fst])
     
@@ -83,28 +86,64 @@ def get_fstat(paris,gt_dict):
 
 
 
-def get_main_stats(pop,freq_data):
+def get_main_stats(pop,freq_data,pos):
     homo = Homozygosity(freq_data)
     nd = nuc_div(pop)
-    taj_d = tajima_d(pop)
+    taj_d = tajima_d(pop,pos=pos)
     hap_div = haplotype_div(pop)
     return homo,nd,hap_div,taj_d
 
 
-def overall_stats(all_pops_array):
+def overall_stats_gtd(all_pops_array):
     for i,ele in enumerate(all_pops_array):
         ele = np.array(ele)
         if i == 0:
             all_pop_arr = ele
         else:
             all_pop_arr = np.hstack((all_pop_arr,ele))
+    return all_pop_arr
+
+def overall_stats_cts(all_pop):
+    full_pop_data = []
+    if len(full_pop_data) == 0:
+        frq_lst = all_pop[0]
+        """In place update of the dictionary from """
+        for dt in frq_lst:
+            for k,v in dt.items():
+                dt.update({k: int(v)})
+        for i in frq_lst:
+            full_pop_data.append(i)
+    frq_lst = all_pop[1:]
+    for i in frq_lst:
+        for main,sub in zip(full_pop_data,i):
+            main['hom_ref'] += int(sub['hom_ref'])
+            main['het'] += int(sub['het'])
+            main['hom_alt'] += int(sub['hom_alt'])
+
+    return full_pop_data
+
 
     
 
+def avg_win(pos,size):
+    windows = allel.moving_statistic(pos, statistic= lambda v: [v[0], v[-1]], size=size)
+    x = np.asarray(windows).mean(axis=1)
+    return x
+
     
     
     
 
+
+def win_nuc_div(positions,pop,bin_size=100,step_size=None):
+    # input list of queries retrieved from the results page, window size and step size. 
+    # window size and step size refers to number of nucleotides. produces a list of 4 arrays
+    pos = np.array(positions)
+    pop_gt = np.array(pop)
+    pop = allel.GenotypeArray(pop_gt)
+    ac = pop.count_alleles()
+    win_pi, windows, n_bases, counts = allel.windowed_diversity(pos,ac,size=bin_size,step=step_size)
+    return win_pi
 
 
 def win_tajima_d(positions,pop,bin_size=100,step_size=None):
@@ -112,14 +151,13 @@ def win_tajima_d(positions,pop,bin_size=100,step_size=None):
     pop_gt = np.array(pop)
     pop = allel.GenotypeArray(pop_gt)
     ac = pop.count_alleles()
-    win_tajima_D, windows, counts = allel.windowed_tajima_d(pos=pos,ac=ac,size=bin_size,step=step_size)
-    
-    return win_tajima_D, windows, counts
+    win_tajima_D, windows, counts = allel.windowed_tajima_d(pos=pos,ac=ac,size=bin_size,step=step_size,min_sites=2)
+    return win_tajima_D
 
 
 
 
-def moving_haplotype_div(pop,bin_size=100,step_size=None):
+def win_haplotype_div(pop,bin_size=100,step_size=None):
     # input list of queries retrieved from the results page, window size and step size. 
     # window size refers to number of variants.
     pop_gt = np.array(pop)
@@ -132,16 +170,6 @@ def moving_haplotype_div(pop,bin_size=100,step_size=None):
 
 
 
-def win_nuc_div(positions,pop,bin_size=100,step_size=None):
-    # input list of queries retrieved from the results page, window size and step size. 
-    # window size and step size refers to number of nucleotides. produces a list of 4 arrays
-    pos = np.array(positions)
-    pop_gt = np.array(pop)
-    pop = allel.GenotypeArray(pop_gt)
-    ac = pop.count_alleles()
-    win_pi, windows, n_bases, counts = allel.windowed_diversity(pos,ac,size=bin_size,step=step_size)
-    
-    return win_pi, windows, n_bases, counts
 
 
 def win_hudson_fst(positions,pop1,pop2,bin_size=100,step_size=None):
@@ -151,153 +179,186 @@ def win_hudson_fst(positions,pop1,pop2,bin_size=100,step_size=None):
     pop2 = allel.GenotypeArray(pop2_gt)
     ac1 = pop1.count_alleles()
     ac2 = pop2.count_alleles()
-    win_fst, win, counts = allel.windowed_hudson_fst(positions,ac1, ac2,bin_size=bin_size,step_size=step_size)
-    return win_fst, win, counts
+    win_fst, windows, counts = allel.windowed_hudson_fst(positions,ac1, ac2,bin_size=bin_size,step_size=step_size)
+    return win_fst
 
 
 
 
 
+"""
+Creating clots
+"""
+
+def plot_win_taj_d(TD, position):
+
+        #graph containing all populations without buttons
+        fig_1 = go.Figure()
+        for x in TD.items():
+            obj = go.Scatter(name=x[0], x=position, y=x[1])
+            fig_1.add_trace(obj)
+
+        fig_1.update_layout(
+            xaxis_title='Position (Base pairs)',
+            yaxis_title="Tajima's D")
+
+
+        #creating Tajima's D graph as an  individual plot
+        fig_2 = go.Figure()
+        buttons = []
+        i = 0
+
+        #iterating through dictionary and addding each population to graph
+        for x in TD.items():
+            obj = go.Scatter(name=x[0], x=position, y=x[1])
+            fig_2.add_trace(obj)
+
+            #args is a list of booleans that tells the buttons which trace to show on click
+            args = [False] * len(TD)
+            args[i] = True
+
+            #creating button object for each population
+            button = dict(label=x[0],
+                          method="update",
+                          args=[{"visible": args}])
+
+            #add button to list
+            buttons.append(button)
+            i += 1
+
+        #adding buttons
+        fig_2.update_layout(
+            updatemenus=[
+                dict(
+                    type="dropdown",
+                    direction="down",
+                    buttons=buttons)
+            ])
+        #adding axis names
+        fig_2.update_layout(
+            xaxis_title='Position (Base pairs)',
+            yaxis_title="Tajima's D")
+
+        graph1JSON = json.dumps(fig_1, cls=plotly.utils.PlotlyJSONEncoder)
+        graph2JSON = json.dumps(fig_2, cls=plotly.utils.PlotlyJSONEncoder)
+
+        return graph1JSON,graph2JSON
 
 
 
 
 
+def plot_win_hap(HD, position):
 
-# Experimental - window size determined by chromosomal position. Window_size and steps is user 
-# submitted (in bp). Sliding_window and bins functions will need to be run once. 
+    # graph containing all populations without buttons
+    fig_3 = go.Figure()
+    for x in HD.items():
+        obj = go.Scatter(name=x[0], x=position, y=x[1])
+        fig_3.add_trace(obj)
 
-def sliding_window(results,window_size):
-    # SNPs will need to be divided into windows based on positions, meaning that windows may not 
-    # neccesarily contain the same number of SNPs
-    positions = [i for i in results.pos] # grab positions for each SNP
-    x = positions[0] # assigning first starting window position
-    end_pos = positions[-1]
-    window = [x, x + window_size] # assigning first window (start and end)
-    windows = [window]
-    while window[1] <= end_pos:
-        x = window[1] + 1
-        window = [x,x+window_size]
-        windows.append(window)
-    return windows
+    fig_3.update_layout(
+        xaxis_title='Position (Base pairs)',
+        yaxis_title="Haploid Diversity")
 
-def bins(windows,results):
-    windows = pd.DataFrame(windows)
-    windows.columns = ['start','end']
-    snp_count = []
-    for row in windows.iterrows():
-        count = 0
-        for i in results.pos:
-            if i in range [windows['start'],windows['end']]: # checking if snp is in window
-                count += 1
-        snp_count.append(count)
-    windows['SNP'] = snp_count # dataframe include window range and number of SNPs
-    bins = windows
-    return bins
-
-
-
-
-# unfinished
-# def haplotype_div(pop,windows,step_size=None):
-#     pop_array = []
-#     for x in pop:
-#         lst = ast.literal_eval(x)
-#         pop_array.append(lst)
-#     return pop_array
-# # unfinished
-
-
-# def tajima_d(pop,windows,step_size=None):
-#     pop_array = []
-#     for x in pop:
-#         lst = ast.literal_eval(x)
-#         pop_array.append(lst)
-#     return pop_array
-
-
-
-
-#############################################################################################################################################
-########################################################## Lavanyas Script###################################################################
-#############################################################################################################################################
-
-
-
-
-
-
-#  Calculating observed and expected
-
-def h_exp_obs_Aa(AA, Aa, aa):
-    
-    'Calculates expected and observed heterzygosity'
-    
-    p = ((2 * AA) + Aa)/ (2 * (AA + Aa + aa))
-    q = ((2 * aa) + Aa)/ (2 * (AA + Aa + aa))
-    
-    #2pq
-    twice_p_q = 2 * p * q
-    
-    #Calculating Observed
-    Observed = (Aa *2) /(2 * (AA + Aa + aa))
- 
-    return Observed, twice_p_q
-
-
-
-def H_W_Equlibrium(AA, Aa, aa):
-    
-    'Calculates whether there is a significant difference between the observed and expected data.'
-    
-    data = [AA, Aa, aa]
-    chi, p= chisquare(data)
-    return p
-
-
-def equal_variance(O, E):     
-    stat, p = bartlett(O, E)
-    return p
-
-def obs_vs_het_chi (pop_freq):
-#Observed and expected heterzygosity & chi squared
-
-    hom_ref =[] #12:14        # didnt know how to iterate using dictionary so used indices
-    het = [] # 22:24
-    hom_alt = [] #37:38
-    rs = [] # rs values
-
-    for x in pop_freq:
-        hom_ref.append(x['hom_ref'])
-        het.append(x['het'])
-        hom_alt.append(x['hom_alt'])
         
-    # GBR_rs = df['ID']
-    # for x in GBR_rs:
-    #     rs.append(x)
+    #creating Haplotype graphs
+    fig_4 = go.Figure()
+    buttons = []
+    i = 0
+
+    # iterating through dictionary and adding each population
+    for x in HD.items():
+        obj = go.Scatter(name=x[0], x=position, y=x[1])
+        fig_4.add_trace(obj)
+
+    #args is a list of booleans that tells the buttons which trace to show on click
+        args = [False] * len(HD)
+        args[i] = True
+
+    #create button object for each pop
+        button = dict(label=x[0],
+                        method="update",
+                        args=[{"visible": args}])
+
+    #add button to list
+        buttons.append(button)
+        i += 1
+
+    #add buttons
+    fig_4.update_layout(
+        updatemenus=[
+            dict(
+                type="dropdown",
+                direction="down",
+                buttons=buttons)
+        ])
+    #add axis names
+    fig_4.update_layout(
+        xaxis_title='Position (Base pairs)',
+        yaxis_title="Haploid Diversity")
+
+    graph3JSON = json.dumps(fig_3, cls=plotly.utils.PlotlyJSONEncoder)
+    graph4JSON = json.dumps(fig_4, cls=plotly.utils.PlotlyJSONEncoder)
+
+
+
+    return graph3JSON,graph4JSON
+
+
+
+
+def plot_nuc_div(ND, position):
+
+    # graph containing all populations without buttons
+    fig_5 = go.Figure()
+    for x in ND.items():
+        obj = go.Scatter(name=x[0], x=position, y=x[1])
+        fig_5.add_trace(obj)
+
+    fig_5.update_layout(
+        xaxis_title='Position (Base pairs)',
+        yaxis_title="Nucleotide Diversity")
+
         
-    freq_data = list(zip(hom_ref, het, hom_alt))  #getting the data
-    # GBR = list(zip(rs, GBR_data))
-    #print(GBR)
+    #creating Haplotype graphs
+    fig_6 = go.Figure()
+    buttons = []
+    i = 0
 
-    # rs_value = []
-    C = [] #observed and expected
-    E = [] #H_W
+    # iterating through dictionary and adding each population
+    for x in ND.items():
+        obj = go.Scatter(name=x[0], x=position, y=x[1])
+        fig_6.add_trace(obj)
 
-    for x in freq_data:
-        try:
-            # rs_value.append(x[0])
-            Calculations = h_exp_obs_Aa(AA = int(x[0]), Aa = int(x[1]), aa = int(x[2]))
-            C.append(Calculations)
-            Equ = H_W_Equlibrium(AA = int(x[0]), Aa = int(x[1]), aa = int(x[2]))
-            E.append(Equ)
-        except:
-            Calculations = 'N/A' 
-            Equ = 'N/A'    
-            C.append(Calculations)
-            E.append(Equ)
-    O_E = list(zip(C, E, ))
-    return O_E
+    #args is a list of booleans that tells the buttons which trace to show on click
+        args = [False] * len(ND)
+        args[i] = True
+
+    #create button object for each pop
+        button = dict(label=x[0],
+                        method="update",
+                        args=[{"visible": args}])
+
+    #add button to list
+        buttons.append(button)
+        i += 1
+
+    #add buttons
+    fig_6.update_layout(
+        updatemenus=[
+            dict(
+                type="dropdown",
+                direction="down",
+                buttons=buttons)
+        ])
+    #add axis names
+    fig_6.update_layout(
+        xaxis_title='Position (Base pairs)',
+        yaxis_title="Nucleotide Diversity")
+
+    graph3JSON = json.dumps(fig_5, cls=plotly.utils.PlotlyJSONEncoder)
+    graph4JSON = json.dumps(fig_6, cls=plotly.utils.PlotlyJSONEncoder)
 
 
 
+    return graph3JSON,graph4JSON
