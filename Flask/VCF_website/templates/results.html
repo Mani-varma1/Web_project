@@ -41,21 +41,85 @@
                 <th>Position</th>
                 <th>Reference allele</th>
                 <th>Alternate allele</th>
+                <th>Frequencies</th>
             </tr>
         </thead>
         <tbody>
           {% for row in Results %}
             <tr>
-            <td>{{ row["chrom"]}}</td>
-            <td>{{ row["rs_val"]}}</td>
-            <td>{{ row["gene_name"]}}</td>
-            <td>{{ row["pos"]}}</td>
-            <td>{{ row["ref_allele"] }}</td>
-            <td>{{ row["alt_allele"] }} </td>
+              <td>{{ row["chrom"]}}</td>
+              <td>{{ row["rs_val"]}}</td>
+              <td>{{ row["gene_name"]}}</td>
+              <td>{{ row["pos"]}}</td>
+              <td>{{ row["ref_allele"] }}</td>
+              <td>{{ row["alt_allele"] }} </td>
+              <td class="table-elipse table-bordered" data-toggle="collapse" data-target='#{{ row["rs_val"]}}'><i class="fa fa-ellipsis-h text-black-50"></i></td>
             </tr>
+            <tr id='{{ row["rs_val"]}}' class="collapse cell-1 row-child">
+              <td class="text-center" colspan="1"><i class="fa fa-angle-up"></i></td>
+              <td colspan="1"><b>Populations</b></td>
+              <td colspan="3"><p style="text-align:center;"><b>Genotype Freqs</b></p></td>
+              <td colspan="2"><p style="text-align:center;"><b>Allele Freqs</b></p></td>
+            </tr>
+            <tr id='{{ row["rs_val"]}}' class="collapse cell-1 row-child">
+              <td class="text-center" colspan="1"><i class="fa fa-angle-up"></i></td>
+              <td colspan="1"></td>
+              <td colspan="1">Home-Ref</td>
+              <td colspan="1">Het</td>
+              <td colspan="1">Home-Alt</td>
+              <td colspan="1">REF Freq</td>
+              <td colspan="1">ALT Freq</td>
+            </tr>
+            <tr id='{{ row["rs_val"]}}' class="collapse cell-1 row-child">
+              <td class="text-center" colspan="1"><i class="fa fa-angle-up"></i></td>
+              <td colspan="1">GBR</td>
+              <td colspan="1">1.0</td>
+              <td colspan="1">0.0</td>
+              <td colspan="1">0.0</td>
+              <td colspan="1">1.0</td>
+              <td colspan="1">0.0</td>
+            </tr>
+            <tr id='{{ row["rs_val"]}}' class="collapse cell-1 row-child">
+              <td class="text-center" colspan="1"><i class="fa fa-angle-up"></i></td>
+              <td colspan="1">JPT</td>
+              <td colspan="1">1.0</td>
+              <td colspan="1">0.0</td>
+              <td colspan="1">0.0</td>
+              <td colspan="1">1.0</td>
+              <td colspan="1">0.0</td>
+            </tr>
+            <tr id='{{ row["rs_val"]}}' class="collapse cell-1 row-child">
+              <td class="text-center" colspan="1"><i class="fa fa-angle-up"></i></td>
+              <td colspan="1">MXL</td>
+              <td colspan="1">1.0</td>
+              <td colspan="1">0.0</td>
+              <td colspan="1">0.0</td>
+              <td colspan="1">1.0</td>
+              <td colspan="1">0.0</td>
+            </tr>
+            <tr id='{{ row["rs_val"]}}' class="collapse cell-1 row-child">
+              <td class="text-center" colspan="1"><i class="fa fa-angle-up"></i></td>
+              <td colspan="1">PJL</td>
+              <td colspan="1">1.0</td>
+              <td colspan="1">0.0</td>
+              <td colspan="1">0.0</td>
+              <td colspan="1">1.0</td>
+              <td colspan="1">0.0</td>
+            </tr>
+            <tr id='{{ row["rs_val"]}}' class="collapse cell-1 row-child">
+              <td class="text-center" colspan="1"><i class="fa fa-angle-up"></i></td>
+              <td colspan="1">YRI</td>
+              <td colspan="1">1.0</td>
+              <td colspan="1">0.0</td>
+              <td colspan="1">0.0</td>
+              <td colspan="1">1.0</td>
+              <td colspan="1">0.0</td>
+            </tr>
+            
           {% endfor %}
         </tbody>
     </table>
+  
 
     <!-- Tab links -->
     <div class="tab">
@@ -275,5 +339,6 @@
         </button>
     </div>
   </div>
-
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script type="text/javascript" src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
 {% endblock carousel %}
