@@ -1,103 +1,97 @@
-{% extends "layout.html" %}
-{% block search %}
-    <h1>Search Page</h1>
-    <form novalidate="novalidate" method="POST" action="">
-        {{ form1.hidden_tag() }}
-        <div class="content-section mt-3">
-            <fieldset class="form-group ">
-                <div class="form-group">
-                    {{ form1.select.label(class="form-control-label mb-1") }}
-                    {% if form1.select.errors %}
-                    {{ form1.select(class="form-control form-control-lg is-invalid") }}
-                    <div class="invalid-feedback">
-                        {% for error in form1.select.errors %}
-                        <span>{{ error }}</span>
-                        {% endfor %}
-                    </div>
-                    {% else %}
-                    {{ form1.select(option_attr={"select-0": {"disabled": ""} }, class="form-control form-control-lg mb-3 ")
-                    }}
-                    {% endif %}
-                </div>
-                <div class="form-group ">
-                    {{ form1.start_pos.label(class="form-control-label mb-1") }}
-                    {% if form1.start_pos.errors %}
-                    {{ form1.start_pos(class="form-control form-control-lg is-invalid") }}
-                    <div class="invalid-feedback">
-                        {% for error in form1.start_pos.errors %}
-                        <span>{{ error }}</span>
-                        {% endfor %}
-                    </div>
-                    {% else %}
-                    {{ form1.start_pos(class="form-control mb-3") }}
-                    {% endif %}
-                </div>
-                <div class="form-group">
-                    {{ form1.end_pos.label(class="form-control-label mb-1") }}
-                    {% if form1.end_pos.errors %}
-                    {{ form1.end_pos(class="form-control form-control-lg is-invalid") }}
-                    <div class="invalid-feedback">
-                        {% for error in form1.end_pos.errors %}
-                        <span>{{ error }}</span>
-                        {% endfor %}
-                    </div>
-                    {% else %}
-                    {{ form1.end_pos(class="form-control mb-3") }}
-                    {% endif %}
-                </div>
-            </fieldset>
-            <div class="form-group">
-                {{ form1.submit(class="btn btn-outline-info mt-3") }}
-            </div>
+{% extends "layout.html" %} {% block search %}
+<h1>Search Page</h1>
+<form novalidate="novalidate" method="POST" action="">
+  {{ form1.hidden_tag() }}
+  <div class="content-section mt-3">
+    <fieldset class="form-group">
+      <div class="form-group">
+        {{ form1.select.label(class="form-control-label mb-1") }} {% if
+        form1.select.errors %} {{ form1.select(class="form-control
+        form-control-lg is-invalid") }}
+        <div class="invalid-feedback">
+          {% for error in form1.select.errors %}
+          <span>{{ error }}</span>
+          {% endfor %}
         </div>
-    </form>
-    <br>
-    <hr style="height:2px;border-width:0;color:gray;background-color:gray">
-    <form novalidate="novalidate" method="POST" action="">
-        {{ form2.hidden_tag() }}
-        <div class="content-section">
-            <fieldset class="form-group">
-                <div class="form-group">
-                    {{ form2.rs_val.label(class="form-control-label mb-1") }}
-                    {% if form2.rs_val.errors %}
-                    {{ form2.rs_val(class="form-control form-control-lg is-invalid") }}
-                    <div class="invalid-feedback">
-                        {% for error in form2.rs_val.errors %}
-                        <span>{{ error }}</span>
-                        {% endfor %}
-                    </div>
-                    {% else %}
-                    {{ form2.rs_val(class="form-control form-control-lg") }}
-                    {% endif %}
-                </div>
-                <div class="form-group">
-                    {{ form2.rs_search(class="btn btn-outline-info mt-3") }}
-                </div>
-            </fieldset>
+        {% else %} {{ form1.select(option_attr={"select-0": {"disabled": ""} },
+        class="form-control form-control-lg mb-3 ") }} {% endif %}
+      </div>
+      <div class="form-group">
+        {{ form1.start_pos.label(class="form-control-label mb-1") }} {% if
+        form1.start_pos.errors %} {{ form1.start_pos(class="form-control
+        form-control-lg is-invalid") }}
+        <div class="invalid-feedback">
+          {% for error in form1.start_pos.errors %}
+          <span>{{ error }}</span>
+          {% endfor %}
         </div>
-    </form>
-    <br>
-    <hr style="height:2px;border-width:0;color:gray;background-color:gray">
-    <br>
-    <form novalidate="novalidate" method="POST" action="">
-        {{ form3.hidden_tag() }}
-        <div class="content-section">
-            <fieldset class="form-group ">
-                {{ form3.gene.label(class="form-control-label") }}
-                {% if form3.gene.errors %}
-                {{ form3.gene(class="form-control form-control-lg is-invalid") }}
-                <div class="invalid-feedback">
-                    {% for error in form3.gene.errors %}
-                    <span>{{ error }}</span>
-                    {% endfor %}
-                </div>
-                {% else %}
-                {{ form3.gene(class="form-control form-control-lg mb-1") }}
-                {% endif %}
-                <div class="form-group">
-                    {{ form3.gene_search(class="btn btn-outline-info mt-3") }}
-                </div>
-            </fieldset>
+        {% else %} {{ form1.start_pos(class="form-control mb-3") }} {% endif %}
+      </div>
+      <div class="form-group">
+        {{ form1.end_pos.label(class="form-control-label mb-1") }} {% if
+        form1.end_pos.errors %} {{ form1.end_pos(class="form-control
+        form-control-lg is-invalid") }}
+        <div class="invalid-feedback">
+          {% for error in form1.end_pos.errors %}
+          <span>{{ error }}</span>
+          {% endfor %}
         </div>
-    </form>
+        {% else %} {{ form1.end_pos(class="form-control mb-3") }} {% endif %}
+      </div>
+    </fieldset>
+    <div class="form-group">
+      {{ form1.submit(class="btn btn-outline-info mt-3") }}
+    </div>
+  </div>
+</form>
+<br />
+<hr style="height: 2px; border-width: 0; color: gray; background-color: gray" />
+<form novalidate="novalidate" method="POST" action="">
+  {{ form2.hidden_tag() }}
+  <div class="content-section">
+    <fieldset class="form-group">
+      <div class="form-group">
+        {{ form2.rs_val.label(class="form-control-label mb-1") }} {% if
+        form2.rs_val.errors %} {{ form2.rs_val(class="form-control
+        form-control-lg is-invalid") }}
+        <div class="invalid-feedback">
+          {% for error in form2.rs_val.errors %}
+          <span>{{ error }}</span>
+          {% endfor %}
+        </div>
+        {% else %} {{ form2.rs_val(class="form-control form-control-lg") }} {%
+        endif %}
+      </div>
+      <div class="form-group">
+        {{ form2.rs_search(class="btn btn-outline-info mt-3") }}
+      </div>
+    </fieldset>
+  </div>
+</form>
+<br />
+<hr style="height: 2px; border-width: 0; color: gray; background-color: gray" />
+<br />
+<form novalidate="novalidate" method="POST" action="">
+  {{ form3.hidden_tag() }}
+  <div class="content-section">
+    <fieldset class="form-group">
+      {{ form3.gene.label(class="form-control-label") }} {% if form3.gene.errors
+      %} {{ form3.gene(class="form-control form-control-lg is-invalid") }}
+      <div class="invalid-feedback">
+        {% for error in form3.gene.errors %}
+        <span>{{ error }}</span>
+        {% endfor %}
+      </div>
+      {% else %} {{ form3.gene(class="form-control form-control-lg mb-1") }} {%
+      endif %}
+      <div class="form-group">
+        {{ form3.gene_search(class="btn btn-outline-info mt-3") }}
+      </div>
+    </fieldset>
+  </div>
+  <br />
+  <br />
+  <br />
+</form>
+
 {% endblock search %}
