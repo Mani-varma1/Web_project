@@ -13,8 +13,10 @@
           <span>{{ error }}</span>
           {% endfor %}
         </div>
-        {% else %} {{ form1.select(option_attr={"select-0": {"disabled": ""} },
-        class="form-control form-control-lg mb-3 ") }} {% endif %}
+        {% else %} 
+        {{ form1.select(option_attr={"select-0": {"disabled": ""} },
+        class="form-control form-control-lg mb-3 ") }} 
+        {% endif %}
       </div>
       <div class="form-group">
         {{ form1.start_pos.label(class="form-control-label mb-1") }} {% if
@@ -36,7 +38,9 @@
           <span>{{ error }}</span>
           {% endfor %}
         </div>
-        {% else %} {{ form1.end_pos(class="form-control mb-3") }} {% endif %}
+        {% else %} 
+        {{ form1.end_pos(class="form-control mb-3") }} 
+        {% endif %}
       </div>
     </fieldset>
     <div class="form-group">
@@ -60,8 +64,9 @@
           <span>{{ error }}</span>
           {% endfor %}
         </div>
-        {% else %} {{ form2.rs_val(class="form-control form-control-lg") }} {%
-        endif %}
+        {% else %} 
+        {{ form2.rs_val(class="form-control form-control-lg") }} 
+        {%endif %}
       </div>
       <div class="form-group">
         {{ form2.rs_search(class="w3-button w3-black w3-margin-top w3-opacity
@@ -84,8 +89,9 @@
         <span>{{ error }}</span>
         {% endfor %}
       </div>
-      {% else %} {{ form3.gene(class="form-control form-control-lg mb-1") }} {%
-      endif %}
+      {% else %} 
+      {{ form3.gene(class="form-control form-control-lg mb-1") }} 
+      {%endif %}
       <div class="form-group">
         {{ form3.gene_search(class="w3-button w3-black w3-margin-top w3-opacity
         w3-hover-opacity-off") }}
@@ -96,5 +102,4 @@
   <br />
   <br />
 </form>
-
 {% endblock search %}
