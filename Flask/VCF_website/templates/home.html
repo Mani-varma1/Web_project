@@ -1,72 +1,132 @@
-{% extends "layout.html" %} 
-{% block content %}
-    <header class="bgimg-1 w3-display-container w3-grayscale-min" id="home">
-      <div class="w3-display-left w3-text-Black" style="padding:48px">
-        <span class="w3-jumbo w3-hide-small">Population Genomics</span><br>
-        <span class="w3-xxlarge w3-hide-large w3-hide-medium">Population Genomics</span><br>
-        <span class="w3-large">Search for variation across chromosomes and perform basic</span>
-        <p><a href="{{ url_for('search') }}"class="w3-button w3-blue w3-text-black w3-padding-large w3-large w3-margin-top w3-hover-black w3-hover-text-white">Search For SNPs</a></p>
-      </div>
-    </header>
+{% extends "layout.html" %} {% block content %}
+<header class="bgimg-1 w3-display-container w3-grayscale-min" id="home">
+  <div class="w3-display-left w3-text-Black" style="padding: 48px">
+    <span class="w3-jumbo w3-hide-small">Population Genomics</span><br />
+    <span class="w3-xxlarge w3-hide-large w3-hide-medium"
+      >Population Genomics</span
+    ><br />
+    <span class="w3-large"
+      >Search for variation across chromosomes and perform basic</span
+    >
+    <p>
+      <a
+        href="{{ url_for('search') }}"
+        class="w3-button w3-black w3-padding-large w3-large w3-margin-top w3-opacity w3-hover-opacity-off"
+        >Search For SNPs</a
+      >
+    </p>
+  </div>
+</header>
 
-    <div class="w3-container" style="padding:128px 16px" id="team">
-      <h3 class="w3-center">THE TEAM</h3>
-      <p class="w3-center w3-large">The ones who Created this Web App</p>
-      <div class="w3-row-padding w3-grayscale" style="margin-top:64px"> 
-        <div class="w3-col l2.5 m2 w3-margin-bottom">
-          <div class="w3-card">
-            <img class="center" src="https://cdn2.iconfinder.com/data/icons/ios-7-icons/50/user_female2-512.png" alt="Github Pic" style="width:100%">
-            <div class="w3-row-padding w3-grayscale">
-              <h3>Alexandra</h3>
-              <p class="w3-opacity">Data Collection and Documentation </p>
-              <p><button class="w3-button w3-light-grey w3-block"><i class="fa fa-address-book"></i>Github</button></p>
-            </div>
-          </div>
-        </div>
-        <div class="w3-col l2.5 m2 w3-margin-bottom">
-          <div class="w3-card">
-            <img src="/w3images/team1.jpg" alt="Github Pic" style="width:100%">
-            <div class="w3-container">
-              <h3>Harry</h3>
-              <p class="w3-opacity">Front End Dev</p>
-              <p><button class="w3-button w3-light-grey w3-block"><i class="fa fa-address-book"></i>Github</button></p>
-            </div>
-          </div>
-        </div>
-        <div class="w3-col l2.5 m2 w3-margin-bottom">
-          <div class="w3-card">
-            <img src="/w3images/team3.jpg" alt="Github Pic" style="width:100%">
-            <div class="w3-container">
-              <h3>Laavanya</h3>
-              <p class="w3-opacity">Statistician and data visualisation</p>
-              <p><button class="w3-button w3-light-grey w3-block"><i class="fa fa-address-book"></i> Github</button></p>
-            </div>
-          </div>
-        </div>
-        <div class="w3-col l2.5 m2 w3-margin-bottom">
-          <div class="w3-card">
-            <img src="/w3images/team3.jpg" alt="Github Pic" style="width:100%">
-            <div class="w3-container">
-              <h3>Waleed</h3>
-              <p class="w3-opacity">Database Engineer</p>
-              <p><button class="w3-button w3-light-grey w3-block"><i class="fa fa-address-book"></i>Github</button></p>
-            </div>
-          </div>
-        </div>
-        <div class="w3-col l2.5 m2 w3-margin-bottom">
-          <div class="w3-card">
-            <img src="/w3images/team4.jpg" alt="Github Pic" style="width:100%">
-            <div class="w3-container">
-              <h3>Mani</h3>
-              <p class="w3-opacity">Backend Dev</p>
-              <p><button class="w3-button w3-light-grey w3-block"><i class="fa fa-address-book"></i>Github</button></p>
-            </div>
-          </div>
+<div class="w3-container" style="padding: 128px 16px" id="team">
+  <h3 class="w3-center">THE TEAM</h3>
+  <p class="w3-center w3-large">The ones who Created this Web App</p>
+  <div class="w3-center w3-row-padding w3-grayscale" style="margin-top: 64px">
+    <div class="w3-col l2.5 m2 w3-margin-bottom">
+      <div class="w3-card">
+        <img
+          class="center"
+          src="https://cdn2.iconfinder.com/data/icons/ios-7-icons/50/user_female2-512.png"
+          alt="Github Pic"
+          style="width: 80%"
+        />
+        <div class="w3-row-padding w3-grayscale">
+          <h3>Alexandra</h3>
+          <p class="w3-opacity">Data Collection and Documentation</p>
+          <p>
+            <button class="w3-button w3-light-grey w3-block">
+              <a target="_blank" href="https://github.com/alexxandra00"
+                ><i class="fa fa-github"></i
+              ></a>
+            </button>
+          </p>
         </div>
       </div>
-    </div> 
-    <!-- Footer -->
-    <footer class="w3-center w3-black w3-padding-64">
-      <p>Powered by: <span class="w3-hover-text-green">Caffine Overdose and Slepless Nights</span></p>
-    </footer>
+    </div>
+    <div class="w3-col l2.5 m2 w3-margin-bottom">
+      <div class="w3-card">
+        <img
+          class="center"
+          src="https://cdn2.iconfinder.com/data/icons/ios-7-icons/50/user_male2-512.png"
+          alt="Github Pic"
+          style="width: 80%"
+        />
+        <div class="w3-container">
+          <h3>Harry</h3>
+          <p class="w3-opacity">Front End Dev</p>
+          <p>
+            <button class="w3-button w3-light-grey w3-block">
+              <a target="_blank" href="https://github.com/HarryArthurMarchant"
+                ><i class="fa fa-github"></i
+              ></a>
+            </button>
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="w3-col l2.5 m2 w3-margin-bottom">
+      <div class="w3-card">
+        <img
+          class="center"
+          src="https://cdn2.iconfinder.com/data/icons/ios-7-icons/50/user_female2-512.png"
+          alt="Github Pic"
+          style="width: 80%"
+        />
+        <div class="w3-container">
+          <h3>Laavanya</h3>
+          <p class="w3-opacity">Statistician and data visualisation</p>
+          <p>
+            <button class="w3-button w3-light-grey w3-block">
+              <a target="_blank" href="https://github.com/Laavanya741"
+                ><i class="fa fa-github"></i
+              ></a>
+            </button>
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="w3-col l2.5 m2 w3-margin-bottom">
+      <div class="w3-card">
+        <img
+          class="center"
+          src="https://cdn2.iconfinder.com/data/icons/ios-7-icons/50/user_male2-512.png"
+          alt="Github Pic"
+          style="width: 80%"
+        />
+        <div class="w3-container">
+          <h3>Waleed</h3>
+          <p class="w3-opacity">Database Engineer</p>
+          <p>
+            <button class="w3-button w3-light-grey w3-block">
+              <a target="_blank" href="https://github.com/AbuKamaal"
+                ><i class="fa fa-github"></i
+              ></a>
+            </button>
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="w3-col l2.5 m2 w3-margin-bottom">
+      <div class="w3-card">
+        <img
+          class="center"
+          src="https://cdn2.iconfinder.com/data/icons/ios-7-icons/50/user_male2-512.png"
+          alt="Github Pic"
+          style="width: 80%"
+        />
+        <div class="w3-container">
+          <h3>Mani</h3>
+          <p class="w3-opacity">Backend Dev</p>
+          <p>
+            <button class="w3-button w3-light-grey w3-block">
+              <a target="_blank" href="https://github.com/Mani-varma1"
+                ><i class="fa fa-github"></i
+              ></a>
+            </button>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock content %}
