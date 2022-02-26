@@ -123,3 +123,12 @@ a.article-title:hover {
 .fa-github {
   font-size: 20px;
 }
+
+.w3-button {
+  border-radius: 6px;
+}
+
+.w3-button:hover {
+  box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24),
+    0 17px 50px 0 rgba(0, 0, 0, 0.19);
+}
