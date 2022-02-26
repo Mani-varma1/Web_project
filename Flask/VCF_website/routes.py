@@ -296,21 +296,6 @@ def decompress(gt_arr):
 
 
 
-
-def win_pi_stats(positions,pop,bin_size,step_size):
-    win_pi, pi_windows, nb, cts_pi = gstat.win_nuc_div(positions=positions,pop=pop,bin_size=bin_size,step_size=step_size)
-    return win_pi, pi_windows, nb, cts_pi
-
-def win_taj_stats(positions,pop,bin_size,step_size=None):
-    win_tajima_D, win_taj, cts_taj = gstat.win_tajima_d(positions=positions,pop=pop,bin_size=bin_size,step_size=step_size)
-    return win_tajima_D,win_taj,cts_taj
-
-def moving_haplotype_div(pop,bin_size,step_size):
-    moving_hap = gstat.moving_haplotype_div(pop=pop,bin_size=bin_size,step_size=step_size)
-    return moving_hap
-
-
-
 def win_fst_stats(positions,pop,bin_size,step_size=None):
     pass
 
@@ -369,17 +354,19 @@ def stats(pops, stats):
 
         """Get homozygositym nucleotide diversity, haplotype diversity, and Tajimas D"""        
         gbr_homo, gbr_nuc_div, gbr_hap_div, gbr_taj_d = gstat.get_main_stats(pop=gbr_gt_data,freq_data =gbr_freq,pos=gen_pos)
-        gbr_stats = ['GBR',gbr_homo, gbr_nuc_div, gbr_hap_div, gbr_taj_d,'FST']
+        gbr_stats = ['GBR',gbr_homo, gbr_nuc_div, gbr_hap_div, gbr_taj_d]
 
         """Windowed Satats"""
         """PI"""
-        gbr_win_pi, gbr_pi_windows, gbr_nb, gbr_cts_pi = win_pi_stats(positions=gen_pos,pop=gbr_gt_data,bin_size=10,step_size=None)
+        gbr_win_pi= gstat.win_nuc_div(positions=gen_pos,pop=gbr_gt_data,bin_size=10,step_size=None)
 
         """Tajimas D"""
-        gbr_win_taj_D, gbr_win_taj, gbr_cts_taj= win_taj_stats(positions=gen_pos,pop=gbr_gt_data,bin_size=10,step_size=None)
+        gbr_win_taj_D= gstat.win_tajima_d(positions=gen_pos,pop=gbr_gt_data,bin_size=10,step_size=None)
+        print(gen_pos)
+        print(gbr_gt_data)
 
         """ Haplotype"""
-        gbr_mov_hap = moving_haplotype_div(pop=gbr_gt_data,bin_size=100,step_size=None)
+        gbr_win_hap = gstat.win_haplotype_div(pop=gbr_gt_data,bin_size=10,step_size=None)
     else:
         gbr = None
 
@@ -390,18 +377,18 @@ def stats(pops, stats):
 
         """Get homozygositym nucleotide diversity, haplotype diversity, and Tajimas D"""
         jpt_homo, jpt_nuc_div, jpt_hap_div, jpt_taj_d = gstat.get_main_stats(pop=jpt_gt_data,freq_data =jpt_freq,pos=gen_pos)
-        jpt_stats = ['JPT',jpt_homo, jpt_nuc_div, jpt_hap_div, jpt_taj_d,'FST']
+        jpt_stats = ['JPT',jpt_homo, jpt_nuc_div, jpt_hap_div, jpt_taj_d]
 
         """Windowed Satats"""
 
         """PI"""
-        jpt_win_pi, jpt_pi_windows, jpt_nb, jpt_cts_pi= win_pi_stats(positions=gen_pos,pop=jpt_gt_data,bin_size=10,step_size=None)
+        jpt_win_pi=  gstat.win_nuc_div(positions=gen_pos,pop=jpt_gt_data,bin_size=10,step_size=None)
 
         """Tajimas D"""
-        jpt_win_taj_D, jpt_win_taj, jpt_cts_taj= win_taj_stats(positions=gen_pos,pop=jpt_gt_data,bin_size=10,step_size=None)
+        jpt_win_taj_D= gstat.win_tajima_d(positions=gen_pos,pop=jpt_gt_data,bin_size=10,step_size=None)
 
         """ Haplotype"""
-        jpt_mov_hap = moving_haplotype_div(pop=jpt_gt_data,bin_size=100,step_size=None)
+        jpt_win_hap = gstat.win_haplotype_div(pop=jpt_gt_data,bin_size=10,step_size=None)
     else:
         jpt = None
 
@@ -413,17 +400,17 @@ def stats(pops, stats):
         mxl_gt_data, mxl_freq = decompress(mxl)
         """Get homozygositym nucleotide diversity, haplotype diversity, and Tajimas D"""
         mxl_homo, mxl_nuc_div, mxl_hap_div, mxl_taj_d = gstat.get_main_stats(pop=mxl_gt_data,freq_data =mxl_freq,pos=gen_pos)
-        mxl_stats = ['MXL',mxl_homo, mxl_nuc_div, mxl_hap_div, mxl_taj_d,'FST']
+        mxl_stats = ['MXL',mxl_homo, mxl_nuc_div, mxl_hap_div, mxl_taj_d]
 
         """Windowed Satats"""
         """PI"""
-        mxl_win_pi, mxl_pi_windows, mxl_nb, mxl_cts_pi= win_pi_stats(positions=gen_pos,pop=mxl_gt_data,bin_size=10,step_size=None)
+        mxl_win_pi=  gstat.win_nuc_div(positions=gen_pos,pop=mxl_gt_data,bin_size=10,step_size=None)
 
         """Tajimas D"""
-        mxl_win_taj_D, mxl_win_taj, mxl_cts_taj= win_taj_stats(positions=gen_pos,pop=mxl_gt_data,bin_size=10,step_size=None)
+        mxl_win_taj_D= gstat.win_tajima_d(positions=gen_pos,pop=mxl_gt_data,bin_size=10,step_size=None)
 
         """ Haplotype"""
-        mxl_mov_hap = moving_haplotype_div(pop=mxl_gt_data,bin_size=100,step_size=None)
+        mxl_win_hap = gstat.win_haplotype_div(pop=mxl_gt_data,bin_size=10,step_size=None)
     else:
         mxl = None
 
@@ -435,17 +422,17 @@ def stats(pops, stats):
         pjl_gt_data, pjl_freq = decompress(pjl)
         """Get homozygositym nucleotide diversity, haplotype diversity, and Tajimas D"""
         pjl_homo, pjl_nuc_div, pjl_hap_div, pjl_taj_d = gstat.get_main_stats(pop=pjl_gt_data,freq_data =pjl_freq,pos=gen_pos)
-        pjl_stats = ['PJL',pjl_homo, pjl_nuc_div, pjl_hap_div, pjl_taj_d,'FST']
+        pjl_stats = ['PJL',pjl_homo, pjl_nuc_div, pjl_hap_div, pjl_taj_d]
 
         """Windowed Satats"""
         """PI"""
-        pjl_win_pi, pjl_pi_windows, pjl_nb, pjl_cts_pi= win_pi_stats(positions=gen_pos,pop=pjl_gt_data,bin_size=10,step_size=None)
+        pjl_win_pi=  gstat.win_nuc_div(positions=gen_pos,pop=pjl_gt_data,bin_size=10,step_size=None)
 
         """Tajimas D"""
-        pjl_win_taj_D, pjl_win_taj, pjl_cts_taj= win_taj_stats(positions=gen_pos,pop=pjl_gt_data,bin_size=10,step_size=None)
+        pjl_win_taj_D= gstat.win_tajima_d(positions=gen_pos,pop=pjl_gt_data,bin_size=10,step_size=None)
 
         """ Haplotype"""
-        pjl_mov_hap = moving_haplotype_div(pop=pjl_gt_data,bin_size=100,step_size=None)
+        pjl_win_hap = gstat.win_haplotype_div(pop=pjl_gt_data,bin_size=10,step_size=None)
     else:
         pjl = None
 
@@ -456,59 +443,116 @@ def stats(pops, stats):
         yri_gt_data, yri_freq = decompress(yri)
         """Get homozygositym nucleotide diversity, haplotype diversity, and Tajimas D"""
         yri_homo,yri_nuc_div,yri_hap_div,yri_taj_d = gstat.get_main_stats(pop=yri_gt_data,freq_data =yri_freq,pos=gen_pos)
-        yri_stats = ['YRI',yri_homo,yri_nuc_div,yri_hap_div,yri_taj_d,'FST']
+        yri_stats = ['YRI',yri_homo,yri_nuc_div,yri_hap_div,yri_taj_d]
 
         """Windowed Satats"""
         """PI"""
-        yri_win_pi, yri_pi_windows, yri_nb, yri_cts_pi= win_pi_stats(positions=gen_pos,pop=yri_gt_data,bin_size=10,step_size=None)
+        yri_win_pi=  gstat.win_nuc_div(positions=gen_pos,pop=yri_gt_data,bin_size=10,step_size=None)
 
         """Tajimas D"""
-        yri_win_taj_D, yri_win_taj, yri_cts_taj= win_taj_stats(positions=gen_pos,pop=yri_gt_data,bin_size=10,step_size=None)
+        yri_win_taj_D= gstat.win_tajima_d(positions=gen_pos,pop=yri_gt_data,bin_size=10,step_size=None)
 
         """ Haplotype"""
-        yri_mov_hap = moving_haplotype_div(pop=yri_gt_data,bin_size=100,step_size=None)
+        yri_win_hap = gstat.win_haplotype_div(pop=yri_gt_data,bin_size=10,step_size=None)
     else:
         yri = None
 
 
 
 
-
+    """For creating overall stats """
 
     gt_dict = {}
     gt_freq = {}
+    """For creating FST stats"""
     pop_stats = {}
 
+    """For creating plots"""
+    plot_pi ={}
+    plot_taj_d = {}
+    plot_hap = {}
+    """If the user seleceted and above stats calculated"""
     if gbr:
+        """For fst stats"""
         gt_dict['GBR'] = gbr_gt_data
+
+        """Purely for calculating overall stats"""
         gt_freq['GBR'] = gbr_freq
+
+        """For displauing on the table as individual stats"""
         pop_stats['GBR'] = gbr_stats
-    
+
+        """ For all plots"""
+        plot_pi['GBR'] = gbr_win_pi
+        plot_taj_d['GBR']=gbr_win_taj_D
+        plot_hap['GBR'] = gbr_win_hap
+
     if jpt:
+        """For fst stats"""
         gt_dict['JPT'] = jpt_gt_data
+
+        """Purely for calculating overall stats"""
         gt_freq['JPT'] = jpt_freq
+
+        """For displauing on the table as individual stats"""
         pop_stats['JPT'] = jpt_stats
 
+        """ For all plots"""
+        plot_pi['JPT'] = jpt_win_pi
+        plot_taj_d['JPT']=jpt_win_taj_D
+        plot_hap['JPT'] = jpt_win_hap
+
     if mxl:
+        """For fst stats"""
         gt_dict['MXL'] = mxl_gt_data
+
+        """Purely for calculating overall stats"""
         gt_freq['MXL'] = mxl_freq
+
+        """For displauing on the table as individual stats"""
         pop_stats['MXL'] = mxl_stats
+
+        """ For all plots"""
+        plot_pi['MXL'] = mxl_win_pi
+        plot_taj_d['MXL']=mxl_win_taj_D
+        plot_hap['MXL'] = mxl_win_hap
     
     if pjl:
+        """For fst stats"""
         gt_dict['PJL'] =pjl_gt_data
+
+        """Purely for calculating overall stats"""
         gt_freq['PJL'] = pjl_freq
+
+        """For displauing on the table as individual stats"""
         pop_stats['PJL'] = pjl_stats
+
+        """ For all plots"""
+        plot_pi['PJL'] = pjl_win_pi
+        plot_taj_d['PJL']=pjl_win_taj_D
+        plot_hap['PJL'] = pjl_win_hap
 
 
     if yri:
+        """For fst stats"""
         gt_dict['YRI'] = pjl_gt_data
+
+        """Purely for calculating overall stats"""
         gt_freq['YRI'] = yri_freq
+
+        """For displauing on the table as individual stats"""
         pop_stats['YRI'] = yri_stats
+
+        """ For all plots"""
+        plot_pi['YRI'] = yri_win_pi
+        plot_taj_d['YRI']=yri_win_taj_D
+        plot_hap['YRI'] = yri_win_hap
         
 
-    
-    if len(pops) >1:
+    """ Create Fstat only if more than one population is selected"""
+    if len(pops) >1: #and 'FST' in stats
         all_fstat = gstat.get_fstat(paris=sel_pops, gt_dict = gt_dict)
+        all_fstat = dict(all_fstat)
 
     """ Overall stats"""
     all_pops_gtd =[gt_dict[i] for i in sel_pops]
@@ -522,8 +566,19 @@ def stats(pops, stats):
 
     """ Get the population stats for html"""
     pop_stats = [pop_stats[i] for i in sel_pops]
-    print(pop_stats)
 
+
+    """Get the avg window size for plotting x axis"""
+
+    x_axis = gstat.avg_win(gen_pos, size=10)
+
+
+    """Create plots"""
+    nuc_div_plot1,nuc_div_plot2 = gstat.plot_nuc_div(plot_pi,x_axis)
+
+    hap_div_plot1,hap_div_plot2 = gstat.plot_win_hap(plot_hap,x_axis)
+
+    taj_d_plot1,taj_d_plot2 = gstat.plot_win_taj_d(plot_taj_d,x_axis)
 
 
 
@@ -533,9 +588,15 @@ def stats(pops, stats):
     html_first_col=html_first_col,
     html_gene=html_gene,
     all_stats=all_stats,
-    pop_stats = pop_stats
+    pop_stats = pop_stats,
+    all_fstat = all_fstat,
+    nuc_div_plot1=nuc_div_plot1,
+    nuc_div_plot2=nuc_div_plot2,
+    hap_div_plot1=hap_div_plot1,
+    hap_div_plot2=hap_div_plot2,
+    taj_d_plot1=taj_d_plot1,
+    taj_d_plot2=taj_d_plot2
     )
-
 
 
 
