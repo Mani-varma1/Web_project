@@ -157,14 +157,16 @@ def win_tajima_d(positions,pop,bin_size=100,step_size=None):
 
 
 
-def win_haplotype_div(pop,bin_size=100,step_size=None):
+def win_haplotype_div(positions,pop,bin_size=100,step_size=None):
     # input list of queries retrieved from the results page, window size and step size. 
     # window size refers to number of variants.
+    pos = np.array(positions)
     pop_gt = np.array(pop)
     pop = allel.GenotypeArray(pop_gt)
     pop_hap = pop.to_haplotypes()
-    moving_hap = allel.moving_haplotype_diversity(h=pop_hap,size=bin_size,step=step_size)
-    return moving_hap
+    # moving_hap = allel.moving_haplotype_diversity(h=pop_hap,size=bin_size,step=step_size)
+    windowed_hap, windows, counts = allel.windowed_statistic(pos=pos,values=pop_hap,statistic=allel.haplotype_diversity,size=bin_size, step=step_size)
+    return windowed_hap
 
 
 

@@ -204,7 +204,7 @@ def loading(search):
 
             pop_data(results,variable)
             
-            return redirect(url_for('results', title='Results', Results=results))
+            return redirect(url_for('results', title='Results'))
 
 
 
@@ -340,8 +340,7 @@ def stats(pops, stats):
 
 
     html_first_col = f"CHR:{first_col['chrom']} Start:{first_col['pos']} - End:{last_col['pos']}"
-    html_gene = [set(i['gene_name']) for i in results if i['gene_name'] != None]
-
+    html_gene = set([i['gene_name'] for i in results if i['gene_name'] != None])
 
 
 
@@ -358,15 +357,13 @@ def stats(pops, stats):
 
         """Windowed Satats"""
         """PI"""
-        gbr_win_pi= gstat.win_nuc_div(positions=gen_pos,pop=gbr_gt_data,bin_size=10,step_size=None)
+        gbr_win_pi= gstat.win_nuc_div(positions=gen_pos,pop=gbr_gt_data,bin_size=5000,step_size=None)
 
         """Tajimas D"""
-        gbr_win_taj_D= gstat.win_tajima_d(positions=gen_pos,pop=gbr_gt_data,bin_size=10,step_size=None)
-        print(gen_pos)
-        print(gbr_gt_data)
+        gbr_win_taj_D= gstat.win_tajima_d(positions=gen_pos,pop=gbr_gt_data,bin_size=5000,step_size=1)
 
         """ Haplotype"""
-        gbr_win_hap = gstat.win_haplotype_div(pop=gbr_gt_data,bin_size=10,step_size=None)
+        gbr_win_hap = gstat.win_haplotype_div(positions=gen_pos,pop=gbr_gt_data,bin_size=5000,step_size=None)
     else:
         gbr = None
 
@@ -382,13 +379,13 @@ def stats(pops, stats):
         """Windowed Satats"""
 
         """PI"""
-        jpt_win_pi=  gstat.win_nuc_div(positions=gen_pos,pop=jpt_gt_data,bin_size=10,step_size=None)
+        jpt_win_pi=  gstat.win_nuc_div(positions=gen_pos,pop=jpt_gt_data,bin_size=5000,step_size=None)
 
         """Tajimas D"""
-        jpt_win_taj_D= gstat.win_tajima_d(positions=gen_pos,pop=jpt_gt_data,bin_size=10,step_size=None)
+        jpt_win_taj_D= gstat.win_tajima_d(positions=gen_pos,pop=jpt_gt_data,bin_size=5000,step_size=None)
 
         """ Haplotype"""
-        jpt_win_hap = gstat.win_haplotype_div(pop=jpt_gt_data,bin_size=10,step_size=None)
+        jpt_win_hap = gstat.win_haplotype_div(positions=gen_pos,pop=jpt_gt_data,bin_size=5000,step_size=None)
     else:
         jpt = None
 
@@ -404,13 +401,13 @@ def stats(pops, stats):
 
         """Windowed Satats"""
         """PI"""
-        mxl_win_pi=  gstat.win_nuc_div(positions=gen_pos,pop=mxl_gt_data,bin_size=10,step_size=None)
+        mxl_win_pi=  gstat.win_nuc_div(positions=gen_pos,pop=mxl_gt_data,bin_size=5000,step_size=None)
 
         """Tajimas D"""
-        mxl_win_taj_D= gstat.win_tajima_d(positions=gen_pos,pop=mxl_gt_data,bin_size=10,step_size=None)
+        mxl_win_taj_D= gstat.win_tajima_d(positions=gen_pos,pop=mxl_gt_data,bin_size=5000,step_size=None)
 
         """ Haplotype"""
-        mxl_win_hap = gstat.win_haplotype_div(pop=mxl_gt_data,bin_size=10,step_size=None)
+        mxl_win_hap = gstat.win_haplotype_div(positions=gen_pos,pop=mxl_gt_data,bin_size=5000,step_size=None)
     else:
         mxl = None
 
@@ -426,13 +423,13 @@ def stats(pops, stats):
 
         """Windowed Satats"""
         """PI"""
-        pjl_win_pi=  gstat.win_nuc_div(positions=gen_pos,pop=pjl_gt_data,bin_size=10,step_size=None)
+        pjl_win_pi=  gstat.win_nuc_div(positions=gen_pos,pop=pjl_gt_data,bin_size=5000,step_size=None)
 
         """Tajimas D"""
-        pjl_win_taj_D= gstat.win_tajima_d(positions=gen_pos,pop=pjl_gt_data,bin_size=10,step_size=None)
+        pjl_win_taj_D= gstat.win_tajima_d(positions=gen_pos,pop=pjl_gt_data,bin_size=5000,step_size=None)
 
         """ Haplotype"""
-        pjl_win_hap = gstat.win_haplotype_div(pop=pjl_gt_data,bin_size=10,step_size=None)
+        pjl_win_hap = gstat.win_haplotype_div(positions=gen_pos,pop=pjl_gt_data,bin_size=5000,step_size=None)
     else:
         pjl = None
 
@@ -447,13 +444,13 @@ def stats(pops, stats):
 
         """Windowed Satats"""
         """PI"""
-        yri_win_pi=  gstat.win_nuc_div(positions=gen_pos,pop=yri_gt_data,bin_size=10,step_size=None)
+        yri_win_pi=  gstat.win_nuc_div(positions=gen_pos,pop=yri_gt_data,bin_size=5000,step_size=None)
 
         """Tajimas D"""
-        yri_win_taj_D= gstat.win_tajima_d(positions=gen_pos,pop=yri_gt_data,bin_size=10,step_size=None)
+        yri_win_taj_D= gstat.win_tajima_d(positions=gen_pos,pop=yri_gt_data,bin_size=5000,step_size=None)
 
         """ Haplotype"""
-        yri_win_hap = gstat.win_haplotype_div(pop=yri_gt_data,bin_size=10,step_size=None)
+        yri_win_hap = gstat.win_haplotype_div(positions=gen_pos,pop=yri_gt_data,bin_size=5000,step_size=None)
     else:
         yri = None
 
