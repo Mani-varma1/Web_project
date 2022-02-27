@@ -194,42 +194,66 @@
       </table>
     </div>
 
-
-
-
-
-
-
-
     <a href="/download">Download</a>
   </div>
   <form novalidate="novalidate" method="POST" action="">
     {{ form.hidden_tag() }}
-                {{ form.stats.label() }}
-                {% if form.stats.errors %}
-                    {{ form.stats(class="form-control form-control-lg is-invalid") }}
-                    <div class="invalid-feedback">
-                        {% for error in form.stats.errors %}
-                            <span>{{ error }}</span>
-                        {% endfor %}
-                    </div>
-                {% else %}
-                    {{ form.stats(style="list-style-type: none") }}
-                {% endif %}
+          {{ form.stats.label() }}
+          {% if form.stats.errors %}
+              {{ form.stats(class="form-control form-control-lg is-invalid") }}
+              <div class="invalid-feedback">
+                  {% for error in form.stats.errors %}
+                      <span>{{ error }}</span>
+                  {% endfor %}
+              </div>
+          {% else %}
+              {{ form.stats(style="list-style-type: none") }}
+          {% endif %}
 
-                {{ form.populations.label() }}
-                {% if form.populations.errors %}
-                    {{ form.populations(class="form-control form-control-lg is-invalid") }}
-                    <div class="invalid-feedback">
-                        {% for error in form.populations.errors %}
-                            <span>{{ error }}</span>
-                        {% endfor %}
-                    </div>
-                {% else %}
-                    {{ form.populations(style="list-style-type: none") }}
-                {% endif %}
-          <div class="form-group">
-              {{ form.pop_stat(class="btn btn-outline-info mt-3") }}
+          {{ form.populations.label() }}
+          {% if form.populations.errors %}
+              {{ form.populations(class="form-control form-control-lg is-invalid") }}
+              <div class="invalid-feedback">
+                  {% for error in form.populations.errors %}
+                      <span>{{ error }}</span>
+                  {% endfor %}
+              </div>
+          {% else %}
+              {{ form.populations(style="list-style-type: none") }}
+          {% endif %}
+
+          <div class="form-row"></div>
+            {{ form.bin_size.label() }}
+            {% if form.bin_size.errors %}
+                {{ form.bin_size(class="form-control form-control-lg is-invalid") }}
+                <div class="invalid-feedback">
+                    {% for error in form.bin_size.errors %}
+                        <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% else %}
+                {{ form.bin_size(class="col-3", placeholder="Bin Size") }}
+            {% endif %}
+
+              {% if not form.bin_size.errors %}
+                {{ form.step_size.label(style="padding-left:50px;") }}
+              {% else %}
+                {{ form.step_size.label() }}
+              {% endif %}
+              {% if form.step_size.errors %}
+                  {{ form.step_size(class="form-control form-control-lg is-invalid") }}
+                  <div class="invalid-feedback">
+                      {% for error in form.step_size.errors %}
+                          <span>{{ error }}</span>
+                      {% endfor %}
+                  </div>
+              {% else %}
+                  {{ form.step_size(class="col-3", placeholder="Step Size") }}
+              {% endif %}
+              <div class="form-group">
+                  {{ form.pop_stat(class="btn btn-outline-info mt-3",id="content-dsip1", onclick="loading();") }}
+                  <div id="loading1"></div>
+            </div>
           </div>
   </form>
   <script>
@@ -250,30 +274,29 @@
     // Get the element with id="defaultOpen" and click on it
     document.getElementById("defaultOpen").click();
   </script>
-{% endblock search %}
-{% block carousel%}
-  <div class="change-width">
-    <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
-        <div class="carousel-inner">
-          <div class="carousel-item active">
-            <img src="..\static\profile_pics\198663.jpg" class="d-block w-100" alt="...">
+  {% endblock search %}
+  {% block carousel%}
+    <div class="change-width">
+      <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+          <div class="carousel-inner">
+            <div class="carousel-item active">
+              <img src="..\static\profile_pics\198663.jpg" class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item">
+              <img src="..\static\profile_pics\wallpaper.jpg" class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item">
+              <img src="..\static\profile_pics\outer space gods 2560x1440 wallpaper_www.wallpaperhi.com_7.jpg" class="d-block w-100" alt="...">
+            </div>
           </div>
-          <div class="carousel-item">
-            <img src="..\static\profile_pics\wallpaper.jpg" class="d-block w-100" alt="...">
-          </div>
-          <div class="carousel-item">
-            <img src="..\static\profile_pics\outer space gods 2560x1440 wallpaper_www.wallpaperhi.com_7.jpg" class="d-block w-100" alt="...">
-          </div>
-        </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Next</span>
-        </button>
+          <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+      </div>
     </div>
-  </div>
-
 {% endblock carousel %}
