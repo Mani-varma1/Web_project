@@ -46,20 +46,27 @@
                 <tr>
                     {% for i in pop_stats %}
                         {% if 'GBR' in i %}
-                    
                             {% for e in i %}
                                 <td rowspan="4"> {{ e }} </td>
                             {% endfor %}
-    
                         {% endif %}
                     {% endfor %}
                 </tr>
                 <tr>
-                    {% for key,value in all_fstat.items() %}
-                        {% if key.startswith("GBR") %}
-                            <td>
-                                {{ key }} : {{ value }}
-                            </td>
+                    {% if all_fstat %}
+                        {% for key,value in all_fstat.items() %}
+                            {% if key.startswith("GBR") %}
+                                <td>
+                                    {{ key }} : {{ value }}
+                                </td>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                    {% for i in pop_stats %}
+                        {% if 'GBR' in i %}
+                            {% if not all_fstat %}
+                            <td style="text-align: center;"> Not Calculated</td>
+                            {% endif%}
                         {% endif %}
                     {% endfor %}
                 </tr>
@@ -78,11 +85,21 @@
                     {% endfor %}
                 </tr>
                 <tr>
-                    {% for key,value in all_fstat.items() %}
-                        {% if key.startswith("JPT") %}
-                            <td>
-                                {{ key }} : {{ value }}
-                            </td>
+                    {% if all_fstat %}
+                        {% for key,value in all_fstat.items() %}
+                            {% if key.startswith("JPT") %}
+                                <td>
+                                    {{ key }} : {{ value }}
+                                </td>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+
+                    {% for i in pop_stats %}
+                        {% if 'JPT' in i %}
+                            {% if not all_fstat %}
+                            <td style="text-align: center;"> Not Calculated</td>
+                            {% endif%}
                         {% endif %}
                     {% endfor %}
                 </tr>
@@ -101,11 +118,21 @@
                     {% endfor %}
                 </tr>
                 <tr>
-                    {% for key,value in all_fstat.items() %}
-                        {% if key.startswith("MXL") %}
-                            <td>
-                                {{ key }} : {{ value }}
-                            </td>
+                    {% if all_fstat %}
+                        {% for key,value in all_fstat.items() %}
+                            {% if key.startswith("MXL") %}
+                                <td>
+                                    {{ key }} : {{ value }}
+                                </td>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+
+                    {% for i in pop_stats %}
+                        {% if 'MXL' in i %}
+                            {% if not all_fstat %}
+                            <td style="text-align: center;"> Not Calculated</td>
+                            {% endif%}
                         {% endif %}
                     {% endfor %}
                 </tr>
@@ -117,19 +144,28 @@
                 <tr>
                     {% for i in pop_stats %}
                         {% if 'PJL' in i %}
-                    
                             {% for e in i %}
                                 <td rowspan="4"> {{ e }} </td>
                             {% endfor %}
                         {% endif %}
-                    {% endfor %}
+                    {% endfor %}      
                 </tr>
                 <tr>
-                    {% for key,value in all_fstat.items() %}
-                        {% if key.startswith("PJL") %}
-                            <td>
-                                {{ key }} : {{ value }}
-                            </td>
+                    {% if all_fstat %}
+                        {% for key,value in all_fstat.items() %}
+                            {% if key.startswith("PJL") %}
+                                <td>
+                                    {{ key }} : {{ value }}
+                                </td>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+
+                    {% for i in pop_stats %}
+                        {% if 'PJL' in i %}
+                            {% if not all_fstat %}
+                            <td style="text-align: center;"> Not Calculated</td>
+                            {% endif%}
                         {% endif %}
                     {% endfor %}
                 </tr>
@@ -149,11 +185,22 @@
                     {% endfor %}
                 </tr>
                 <tr>
-                    {% for key,value in all_fstat.items() %}
-                        {% if key.startswith("YRI") %}
-                            <td>
-                                {{ key }} : {{ value }}
-                            </td>
+                    {% if all_fstat %}
+                        {% for key,value in all_fstat.items() %}
+                            {% if key.startswith("YRI") %}
+                                <td>
+                                    {{ key }} : {{ value }}
+                                </td>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+
+
+                    {% for i in pop_stats %}
+                        {% if 'YRI' in i %}
+                            {% if not all_fstat %}
+                            <td style="text-align: center;"> Not Calculated</td>
+                            {% endif%}
                         {% endif %}
                     {% endfor %}
                 </tr>
@@ -227,6 +274,7 @@
         </script>
         
         {% endif %}
+
 {% endblock content %}
 
 
