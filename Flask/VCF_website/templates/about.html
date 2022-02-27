@@ -1,98 +1,73 @@
-{% extends "layout.html" %} {% block content %}
-<!-- Oursite" -->
-<div class="w3-container w3-light-grey" style="padding: 50px 16px">
-  <div class="row">
-    <div class="col-sm-12 col-md-6">
-      <img
-        class="w3-image w3-round-large center"
-        style="float: left"
-        src="..\static\profile_pics\POPgen-logos_black.png"
-        alt="Buildings"
-        width="50%"
-      />
-    </div>
-    <div class="col-sm-12 col-md-6">
-      <h3 style="margin-top: 10%">POPgen</h3>
-      <p>
-        POPgen explores the annotation and description of single nucleotide
-        polymorphisms (SNPs) within five human populations. SNPs are the key
-        controllers of genetic diversity. POPgen provides a user-friendly
-        application that takes inputs of genomics coordinates, SNP name or gene
-        name and retrieves SNP information such as rs id, genomic position,
-        genotype frequency and allele frequency. We wrangled the sequencing data
-        specifically to the human chromosome 22 from five different populations
-        around the world.
-      </p>
-      <br />
-      <p>
-        <a
-          target="_blank"
-          href="{{ url_for('help') }}"
-          class="w3-button w3-black w3-padding-large w3-large w3-margin-top w3-opacity w3-hover-opacity-off"
-          >Documentation</a
-        >
-      </p>
+{% extends "layout.html" %} 
+{% block content %}
+  <!-- Oursite" -->
+  <div class="w3-container w3-light-grey" style="padding: 50px 16px">
+    <div class="row">
+      <div class="col-sm-12 col-md-6">
+        <img class="w3-image w3-round-large center" style="float: left" src="..\static\profile_pics\POPgen-logos_black.png" alt="Buildings" width="50%" />
+      </div>
+      <div class="col-sm-12 col-md-6">
+        <h3 style="margin-top: 10%">POPgen</h3>
+        <p>
+          POPgen explores the annotation and description of single nucleotide
+          polymorphisms (SNPs) within five human populations. SNPs are the key
+          controllers of genetic diversity. POPgen provides a user-friendly
+          application that takes inputs of genomics coordinates, SNP name or gene
+          name and retrieves SNP information such as rs id, genomic position,
+          genotype frequency and allele frequency. We wrangled the sequencing data
+          specifically to the human chromosome 22 from five different populations
+          around the world.
+        </p>
+        <br />
+        <p>
+          <a target="_blank" href="{{ url_for('help') }}" class="w3-button w3-black w3-padding-large w3-large w3-margin-top w3-opacity w3-hover-opacity-off">Documentation</a>
+        </p>
+      </div>
     </div>
   </div>
-</div>
-<!-- IGSR" -->
-<div class="w3-container w3-white" style="padding: 50px 10px">
-  <div class="row">
-    <div class="col-sm-12 col-md-6">
-      <h3>IGSR</h3>
-      <p>
-        The International Genome Sample Resource collects data from multiple
-        human populations through Variant Call Format (VCF) files, containing
-        genotype/haplotype information for sequenced samples at each called SNP.
-        IGSR provided our team with the usability and accessibility of data from
-        the 1000 Genomes Project.
-      </p>
-      <br />
-      <p>
-        <a
-          target="_blank"
-          href="https://www.internationalgenome.org/home"
-          class="w3-button w3-black w3-padding-large w3-large w3-margin-top w3-opacity w3-hover-opacity-off"
-          >IGSR Website</a
-        >
-      </p>
-    </div>
-    <div class="col-sm-12 col-md-6">
-      <img
-        class="w3-image w3-round-large center"
-        src="..\static\profile_pics\IGSR.jpg"
-        alt="Buildings"
-        width="400"
-      />
+  <!-- IGSR" -->
+  <div class="w3-container w3-white" style="padding: 50px 10px">
+    <div class="row">
+      <div class="col-sm-12 col-md-6">
+        <h3>IGSR</h3>
+        <p>
+          The International Genome Sample Resource collects data from multiple
+          human populations through Variant Call Format (VCF) files, containing
+          genotype/haplotype information for sequenced samples at each called SNP.
+          IGSR provided our team with the usability and accessibility of data from
+          the 1000 Genomes Project.
+        </p>
+        <br />
+        <p>
+          <a target="_blank" href="https://www.internationalgenome.org/home" class="w3-button w3-black w3-padding-large w3-large w3-margin-top w3-opacity w3-hover-opacity-off">IGSR Website</a>
+        </p>
+      </div>
+      <div class="col-sm-12 col-md-6">
+        <img class="w3-image w3-round-large center" src="..\static\profile_pics\IGSR.jpg" alt="Buildings" width="400" />
+      </div>
     </div>
   </div>
-</div>
 
-<!-- Population Genomics" -->
-<div class="w3-container w3-light-grey" style="padding: 16%">
-  <div class="w3-row-padding w3-center">
-    <div class="w3-col m12">
-      <h3 style="margin-top: -5%; margin-bottom: 5%">POPULATION GENOMICS</h3>
-      <br />
-      <p>
-        Population genomics is the study of genetic variation within and between
-        populations and the evolutionary factors that explain this variation.
-        Through the analysis of genetic variation, inferences from population
-        genomic data can be applied to conservation genetics, evolutionary
-        biology and precision medicine, etc. The advent of next-generation
-        sequencing (NGS) technologies has provided a surge of genomic data from
-        several populations, helping to improve our understanding of the
-        evolutionary history in and between populations.
-      </p>
-      <p>
-        <a
-          target="_blank"
-          href="https://en.wikipedia.org/wiki/Population_genomics"
-          class="w3-button w3-black w3-padding-large w3-large w3-margin-top w3-opacity w3-hover-opacity-off"
-          >Wiki Page</a
-        >
-      </p>
+  <!-- Population Genomics" -->
+  <div class="w3-container w3-light-grey" style="padding: 16%">
+    <div class="w3-row-padding w3-center">
+      <div class="w3-col m12">
+        <h3 style="margin-top: -5%; margin-bottom: 5%">POPULATION GENOMICS</h3>
+        <br />
+        <p>
+          Population genomics is the study of genetic variation within and between
+          populations and the evolutionary factors that explain this variation.
+          Through the analysis of genetic variation, inferences from population
+          genomic data can be applied to conservation genetics, evolutionary
+          biology and precision medicine, etc. The advent of next-generation
+          sequencing (NGS) technologies has provided a surge of genomic data from
+          several populations, helping to improve our understanding of the
+          evolutionary history in and between populations.
+        </p>
+        <p>
+          <a target="_blank" href="https://en.wikipedia.org/wiki/Population_genomics"class="w3-button w3-black w3-padding-large w3-large w3-margin-top w3-opacity w3-hover-opacity-off">Wiki Page</a>
+        </p>
+      </div>
     </div>
   </div>
-</div>
 {% endblock content %}
