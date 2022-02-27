@@ -1,5 +1,5 @@
+
 import time
-from trace import CoverageResults
 from flask import render_template, url_for, flash, redirect, request, session, make_response
 from io import StringIO
 from werkzeug.wrappers import Response
@@ -124,7 +124,7 @@ def loading(search):
                 return redirect(url_for('search'))
             
             pop_data(results,variable)
-            
+            flash("Please read the documentation for appropriate parameters", 'info')            
             return redirect(url_for('results', title='Results', Results=results))
 
         else:
@@ -140,7 +140,7 @@ def loading(search):
             pop_data(results,variable)
 
             print("--- %s seconds pop_data_func() ---" % (time.time() - start_time))
-
+            flash("Please read the documentation for appropriate parameters", 'info')
             return redirect(url_for('results', title='Results'))
     else:
         """For Multi rsid or gene list, gene limited to just 5. if conditions not met
@@ -170,10 +170,12 @@ def loading(search):
                     if len(rs_lst) != 0:
                         results = query_search.query.filter(query_search.rs_val.in_(rs_lst)).all()
                         pop_data(results,rs_lst)
+                        flash("Please read the documentation for appropriate parameters", 'info')
                         return redirect(url_for('results', title='Results'))
                     else:
                         results = query_search.query.filter(query_search.gene_name.in_(gene_lst)).all()
                         pop_data(results,gene_lst)
+                        flash("Please read the documentation for appropriate parameters", 'info')
                         return redirect(url_for('results', title='Results')) 
             except Exception:
                 flash("Sorry please check your format and try again", 'danger')
@@ -191,6 +193,7 @@ def loading(search):
 
             pop_data(results,variable)
 
+            flash("Please read the documentation for appropriate parameters", 'info')
             return redirect(url_for('results', title='Results'))
         
 
@@ -203,8 +206,8 @@ def loading(search):
                 return redirect(url_for('search'))
 
             pop_data(results,variable)
-            
-            return redirect(url_for('results', title='Results'))
+            flash("Please read the documentation for appropriate parameters", 'info')
+            return redirect(url_for('results', title='Results', Results=results))
 
 
 
@@ -254,7 +257,7 @@ def results():
             if len(results) <= 1:
                 flash("Can only perform statistics on two or more SNPs, please search for multiple SNPs", 'warning')
                 return redirect(url_for('search'))
-            return redirect(url_for('stats',pops=form.populations.data, stats=form.stats.data))
+            return redirect(url_for('stats',pops=form.populations.data, stats=form.stats.data,bin=form.bin_size.data,step=form.step_size.data))
     return render_template('results.html', Results=results, GBR=gbr, JPT=jpt,MXL=mxl,PJL=pjl,YRI=yri, form=form)
 
 
@@ -302,27 +305,29 @@ def win_fst_stats(positions,pop,bin_size,step_size=None):
 
 
 
-
-@app.route("/stats/<pops>/<stats>")
-def stats(pops, stats):
-
+@app.route("/stats/<pops>/<stats>/<bin>")
+@app.route("/stats/<pops>/<stats>/<bin>/<step>")
+def stats(pops, stats, bin, step = None):
 
     try:
         if pops.startswith('[') :
-            sel_pops = ast.literal_eval(pops)        
+            sel_pops = ast.literal_eval(pops)
+            bin = int(bin)       
         else:
-            sel_pops = [pops]
+            sel_pops = [pops]   
         
         if stats.startswith('['):
-            stats = ast.literal_eval(stats) 
+            stats_sel = ast.literal_eval(stats) 
         else:
-            stats = [stats]
-            
+            stats_sel = [stats]
+        
+        bin = int(bin)
+        if step:
+            step = int(step)
     except Exception:
         print('work?')
         flash ('Please select the Stats and populations from this page', 'info')
         return redirect(url_for('results'))
-
 
 
     """Load the session"""
@@ -340,7 +345,8 @@ def stats(pops, stats):
 
 
     html_first_col = f"CHR:{first_col['chrom']} Start:{first_col['pos']} - End:{last_col['pos']}"
-    html_gene = set([i['gene_name'] for i in results if i['gene_name'] != None])
+    html_gene = [set(i['gene_name']) for i in results if i['gene_name'] != None]
+
 
 
 
@@ -352,12 +358,12 @@ def stats(pops, stats):
         gbr_gt_data, gbr_freq = decompress(gbr)
 
         """Get homozygositym nucleotide diversity, haplotype diversity, and Tajimas D"""        
-        gbr_homo, gbr_nuc_div, gbr_hap_div, gbr_taj_d = gstat.get_main_stats(pop=gbr_gt_data,freq_data =gbr_freq,pos=gen_pos)
+        gbr_homo, gbr_nuc_div, gbr_hap_div, gbr_taj_d = gstat.get_main_stats(pop=gbr_gt_data,freq_data =gbr_freq,pos=gen_pos,stats=stats_sel)
         gbr_stats = ['GBR',gbr_homo, gbr_nuc_div, gbr_hap_div, gbr_taj_d]
 
         """Windowed Satats"""
         """PI"""
-        gbr_win_pi= gstat.win_nuc_div(positions=gen_pos,pop=gbr_gt_data,bin_size=5000,step_size=None)
+        gbr_win_pi,gbr_pi_win= gstat.win_nuc_div(positions=gen_pos,pop=gbr_gt_data,bin_size=5000,step_size=None)
 
         """Tajimas D"""
         gbr_win_taj_D= gstat.win_tajima_d(positions=gen_pos,pop=gbr_gt_data,bin_size=5000,step_size=1)
@@ -367,19 +373,21 @@ def stats(pops, stats):
     else:
         gbr = None
 
+
+
     """JPT"""
     if 'JPT' in sel_pops:
         jpt = json.loads(session['jpt'])
         jpt_gt_data, jpt_freq = decompress(jpt)
 
         """Get homozygositym nucleotide diversity, haplotype diversity, and Tajimas D"""
-        jpt_homo, jpt_nuc_div, jpt_hap_div, jpt_taj_d = gstat.get_main_stats(pop=jpt_gt_data,freq_data =jpt_freq,pos=gen_pos)
+        jpt_homo, jpt_nuc_div, jpt_hap_div, jpt_taj_d = gstat.get_main_stats(pop=jpt_gt_data,freq_data =jpt_freq,pos=gen_pos,stats=stats_sel)
         jpt_stats = ['JPT',jpt_homo, jpt_nuc_div, jpt_hap_div, jpt_taj_d]
 
         """Windowed Satats"""
 
         """PI"""
-        jpt_win_pi=  gstat.win_nuc_div(positions=gen_pos,pop=jpt_gt_data,bin_size=5000,step_size=None)
+        jpt_win_pi,jpt_pi_win=  gstat.win_nuc_div(positions=gen_pos,pop=jpt_gt_data,bin_size=5000,step_size=None)
 
         """Tajimas D"""
         jpt_win_taj_D= gstat.win_tajima_d(positions=gen_pos,pop=jpt_gt_data,bin_size=5000,step_size=None)
@@ -396,12 +404,12 @@ def stats(pops, stats):
         mxl = json.loads(session['mxl'])
         mxl_gt_data, mxl_freq = decompress(mxl)
         """Get homozygositym nucleotide diversity, haplotype diversity, and Tajimas D"""
-        mxl_homo, mxl_nuc_div, mxl_hap_div, mxl_taj_d = gstat.get_main_stats(pop=mxl_gt_data,freq_data =mxl_freq,pos=gen_pos)
+        mxl_homo, mxl_nuc_div, mxl_hap_div, mxl_taj_d = gstat.get_main_stats(pop=mxl_gt_data,freq_data =mxl_freq,pos=gen_pos,stats=stats_sel)
         mxl_stats = ['MXL',mxl_homo, mxl_nuc_div, mxl_hap_div, mxl_taj_d]
 
         """Windowed Satats"""
         """PI"""
-        mxl_win_pi=  gstat.win_nuc_div(positions=gen_pos,pop=mxl_gt_data,bin_size=5000,step_size=None)
+        mxl_win_pi,mxl_pi_win=  gstat.win_nuc_div(positions=gen_pos,pop=mxl_gt_data,bin_size=5000,step_size=None)
 
         """Tajimas D"""
         mxl_win_taj_D= gstat.win_tajima_d(positions=gen_pos,pop=mxl_gt_data,bin_size=5000,step_size=None)
@@ -413,17 +421,17 @@ def stats(pops, stats):
 
 
 
-
+    """PJL"""
     if 'PJL' in sel_pops:
         pjl = json.loads(session['pjl'])
         pjl_gt_data, pjl_freq = decompress(pjl)
         """Get homozygositym nucleotide diversity, haplotype diversity, and Tajimas D"""
-        pjl_homo, pjl_nuc_div, pjl_hap_div, pjl_taj_d = gstat.get_main_stats(pop=pjl_gt_data,freq_data =pjl_freq,pos=gen_pos)
+        pjl_homo, pjl_nuc_div, pjl_hap_div, pjl_taj_d = gstat.get_main_stats(pop=pjl_gt_data,freq_data =pjl_freq,pos=gen_pos,stats=stats_sel)
         pjl_stats = ['PJL',pjl_homo, pjl_nuc_div, pjl_hap_div, pjl_taj_d]
 
         """Windowed Satats"""
         """PI"""
-        pjl_win_pi=  gstat.win_nuc_div(positions=gen_pos,pop=pjl_gt_data,bin_size=5000,step_size=None)
+        pjl_win_pi,pjl_pi_win=  gstat.win_nuc_div(positions=gen_pos,pop=pjl_gt_data,bin_size=5000,step_size=None)
 
         """Tajimas D"""
         pjl_win_taj_D= gstat.win_tajima_d(positions=gen_pos,pop=pjl_gt_data,bin_size=5000,step_size=None)
@@ -434,17 +442,17 @@ def stats(pops, stats):
         pjl = None
 
 
-
+    """YRI"""
     if 'YRI' in sel_pops:
         yri = json.loads(session['yri'])
         yri_gt_data, yri_freq = decompress(yri)
         """Get homozygositym nucleotide diversity, haplotype diversity, and Tajimas D"""
-        yri_homo,yri_nuc_div,yri_hap_div,yri_taj_d = gstat.get_main_stats(pop=yri_gt_data,freq_data =yri_freq,pos=gen_pos)
+        yri_homo,yri_nuc_div,yri_hap_div,yri_taj_d = gstat.get_main_stats(pop=yri_gt_data,freq_data =yri_freq,pos=gen_pos,stats=stats_sel)
         yri_stats = ['YRI',yri_homo,yri_nuc_div,yri_hap_div,yri_taj_d]
 
         """Windowed Satats"""
         """PI"""
-        yri_win_pi=  gstat.win_nuc_div(positions=gen_pos,pop=yri_gt_data,bin_size=5000,step_size=None)
+        yri_win_pi,yri_pi_win=  gstat.win_nuc_div(positions=gen_pos,pop=yri_gt_data,bin_size=5000,step_size=None)
 
         """Tajimas D"""
         yri_win_taj_D= gstat.win_tajima_d(positions=gen_pos,pop=yri_gt_data,bin_size=5000,step_size=None)
@@ -453,6 +461,7 @@ def stats(pops, stats):
         yri_win_hap = gstat.win_haplotype_div(positions=gen_pos,pop=yri_gt_data,bin_size=5000,step_size=None)
     else:
         yri = None
+
 
 
 
@@ -547,9 +556,11 @@ def stats(pops, stats):
         
 
     """ Create Fstat only if more than one population is selected"""
-    if len(pops) >1: #and 'FST' in stats
+    if len(pops) >1 and 'FST' in stats_sel:
         all_fstat = gstat.get_fstat(paris=sel_pops, gt_dict = gt_dict)
         all_fstat = dict(all_fstat)
+    else:
+        all_fstat = None
 
     """ Overall stats"""
     all_pops_gtd =[gt_dict[i] for i in sel_pops]
@@ -557,7 +568,7 @@ def stats(pops, stats):
 
     all_pops_gtd = gstat.overall_stats_gtd(all_pops_gtd)
     all_pops_cts =gstat.overall_stats_cts(all_pops_cts)
-    all_homo,all_nuc_div,all_hap_div,all_taj_d =gstat.get_main_stats(pop=all_pops_gtd,freq_data=all_pops_cts,pos=gen_pos)
+    all_homo,all_nuc_div,all_hap_div,all_taj_d =gstat.get_main_stats(pop=all_pops_gtd,freq_data=all_pops_cts,pos=gen_pos,stats = stats_sel)
     all_stats ={'Observed Homozugosity':all_homo,'Nucleotide Diversity(pi)':all_nuc_div,'Haplotide Diversity':all_hap_div,'Tajima D':all_taj_d}
 
 
@@ -567,15 +578,24 @@ def stats(pops, stats):
 
     """Get the avg window size for plotting x axis"""
 
-    x_axis = gstat.avg_win(gen_pos, size=10)
+    x_axis = gstat.avg_win(gbr_pi_win, size=5000)
 
 
-    """Create plots"""
-    nuc_div_plot1,nuc_div_plot2 = gstat.plot_nuc_div(plot_pi,x_axis)
-
-    hap_div_plot1,hap_div_plot2 = gstat.plot_win_hap(plot_hap,x_axis)
-
-    taj_d_plot1,taj_d_plot2 = gstat.plot_win_taj_d(plot_taj_d,x_axis)
+    """Create plots based on the user selected stats"""
+    if 'Nucleotide Diversity' in stats_sel:
+        nuc_div_plot1,nuc_div_plot2 = gstat.plot_nuc_div(plot_pi,x_axis,sel_pops)
+    else:
+        nuc_div_plot1,nuc_div_plot2 = (None,None)
+    
+    if 'Haplotype Diversity' in stats_sel:
+        hap_div_plot1,hap_div_plot2 = gstat.plot_win_hap(plot_hap,x_axis,sel_pops)
+    else:
+        hap_div_plot1,hap_div_plot2 = (None,None)
+   
+    if 'Tajimas D' in stats_sel:
+        taj_d_plot1,taj_d_plot2 = gstat.plot_win_taj_d(plot_taj_d,x_axis,sel_pops)
+    else:
+        taj_d_plot1,taj_d_plot2 = (None,None)
 
 
 
@@ -594,6 +614,12 @@ def stats(pops, stats):
     taj_d_plot1=taj_d_plot1,
     taj_d_plot2=taj_d_plot2
     )
+
+
+
+
+
+
 
 
 
@@ -640,8 +666,22 @@ def contact():
     return render_template('contact.html', title='Contact', form=form)
 
 
+
+
 @app.route("/help", methods=['GET', 'POST'])
 def help():
-    return render_template('help.html', title='Help')
+    return render_template('help.html', title='Contact')
 
 
+
+# Create Custom Error Pages
+# Invalid URL
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template("404.html"), 404
+
+
+# Internal Server Error
+@app.errorhandler(500)
+def page_not_found(e):
+    return render_template("500.html"), 500
