@@ -1,5 +1,4 @@
 # Stats script
-from scipy.stats import bartlett, chisquare
 import plotly.graph_objects as go
 import plotly
 import json
@@ -72,6 +71,38 @@ def hudson_fst(pop1,pop2):
     fst = np.sum(num) / np.sum(den)
     return round(fst,3)
 
+
+
+
+def get_main_stats(pop,freq_data,pos,stats):
+    if 'Homozygosity' in stats:
+        homo = Homozygosity(freq_data)
+    else:
+        homo = 'Not calculated'
+
+
+    if 'Nucleotide Diversity' in stats:
+        nd = nuc_div(pop)
+    else:
+        nd = 'Not calculated'
+
+
+    if 'Tajimas D' in stats:
+        taj_d = tajima_d(pop,pos=pos)
+    else:
+        taj_d = 'Not calculated'
+
+
+    if 'Haplotype Diversity' in stats:
+        hap_div = haplotype_div(pop)
+    else:
+        hap_div = 'Not calculated'
+    
+    return homo,nd,hap_div,taj_d
+
+
+
+
 def get_fstat(paris,gt_dict):
     combos = itertools.permutations(paris,2)
     lst = []
@@ -86,12 +117,6 @@ def get_fstat(paris,gt_dict):
 
 
 
-def get_main_stats(pop,freq_data,pos):
-    homo = Homozygosity(freq_data)
-    nd = nuc_div(pop)
-    taj_d = tajima_d(pop,pos=pos)
-    hap_div = haplotype_div(pop)
-    return homo,nd,hap_div,taj_d
 
 
 def overall_stats_gtd(all_pops_array):
@@ -126,8 +151,8 @@ def overall_stats_cts(all_pop):
     
 
 def avg_win(pos,size):
-    windows = allel.moving_statistic(pos, statistic= lambda v: [v[0], v[-1]], size=size)
-    x = np.asarray(windows).mean(axis=1)
+    # windows = allel.moving_statistic(pos, statistic= lambda v: [v[0], v[-1]], size=size)
+    x = np.asarray(pos).mean(axis=1)
     return x
 
     
@@ -143,7 +168,7 @@ def win_nuc_div(positions,pop,bin_size=100,step_size=None):
     pop = allel.GenotypeArray(pop_gt)
     ac = pop.count_alleles()
     win_pi, windows, n_bases, counts = allel.windowed_diversity(pos,ac,size=bin_size,step=step_size)
-    return win_pi
+    return win_pi,windows
 
 
 def win_tajima_d(positions,pop,bin_size=100,step_size=None):
@@ -192,7 +217,7 @@ def win_hudson_fst(positions,pop1,pop2,bin_size=100,step_size=None):
 Creating clots
 """
 
-def plot_win_taj_d(TD, position):
+def plot_win_taj_d(TD, position, num_pops):
 
         #graph containing all populations without buttons
         fig_1 = go.Figure()
@@ -241,8 +266,12 @@ def plot_win_taj_d(TD, position):
             xaxis_title='Position (Base pairs)',
             yaxis_title="Tajima's D")
 
-        graph1JSON = json.dumps(fig_1, cls=plotly.utils.PlotlyJSONEncoder)
-        graph2JSON = json.dumps(fig_2, cls=plotly.utils.PlotlyJSONEncoder)
+        if len(num_pops)==1:
+            graph1JSON = json.dumps(fig_1, cls=plotly.utils.PlotlyJSONEncoder)
+            graph2JSON = None
+        else:
+            graph1JSON = json.dumps(fig_1, cls=plotly.utils.PlotlyJSONEncoder)
+            graph2JSON = json.dumps(fig_2, cls=plotly.utils.PlotlyJSONEncoder)
 
         return graph1JSON,graph2JSON
 
@@ -250,7 +279,7 @@ def plot_win_taj_d(TD, position):
 
 
 
-def plot_win_hap(HD, position):
+def plot_win_hap(HD, position,num_pops):
 
     # graph containing all populations without buttons
     fig_3 = go.Figure()
@@ -298,9 +327,13 @@ def plot_win_hap(HD, position):
     fig_4.update_layout(
         xaxis_title='Position (Base pairs)',
         yaxis_title="Haploid Diversity")
-
-    graph3JSON = json.dumps(fig_3, cls=plotly.utils.PlotlyJSONEncoder)
-    graph4JSON = json.dumps(fig_4, cls=plotly.utils.PlotlyJSONEncoder)
+    
+    if len(num_pops)==1:
+        graph3JSON = json.dumps(fig_3, cls=plotly.utils.PlotlyJSONEncoder)
+        graph4JSON = None
+    else:
+        graph3JSON = json.dumps(fig_3, cls=plotly.utils.PlotlyJSONEncoder)
+        graph4JSON = json.dumps(fig_4, cls=plotly.utils.PlotlyJSONEncoder)
 
 
 
@@ -309,7 +342,7 @@ def plot_win_hap(HD, position):
 
 
 
-def plot_nuc_div(ND, position):
+def plot_nuc_div(ND, position,num_pops):
 
     # graph containing all populations without buttons
     fig_5 = go.Figure()
@@ -358,8 +391,14 @@ def plot_nuc_div(ND, position):
         xaxis_title='Position (Base pairs)',
         yaxis_title="Nucleotide Diversity")
 
-    graph3JSON = json.dumps(fig_5, cls=plotly.utils.PlotlyJSONEncoder)
-    graph4JSON = json.dumps(fig_6, cls=plotly.utils.PlotlyJSONEncoder)
+
+    
+    if len(num_pops)==1:
+        graph3JSON = json.dumps(fig_5, cls=plotly.utils.PlotlyJSONEncoder)
+        graph4JSON = None
+    else:
+        graph3JSON = json.dumps(fig_5, cls=plotly.utils.PlotlyJSONEncoder)
+        graph4JSON = json.dumps(fig_6, cls=plotly.utils.PlotlyJSONEncoder)
 
 
 
