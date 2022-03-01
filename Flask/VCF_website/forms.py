@@ -76,8 +76,8 @@ class GreaterThan(object):
 class SearchPos(FlaskForm):
     choices = [("", "CHR"),('1', '1'), ('22', '22'),]
     select = SelectField("Select Chromosome", choices=choices, validators=[DataRequired(message="Please select a chromosome")],widget=CustomSelect(),default="",)
-    start_pos = IntegerField("Starting position", validators=[DataRequired()])
-    end_pos = IntegerField("Ending position", validators=[Optional(),GreaterThan('start_pos')])
+    start_pos = IntegerField("Starting position:", validators=[DataRequired()])
+    end_pos = IntegerField("Ending position(Optioanal):", validators=[Optional(),GreaterThan('start_pos')])
     submit = SubmitField("Search")
 
     
@@ -105,12 +105,14 @@ class MultiCheckboxField(SelectMultipleField):
     option_widget =CheckboxInput()
 
 class PopulationStatistics(FlaskForm):
-    choices_stats = [('Heterozygosity','Heterozygosity'),('Haplotype','Haplotype'),('Tajimas_D','Tajimas_D'),('Fst','Fst')]
-    stats = MultiCheckboxField('Select Statistics', choices=choices_stats, validators=[DataRequired(message="Please select atleast one statistic")])
+    choices_stats = [('Homozygosity','Homozygosity'),('Nucleotide Diversity','Nucleotide Diversity'),('Haplotype Diversity','Haplotype Diversity'),('Tajimas D','Tajimas D'),('FST','FST')]
+    stats = MultiCheckboxField('Select Statistics:', choices=choices_stats, validators=[DataRequired(message="Please select atleast one statistic")])
     choices_pop = [('GBR','GBR'),('JPT','JPT'),('MXL','MXL'),('PJL','PJL'),('YRI','YRI')]
-    populations = MultiCheckboxField('Select population', choices=choices_pop, validators=[DataRequired(message="Please select a population")])
+    populations = MultiCheckboxField('Select Population:', choices=choices_pop, validators=[DataRequired(message="Please select a population")])
+    bin_size = IntegerField("Bin size:", validators=[DataRequired()])
+    step_size = IntegerField("Step size (Optioanal):",validators=[Optional()])
     pop_stat = SubmitField("Calculate")
 
     def validate_populations(self,populations):
-        if ('Fst' in  self.stats.data) and (len(populations.data)<2):
+        if ('FST' in  self.stats.data) and (len(populations.data)<2):
             raise ValidationError('Need atleast two populations for FST')
