@@ -111,7 +111,7 @@ class PopulationStatistics(FlaskForm):
     populations = MultiCheckboxField('Select Population:', choices=choices_pop, validators=[DataRequired(message="Please select a population")])
     bin_size = IntegerField("Bin size:", validators=[DataRequired()])
     step_size = IntegerField("Step size (Optioanal):",validators=[Optional()])
-    pop_stat = SubmitField("Search")
+    pop_stat = SubmitField("Calculate")
 
     def validate_populations(self,populations):
         if ('FST' in  self.stats.data) and (len(populations.data)<2):

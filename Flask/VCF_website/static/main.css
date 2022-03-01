@@ -110,6 +110,46 @@ a.article-title:hover {
   margin: auto;
 }
 
+
+
+@import url('https://fonts.googleapis.com/css?family=Assistant');
+
+.cell-1 {
+border-collapse: separate;
+border-spacing: 0 4em;
+background: #ffffff;
+border-bottom: 5px solid transparent;
+background-clip: padding-box;
+cursor: pointer
+}
+thead {
+background: #dddcdc
+}
+.table-elipse {
+cursor: pointer
+}
+#demo {
+-webkit-transition: all 0.3s ease-in-out;
+-moz-transition: all 0.3s ease-in-out;
+-o-transition: all 0.3s 0.1s ease-in-out;
+transition: all 0.3s ease-in-out
+}
+.row-child {
+background-color: rgba(89, 88, 88, 0.487);
+color: #fff
+}
+
+
+.header{
+    position:sticky;
+    top: 0 ;
+}
+
+
+.table-wrapper {
+  max-height: 600px;
+  overflow: auto;
+ 
 .footer {
   position: fixed;
   left: 0;
