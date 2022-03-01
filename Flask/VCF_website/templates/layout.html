@@ -48,45 +48,20 @@
         <a href="/" class="w3-bar-item w3-button w3-wide">POPgen</a>
         <!-- Right-sided navbar links -->
         <div class="w3-right w3-hide-small">
-          {% if not session['results'] %}
-          <a href="{{ url_for('home') }}" class="w3-bar-item w3-button"
-            ><i class="fa fa-home"></i>HOME</a
-          >
-          <a href="{{ url_for('about') }}" class="w3-bar-item w3-button"
-            ><i class="fa fa-book"></i>ABOUT</a
-          >
-          <a href="{{ url_for('search') }}" class="w3-bar-item w3-button"
-            ><i class="fa fa-binoculars"></i> SEARCH</a
-          >
-          <a href="{{ url_for('contact') }}" class="w3-bar-item w3-button"
-            ><i class="fa fa-th"></i> CONTACT</a
-          >
-          <a href="{{ url_for('help') }}" class="w3-bar-item w3-button"
-            ><i class="fa fa-book"></i> HELP</a
-          >
-          {% endif %} {% if session['results'] %}
-          <a href="{{ url_for('home') }}" class="w3-bar-item w3-button"
-            ><i class="fa fa-home"></i>HOME</a
-          >
-          <a href="{{ url_for('about') }}" class="w3-bar-item w3-button"
-            ><i class="fa fa-book"></i>ABOUT</a
-          >
-          <a href="{{ url_for('search') }}" class="w3-bar-item w3-button"
-            ><i class="fa fa-binoculars"></i> SEARCH</a
-          >
-          <a href="{{ url_for('contact') }}" class="w3-bar-item w3-button"
-            ><i class="fa fa-th"></i> CONTACT</a
-          >
-          <a href="{{ url_for('help') }}" class="w3-bar-item w3-button"
-            ><i class="fa fa-book"></i> HELP</a
-          >
-          <a href="{{ url_for('results') }}" class="w3-bar-item w3-button">
-            RESULTS</a
-          >
-          <a href="{{ url_for('help') }}" class="w3-bar-item w3-button">
-            STATS</a
-          >
-          {% endif %}
+      {% if not session['results'] %}
+      <a href="{{ url_for('home') }}" class="w3-bar-item w3-button"><i class="fa fa-home"></i>HOME</a>
+      <a href="{{ url_for('about') }}" class="w3-bar-item w3-button"><i class="fa fa-book"></i>ABOUT</a>
+      <a href="{{ url_for('search') }}" class="w3-bar-item w3-button"><i class="fa fa-binoculars"></i> SEARCH</a>
+      <a href="{{ url_for('help') }}" class="w3-bar-item w3-button"><i class="fa fa-book"></i> HELP</a>
+      {% endif %}
+      {% if session['results'] %}
+        <a href="{{ url_for('home') }}" class="w3-bar-item w3-button"><i class="fa fa-home"></i>HOME</a>
+        <a href="{{ url_for('about') }}" class="w3-bar-item w3-button"><i class="fa fa-book"></i>ABOUT</a>
+        <a href="{{ url_for('search') }}" class="w3-bar-item w3-button"><i class="fa fa-binoculars"></i> SEARCH</a>
+        <a href="{{ url_for('help') }}" class="w3-bar-item w3-button"><i class="fa fa-book"></i> HELP</a>
+        <a href="{{ url_for('results') }}" class="w3-bar-item w3-button"> RESULTS</a>
+        <a href="{{ url_for('stats', pops= None, stats=None, bin=None, step=None) }}" class="w3-bar-item w3-button"> STATS</a>
+      {% endif %}
         </div>
       </div>
     </div>
@@ -97,11 +72,17 @@
     <main role="main" class="container mt-5">
       <div class="row">
         <div class="col-md-8 mt-5">
-          {% with messages = get_flashed_messages(with_categories=True) %} {%if
-          messages %} {% for category, message in messages %}
-          <div class="alert alert-{{ category }}">{{ message }}</div>
-          {% endfor %} {% endif %} {% endwith %} {% block search %}{% endblock
-          %}
+          {% with messages = get_flashed_messages(with_categories=True) %}
+            {%if messages %}
+              {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                  {{ message }}
+                </div>
+              {% endfor %}
+            {% endif %}
+          {% endwith %}
+          
+          {% block search %}{% endblock %}
         </div>
       </div>
     </main>
