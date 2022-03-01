@@ -1,95 +1,177 @@
 {% extends "layout.html" %}
 {% block search %}
-
   <h1> Results </h1>
   <div class="container col-md-15 col-md-offset-55">
     <div class="table-wrapper">
-      <table id="example" class="table table-striped table-bordered" style="width:100%">
-          <thead style="position: sticky;top: 0" class="thead-dark">
+      <table id="example" class="table table-striped table-bordered" style="width: 100%">
+          <thead>
               <tr>
-                  <th class="header" scope="col">Chromosome</th>
-                  <th class="header" scope="col">RS ID</th>
-                  <th class="header" scope="col">Gene Name</th>
-                  <th class="header" scope="col">Position</th>
-                  <th class="header" scope="col">Reference allele</th>
-                  <th class="header" scope="col">Alternate allele</th>
-                  <th class="header" scope="col">Frequencies</th>
+                  <th>Chromosome</th>
+                  <th>RS ID</th>
+                  <th>Gene Name</th>
+                  <th>Position</th>
+                  <th>Reference allele</th>
+                  <th>Alternate allele</th>
               </tr>
           </thead>
-           <tbody>
+          <tbody>
             {% for row in Results %}
               <tr>
-                <td>{{ row["chrom"]}}</td>
-                <td>{{ row["rs_val"]}}</td>
-                <td>{{ row["gene_name"]}}</td>
-                <td>{{ row["pos"]}}</td>
-                <td>{{ row["ref_allele"] }}</td>
-                <td>{{ row["alt_allele"] }} </td>
-                <td class="table-elipse table-bordered" data-toggle="collapse" data-target='#{{ row["rs_val"]}}'><i class="fa fa-ellipsis-h text-black-50"></i></td>
+              <td>{{ row["chrom"]}}</td>
+              <td>{{ row["rs_val"]}}</td>
+              <td>{{ row["gene_name"]}}</td>
+              <td>{{ row["pos"]}}</td>
+              <td>{{ row["ref_allele"] }}</td>
+              <td>{{ row["alt_allele"] }} </td>
               </tr>
-              <tr id='{{ row["rs_val"]}}' class="collapse cell-1 row-child">
-                <td class="text-center" colspan="1"><i class="fa fa-angle-up"></i></td>
-                <td colspan="1"><b>Populations</b></td>
-                <td colspan="3"><p style="text-align:center;"><b>Genotype Freqs</b></p></td>
-                <td colspan="2"><p style="text-align:center;"><b>Allele Freqs</b></p></td>
-              </tr>
-              <tr id='{{ row["rs_val"]}}' class="collapse cell-1 row-child">
-                <td class="text-center" colspan="1"><i class="fa fa-angle-up"></i></td>
-                <td colspan="1">GBR</td>
-                {% for row_pop in GBR %}
-                  {% if row["rs_val"] == row_pop["rs_val_id"] %}
-                    <td colspan="3">{{row_pop["geno_freq"]}}</td>
-                    <td colspan="2">{{row_pop["allele_freq"]}}</td>
-                  {% endif %}
-                {% endfor %}    
-              </tr>
-              <tr id='{{ row["rs_val"]}}' class="collapse cell-1 row-child">
-                <td class="text-center" colspan="1"><i class="fa fa-angle-up"></i></td>
-                <td colspan="1">JPT</td>
-                {% for row_pop in JPT %}
-                  {% if row["rs_val"] == row_pop["rs_val_id"] %}                
-                    <td colspan="3">{{row_pop["geno_freq"]}}</td>
-                    <td colspan="2">{{row_pop["allele_freq"]}}</td>
-                  {% endif %}
-                {% endfor %}  
-              </tr>
-              <tr id='{{ row["rs_val"]}}' class="collapse cell-1 row-child">
-                <td class="text-center" colspan="1"><i class="fa fa-angle-up"></i></td>
-                <td colspan="1">MXL</td>
-                {% for row_pop in MXL %}
-                  {% if row["rs_val"] == row_pop["rs_val_id"] %}
-                    <td colspan="3">{{row_pop["geno_freq"]}}</td>
-                    <td colspan="2">{{row_pop["allele_freq"]}}</td>
-                  {% endif %}
-                {% endfor %} 
-              </tr>
-              <tr id='{{ row["rs_val"]}}' class="collapse cell-1 row-child">
-                <td class="text-center" colspan="1"><i class="fa fa-angle-up"></i></td>
-                <td colspan="1">PJL</td>
-                {% for row_pop in PJL %}
-                  {% if row["rs_val"] == row_pop["rs_val_id"] %}
-                    <td colspan="3">{{row_pop["geno_freq"]}}</td>
-                    <td colspan="2">{{row_pop["allele_freq"]}}</td>
-                  {% endif %}
-                {% endfor %} 
-              </tr>
-              <tr id='{{ row["rs_val"]}}' class="collapse cell-1 row-child">
-                <td class="text-center" colspan="1"><i class="fa fa-angle-up"></i></td>
-                <td colspan="1">YRI</td>
-                {% for row_pop in YRI %}
-                  {% if row["rs_val"] == row_pop["rs_val_id"] %}
-                    <td colspan="3">{{row_pop["geno_freq"]}}</td>
-                    <td colspan="2">{{row_pop["allele_freq"]}}</td>
-                  {% endif %}
-                {% endfor %} 
-              </tr>
-              
             {% endfor %}
           </tbody>
       </table>
-    </div>  
-  </div>
- 
+    </div>
+  
+    <!-- Tab links -->
+    <div class="tab mt-5"> 
+      <button class="tablinks" onclick="openCity(event, 'GBR')" id="defaultOpen">GBR</button>
+      <button class="tablinks" onclick="openCity(event, 'JPT')">JPT</button>
+      <button class="tablinks" onclick="openCity(event, 'MXL')">MXL</button>
+      <button class="tablinks" onclick="openCity(event, 'PJL')">PJL</button>
+      <button class="tablinks" onclick="openCity(event, 'YRI')">YRI</button>
+    </div>
+
+    <!-- Tab content -->
+    <div id="GBR" class="tabcontent">
+      <div class="table-wrapper">
+        <table id="example" class="table table-striped table-bordered" style="width:100%">
+          <thead>
+            <tr>
+              <th>RS ID</th>
+              <th>genotypes</th>
+              <th>allele frequency</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in GBR %}
+            <tr>
+              <td>{{ row["rs_val_id"]}}</td>
+              <td>
+                <pre>{{ row["geno_freq"]}}</pre>
+              </td>
+              <td>
+                <pre>{{ row["allele_freq"]}}</pre>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div id="JPT" class="tabcontent">
+      <div class="table-wrapper">
+        <table id="example" class="table table-striped table-bordered" style="width:100%">
+          <thead>
+            <tr>
+              <th>RS ID</th>
+              <th>genotypes</th>
+              <th>allele frequency</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in JPT %}
+            <tr>
+              <td>{{ row["rs_val_id"]}}</td>
+              <td>
+                <pre>{{ row["geno_freq"]}}</pre>
+              </td>
+              <td>
+                <pre>{{ row["allele_freq"]}}</pre>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div id="MXL" class="tabcontent">
+      <div class="table-wrapper">
+        <table id="example" class="table table-striped table-bordered" style="width:100%">
+          <thead>
+            <tr>
+              <th>RS ID</th>
+              <th>genotypes</th>
+              <th>allele frequency</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in MXL %}
+            <tr>
+              <td>{{ row["rs_val_id"]}}</td>
+              <td>
+                <pre>{{ row["geno_freq"]}}</pre>
+              </td>
+              <td>
+                <pre>{{ row["allele_freq"]}}</pre>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div id="PJL" class="tabcontent">
+      <div class="table-wrapper">
+        <table id="example" class="table table-striped table-bordered" style="width:100%">
+          <thead>
+            <tr>
+              <th>RS ID</th>
+              <th>genotypes</th>
+              <th>allele frequency</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in PJL %}
+            <tr>
+              <td>{{ row["rs_val_id"]}}</td>
+              <td>
+                <pre>{{ row["geno_freq"]}}</pre>
+              </td>
+              <td>
+                <pre>{{ row["allele_freq"]}}</pre>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div id="YRI" class="tabcontent">
+      <div class="table-wrapper">
+        <table id="example" class="table table-striped table-bordered" style="width:100%">
+          <thead>
+            <tr>
+              <th>RS ID</th>
+              <th>genotypes</th>
+              <th>allele frequency</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in MXL %}
+            <tr>
+              <td>{{ row["rs_val_id"]}}</td>
+              <td>
+                <pre>{{ row["geno_freq"]}}</pre>
+              </td>
+              <td>
+                <pre>{{ row["allele_freq"]}}</pre>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
 
     <a href="/download">Download</a>
   </div>
@@ -148,7 +230,7 @@
                   {{ form.step_size(class="col-3", placeholder="Step Size") }}
               {% endif %}
               <div class="form-group">
-                  {{ form.pop_stat(class="btn btn-outline-info mt-3",id="content-dsip1", onclick="loading();") }}
+                  {{ form.pop_stat(class="btn btn-outline-info mt-3 mb-5",id="content-dsip1", onclick="loading();") }}
                   <div id="loading1"></div>
             </div>
           </div>
@@ -172,31 +254,3 @@
     document.getElementById("defaultOpen").click();
   </script>
   {% endblock search %}
-  {% block carousel%}
-    <div class="change-width">
-      <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
-          <div class="carousel-inner">
-            <div class="carousel-item active">
-              <img src="..\static\profile_pics\198663.jpg" class="d-block w-100" alt="...">
-            </div>
-            <div class="carousel-item">
-              <img src="..\static\profile_pics\wallpaper.jpg" class="d-block w-100" alt="...">
-            </div>
-            <div class="carousel-item">
-              <img src="..\static\profile_pics\outer space gods 2560x1440 wallpaper_www.wallpaperhi.com_7.jpg" class="d-block w-100" alt="...">
-            </div>
-          </div>
-          <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-          </button>
-          <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-          </button>
-      </div>
-    </div>
-  </div>
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <script type="text/javascript" src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
-{% endblock carousel %}
