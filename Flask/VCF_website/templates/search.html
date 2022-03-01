@@ -50,13 +50,13 @@
                             </div>
                         </fieldset>
                         <div class="form-group">
-                            {{ form1.submit(class="w3-button w3-black w3-margin-top w3-opacity w3-hover-opacity-off",id="content-dsip1", onclick="loading();") }}
+                            {{ form1.submit(class="btn btn-outline-info mt-3",id="content-dsip1", onclick="loading();") }}
                             <div id="loading1"></div>
                         </div>
                     </div>
                 </form>
             </div>
-            <div class="col-sm-12">
+            <div class="col-sm-12 col-md-6">
                 <form novalidate="novalidate" method="POST" action="">
                     {{ form2.hidden_tag() }}
                     <div class="content-section">
@@ -75,14 +75,14 @@
                                 {% endif %}
                             </div>
                             <div class="form-group">
-                                {{ form2.rs_search(class="w3-button w3-black w3-margin-top w3-opacity w3-hover-opacity-off",id="content-dsip2", onclick="loading();") }}
+                                {{ form2.rs_search(class="btn btn-outline-info mt-3",id="content-dsip2", onclick="loading();") }}
                                 <div id="loading2"></div>
                             </div>
                         </fieldset>
                     </div>
                 </form>
             </div>
-            <div class="col-sm-12"></div>
+            <div class="col-sm-12 col-md-6"></div>
                 <form novalidate="novalidate" method="POST" action="">
                     {{ form3.hidden_tag() }}
                     <div class="content-section">
@@ -99,7 +99,7 @@
                                 {{ form3.gene(class="form-control form-control-lg mb-1") }}
                             {% endif %}
                             <div class="form-group">
-                                {{ form3.gene_search(class="w3-button w3-black w3-margin-top w3-opacity w3-hover-opacity-off",id="content-dsip3", onclick="loading();") }}
+                                {{ form3.gene_search(class="btn btn-outline-info mt-3",id="content-dsip3", onclick="loading();") }}
                                 <div id="loading3"></div>
                             </div>
                         </fieldset>
