@@ -523,14 +523,6 @@ def stats(pops, stats):
 
 
 
-"""
-Temp Download page with dummy data
-
-"""
-test_down = [{'chrom': '22', 'rs_val': 'rs587698813', 'pos': '16051164',
-              'gene_name': None, 'ref_allele': 'G', 'alt_allele': 'A'}]
-
-
 @app.route('/download')
 def download():
     si = StringIO()
@@ -540,17 +532,75 @@ def download():
         'pos',
         'gene_name',
         'ref_allele',
-        'alt_allele'
-    ]
+        'alt_allele',
+        'GBR_geno_freq',
+        'GBR_allele_freq',
+        'MXL_geno_freq',
+        'MXL_allele_freq',
+        'JPT_geno_freq',
+        'JPT_allele_freq',
+        'PJL_geno_freq',
+        'PJL_allele_freq',
+        'YRI_geno_freq',
+        'YRI_allele_freq'
+        ]
+    results = json.loads(session['results'])
+    gbr = json.loads(session['gbr'])
+    jpt = json.loads(session['jpt'])
+    mxl = json.loads(session['mxl'])
+    pjl = json.loads(session['pjl'])
+    yri = json.loads(session['yri'])
+
+    # Recreate the list of dictionaries, adding inside each dictionary the population key/value pairs
+    # The final list of dicts inside the file will be "results_print", 
+    # while we use "row_enriched" to enrich each dict
+    results_print = []
+    row_enriched = {}
+
+    # Take each dict from the list
+    for row in results:
+        #Copy the dict into a new dict
+        row_enriched = row.copy()
+        
+        # Loop inside each population dict to find the frequencies for this rs_id
+        # when found, add in the enriched_row_dict
+        for row_pop in gbr:
+           if row["rs_val"] == row_pop["rs_val_id"]:
+                row_enriched["GBR_geno_freq"] = row_pop["geno_freq"]
+                row_enriched["GBR_allele_freq"] = row_pop["allele_freq"]
+
+        for row_pop in mxl:
+           if row["rs_val"] == row_pop["rs_val_id"]:
+                row_enriched["MXL_geno_freq"] = row_pop["geno_freq"]
+                row_enriched["MXL_allele_freq"] = row_pop["allele_freq"]
+        
+        for row_pop in jpt:
+           if row["rs_val"] == row_pop["rs_val_id"]:
+                row_enriched["JPT_geno_freq"] = row_pop["geno_freq"]
+                row_enriched["JPT_allele_freq"] = row_pop["allele_freq"]
+
+        for row_pop in pjl:
+           if row["rs_val"] == row_pop["rs_val_id"]:
+                row_enriched["PJL_geno_freq"] = row_pop["geno_freq"]
+                row_enriched["PJL_allele_freq"] = row_pop["allele_freq"]
+
+        for row_pop in yri:
+           if row["rs_val"] == row_pop["rs_val_id"]:
+                row_enriched["YRI_geno_freq"] = row_pop["geno_freq"]
+                row_enriched["YRI_allele_freq"] = row_pop["allele_freq"]
+
+        results_print.append(row_enriched)
+    
+
+
     cw = csv.DictWriter(si, fieldnames=fields)
     cw.writeheader()
-    for stats in test_down:
+    for stats in results_print:
         cw.writerow(stats)
     output = make_response(si.getvalue())
-    output.headers["Content-Disposition"] = "attachment; filename=stats.csv"
+    output.headers["Content-Disposition"] = "attachment; filename=results.csv"
     output.headers["Content-type"] = "text/csv"
     return output
-
 
 
 
