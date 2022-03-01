@@ -13,7 +13,7 @@
             </thead>
             <tbody>
                 <tr>
-                    <td><a href="#"></a>{{ html_first_col}}</a></td>
+                    <td><a href="#">{{ html_first_col}}</a></td>
                     {% if html_gene %}
                         <td>{{ html_gene }}</td>
                     {% endif %}
@@ -206,6 +206,7 @@
                 </tr>
             </tbody>
         </table>
+        <a href="/download_stats">Download Stats</a>
 
 
 
@@ -265,13 +266,70 @@
         
         
         {% if taj_d_plot2 %}
-        <div id='chart6' class='chart6' ”></div>
+            <div id='chart6' class='chart6' ”></div>
+            
+            <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+            <script type='text/javascript'>
+                var graphs = {{ taj_d_plot2 | safe}};
+                Plotly.plot('chart6', graphs, {});
+            </script>
         
-        <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
-        <script type='text/javascript'>
-            var graphs = {{ taj_d_plot2 | safe}};
-            Plotly.plot('chart6', graphs, {});
-        </script>
+        {% endif %}
+
+        {% if gbr_fst_plt %}
+            <div id='chart7' class='chart7' ”></div>
+            
+            <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+            <script type='text/javascript'>
+                var graphs = {{ gbr_fst_plt | safe}};
+                Plotly.plot('chart7', graphs, {});
+            </script>
+        
+        {% endif %}
+
+
+        {% if jpt_fst_plt %}
+            <div id='chart8' class='chart8' ”></div>
+            
+            <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+            <script type='text/javascript'>
+                var graphs = {{ jpt_fst_plt | safe}};
+                Plotly.plot('chart8', graphs, {});
+            </script>
+        
+        {% endif %}
+
+
+        {% if mxl_fst_plt %}
+            <div id='chart9' class='chart9' ”></div>
+            
+            <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+            <script type='text/javascript'>
+                var graphs = {{ mxl_fst_plt | safe}};
+                Plotly.plot('chart9', graphs, {});
+            </script>
+        
+        {% endif %}
+
+        {% if pjl_fst_plt %}
+            <div id='chart10' class='chart10' ”></div>
+            
+            <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+            <script type='text/javascript'>
+                var graphs = {{ pjl_fst_plt | safe}};
+                Plotly.plot('chart10', graphs, {});
+            </script>
+        
+        {% endif %}
+
+        {% if yri_fst_plt %}
+            <div id='chart11' class='chart11' ”></div>
+            
+            <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+            <script type='text/javascript'>
+                var graphs = {{ yri_fst_plt | safe}};
+                Plotly.plot('chart11', graphs, {});
+            </script>
         
         {% endif %}
 
