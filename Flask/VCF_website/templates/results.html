@@ -1,36 +1,5 @@
 {% extends "layout.html" %}
 {% block search %}
-  <style>
-    /* Style the tab */
-  .tab {
-    overflow: hidden;
-    border: 1px solid #ccc;
-    background-color: #f1f1f1;
-  }
-
-  /* Style the buttons inside the tab */
-  .tab button {
-    background-color: inherit;
-    float: left;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    padding: 14px 16px;
-    transition: 0.3s;
-    font-size: 17px;
-  }
-
-  /* Change background color of buttons on hover */
-  .tab button:hover {
-    background-color: #ddd;
-  }
-
-  /* Create an active/current tablink class */
-  .tab button.active {
-    background-color: #ccc;
-  }
-  </style>
-
 
   <h1> Results </h1>
   <div class="container col-md-15 col-md-offset-55">
@@ -121,7 +90,7 @@
     </div>  
   </div>
  
-  
+
     <a href="/download">Download</a>
   </div>
   <form novalidate="novalidate" method="POST" action="">
