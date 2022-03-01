@@ -95,6 +95,11 @@ class SearchGene(FlaskForm):
 
 
 
+
+
+
+
+
 class MultiCheckboxField(SelectMultipleField):
     widget = ListWidget(prefix_label=False)
     option_widget =CheckboxInput()
