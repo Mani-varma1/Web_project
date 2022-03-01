@@ -47,7 +47,7 @@
                   <th class="header" scope="col">Frequencies</th>
               </tr>
           </thead>
-          <tbody>
+           <tbody>
             {% for row in Results %}
               <tr>
                 <td>{{ row["chrom"]}}</td>
@@ -66,57 +66,53 @@
               </tr>
               <tr id='{{ row["rs_val"]}}' class="collapse cell-1 row-child">
                 <td class="text-center" colspan="1"><i class="fa fa-angle-up"></i></td>
-                <td colspan="1"></td>
-                <td colspan="1">Home-Ref</td>
-                <td colspan="1">Het</td>
-                <td colspan="1">Home-Alt</td>
-                <td colspan="1">REF Freq</td>
-                <td colspan="1">ALT Freq</td>
-              </tr>
-              <tr id='{{ row["rs_val"]}}' class="collapse cell-1 row-child">
-                <td class="text-center" colspan="1"><i class="fa fa-angle-up"></i></td>
                 <td colspan="1">GBR</td>
-                <td colspan="1">1.0</td>
-                <td colspan="1">0.0</td>
-                <td colspan="1">0.0</td>
-                <td colspan="1">1.0</td>
-                <td colspan="1">0.0</td>
+                {% for row_pop in GBR %}
+                  {% if row["rs_val"] == row_pop["rs_val_id"] %}
+                    <td colspan="3">{{row_pop["geno_freq"]}}</td>
+                    <td colspan="2">{{row_pop["allele_freq"]}}</td>
+                  {% endif %}
+                {% endfor %}    
               </tr>
               <tr id='{{ row["rs_val"]}}' class="collapse cell-1 row-child">
                 <td class="text-center" colspan="1"><i class="fa fa-angle-up"></i></td>
                 <td colspan="1">JPT</td>
-                <td colspan="1">1.0</td>
-                <td colspan="1">0.0</td>
-                <td colspan="1">0.0</td>
-                <td colspan="1">1.0</td>
-                <td colspan="1">0.0</td>
+                {% for row_pop in JPT %}
+                  {% if row["rs_val"] == row_pop["rs_val_id"] %}                
+                    <td colspan="3">{{row_pop["geno_freq"]}}</td>
+                    <td colspan="2">{{row_pop["allele_freq"]}}</td>
+                  {% endif %}
+                {% endfor %}  
               </tr>
               <tr id='{{ row["rs_val"]}}' class="collapse cell-1 row-child">
                 <td class="text-center" colspan="1"><i class="fa fa-angle-up"></i></td>
                 <td colspan="1">MXL</td>
-                <td colspan="1">1.0</td>
-                <td colspan="1">0.0</td>
-                <td colspan="1">0.0</td>
-                <td colspan="1">1.0</td>
-                <td colspan="1">0.0</td>
+                {% for row_pop in MXL %}
+                  {% if row["rs_val"] == row_pop["rs_val_id"] %}
+                    <td colspan="3">{{row_pop["geno_freq"]}}</td>
+                    <td colspan="2">{{row_pop["allele_freq"]}}</td>
+                  {% endif %}
+                {% endfor %} 
               </tr>
               <tr id='{{ row["rs_val"]}}' class="collapse cell-1 row-child">
                 <td class="text-center" colspan="1"><i class="fa fa-angle-up"></i></td>
                 <td colspan="1">PJL</td>
-                <td colspan="1">1.0</td>
-                <td colspan="1">0.0</td>
-                <td colspan="1">0.0</td>
-                <td colspan="1">1.0</td>
-                <td colspan="1">0.0</td>
+                {% for row_pop in PJL %}
+                  {% if row["rs_val"] == row_pop["rs_val_id"] %}
+                    <td colspan="3">{{row_pop["geno_freq"]}}</td>
+                    <td colspan="2">{{row_pop["allele_freq"]}}</td>
+                  {% endif %}
+                {% endfor %} 
               </tr>
               <tr id='{{ row["rs_val"]}}' class="collapse cell-1 row-child">
                 <td class="text-center" colspan="1"><i class="fa fa-angle-up"></i></td>
                 <td colspan="1">YRI</td>
-                <td colspan="1">1.0</td>
-                <td colspan="1">0.0</td>
-                <td colspan="1">0.0</td>
-                <td colspan="1">1.0</td>
-                <td colspan="1">0.0</td>
+                {% for row_pop in YRI %}
+                  {% if row["rs_val"] == row_pop["rs_val_id"] %}
+                    <td colspan="3">{{row_pop["geno_freq"]}}</td>
+                    <td colspan="2">{{row_pop["allele_freq"]}}</td>
+                  {% endif %}
+                {% endfor %} 
               </tr>
               
             {% endfor %}
@@ -124,150 +120,8 @@
       </table>
     </div>  
   </div>
-    <!-- Tab links -->
-    <div class="tab">
-      <button class="tablinks" onclick="openCity(event, 'GBR')" id="defaultOpen">GBR</button>
-      <button class="tablinks" onclick="openCity(event, 'JPT')">JPT</button>
-      <button class="tablinks" onclick="openCity(event, 'MXL')">MXL</button>
-      <button class="tablinks" onclick="openCity(event, 'PJL')">PJL</button>
-      <button class="tablinks" onclick="openCity(event, 'YRI')">YRI</button>
-    </div>
-
-    <!-- Tab content -->
-    <div id="GBR" class="tabcontent">
-      <table id="example" class="table table-striped table-bordered" style="width:100%">
-        <thead>
-          <tr>
-            <th>RS ID</th>
-            <th>genotypes</th>
-            <th>allele frequency</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for row in GBR %}
-          <tr>
-            <td>{{ row["rs_val_id"]}}</td>
-            <td>
-              <pre>{{ row["geno_freq"]}}</pre>
-            </td>
-            <td>
-              <pre>{{ row["allele_freq"]}}</pre>
-            </td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </div>
-
-
-
-    <div id="JPT" class="tabcontent">
-      <table id="example" class="table table-striped table-bordered" style="width:100%">
-        <thead>
-          <tr>
-            <th>RS ID</th>
-            <th>genotypes</th>
-            <th>allele frequency</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for row in JPT %}
-          <tr>
-            <td>{{ row["rs_val_id"]}}</td>
-            <td>
-              <pre>{{ row["geno_freq"]}}</pre>
-            </td>
-            <td>
-              <pre>{{ row["allele_freq"]}}</pre>
-            </td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </div>
-
-    <div id="MXL" class="tabcontent">
-      <table id="example" class="table table-striped table-bordered" style="width:100%">
-        <thead>
-          <tr>
-            <th>RS ID</th>
-            <th>genotypes</th>
-            <th>allele frequency</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for row in MXL %}
-          <tr>
-            <td>{{ row["rs_val_id"]}}</td>
-            <td>
-              <pre>{{ row["geno_freq"]}}</pre>
-            </td>
-            <td>
-              <pre>{{ row["allele_freq"]}}</pre>
-            </td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </div>
-
-    <div id="PJL" class="tabcontent">
-      <table id="example" class="table table-striped table-bordered" style="width:100%">
-        <thead>
-          <tr>
-            <th>RS ID</th>
-            <th>genotypes</th>
-            <th>allele frequency</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for row in PJL %}
-          <tr>
-            <td>{{ row["rs_val_id"]}}</td>
-            <td>
-              <pre>{{ row["geno_freq"]}}</pre>
-            </td>
-            <td>
-              <pre>{{ row["allele_freq"]}}</pre>
-            </td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </div>
-
-    <div id="YRI" class="tabcontent">
-      <table id="example" class="table table-striped table-bordered" style="width:100%">
-        <thead>
-          <tr>
-            <th>RS ID</th>
-            <th>genotypes</th>
-            <th>allele frequency</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for row in MXL %}
-          <tr>
-            <td>{{ row["rs_val_id"]}}</td>
-            <td>
-              <pre>{{ row["geno_freq"]}}</pre>
-            </td>
-            <td>
-              <pre>{{ row["allele_freq"]}}</pre>
-            </td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </div>
-
-
-
-
-
-
-
-
+ 
+  
     <a href="/download">Download</a>
   </div>
   <form novalidate="novalidate" method="POST" action="">
