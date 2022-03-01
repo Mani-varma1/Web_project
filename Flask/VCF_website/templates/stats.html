@@ -13,7 +13,7 @@
             </thead>
             <tbody>
                 <tr>
-                    <td><a href="#"></a>{{ html_first_col}}</a></td>
+                    <td><a href="#">{{ html_first_col}}</a></td>
                     {% if html_gene %}
                         <td>{{ html_gene }}</td>
                     {% endif %}
@@ -46,20 +46,27 @@
                 <tr>
                     {% for i in pop_stats %}
                         {% if 'GBR' in i %}
-                    
                             {% for e in i %}
                                 <td rowspan="4"> {{ e }} </td>
                             {% endfor %}
-    
                         {% endif %}
                     {% endfor %}
                 </tr>
                 <tr>
-                    {% for key,value in all_fstat.items() %}
-                        {% if key.startswith("GBR") %}
-                            <td>
-                                {{ key }} : {{ value }}
-                            </td>
+                    {% if all_fstat %}
+                        {% for key,value in all_fstat.items() %}
+                            {% if key.startswith("GBR") %}
+                                <td>
+                                    {{ key }} : {{ value }}
+                                </td>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                    {% for i in pop_stats %}
+                        {% if 'GBR' in i %}
+                            {% if not all_fstat %}
+                            <td style="text-align: center;"> Not Calculated</td>
+                            {% endif%}
                         {% endif %}
                     {% endfor %}
                 </tr>
@@ -78,11 +85,21 @@
                     {% endfor %}
                 </tr>
                 <tr>
-                    {% for key,value in all_fstat.items() %}
-                        {% if key.startswith("JPT") %}
-                            <td>
-                                {{ key }} : {{ value }}
-                            </td>
+                    {% if all_fstat %}
+                        {% for key,value in all_fstat.items() %}
+                            {% if key.startswith("JPT") %}
+                                <td>
+                                    {{ key }} : {{ value }}
+                                </td>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+
+                    {% for i in pop_stats %}
+                        {% if 'JPT' in i %}
+                            {% if not all_fstat %}
+                            <td style="text-align: center;"> Not Calculated</td>
+                            {% endif%}
                         {% endif %}
                     {% endfor %}
                 </tr>
@@ -101,11 +118,21 @@
                     {% endfor %}
                 </tr>
                 <tr>
-                    {% for key,value in all_fstat.items() %}
-                        {% if key.startswith("MXL") %}
-                            <td>
-                                {{ key }} : {{ value }}
-                            </td>
+                    {% if all_fstat %}
+                        {% for key,value in all_fstat.items() %}
+                            {% if key.startswith("MXL") %}
+                                <td>
+                                    {{ key }} : {{ value }}
+                                </td>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+
+                    {% for i in pop_stats %}
+                        {% if 'MXL' in i %}
+                            {% if not all_fstat %}
+                            <td style="text-align: center;"> Not Calculated</td>
+                            {% endif%}
                         {% endif %}
                     {% endfor %}
                 </tr>
@@ -117,19 +144,28 @@
                 <tr>
                     {% for i in pop_stats %}
                         {% if 'PJL' in i %}
-                    
                             {% for e in i %}
                                 <td rowspan="4"> {{ e }} </td>
                             {% endfor %}
                         {% endif %}
-                    {% endfor %}
+                    {% endfor %}      
                 </tr>
                 <tr>
-                    {% for key,value in all_fstat.items() %}
-                        {% if key.startswith("PJL") %}
-                            <td>
-                                {{ key }} : {{ value }}
-                            </td>
+                    {% if all_fstat %}
+                        {% for key,value in all_fstat.items() %}
+                            {% if key.startswith("PJL") %}
+                                <td>
+                                    {{ key }} : {{ value }}
+                                </td>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+
+                    {% for i in pop_stats %}
+                        {% if 'PJL' in i %}
+                            {% if not all_fstat %}
+                            <td style="text-align: center;"> Not Calculated</td>
+                            {% endif%}
                         {% endif %}
                     {% endfor %}
                 </tr>
@@ -149,16 +185,28 @@
                     {% endfor %}
                 </tr>
                 <tr>
-                    {% for key,value in all_fstat.items() %}
-                        {% if key.startswith("YRI") %}
-                            <td>
-                                {{ key }} : {{ value }}
-                            </td>
+                    {% if all_fstat %}
+                        {% for key,value in all_fstat.items() %}
+                            {% if key.startswith("YRI") %}
+                                <td>
+                                    {{ key }} : {{ value }}
+                                </td>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+
+
+                    {% for i in pop_stats %}
+                        {% if 'YRI' in i %}
+                            {% if not all_fstat %}
+                            <td style="text-align: center;"> Not Calculated</td>
+                            {% endif%}
                         {% endif %}
                     {% endfor %}
                 </tr>
             </tbody>
         </table>
+        <a href="/download_stats">Download Stats</a>
 
 
 
@@ -218,13 +266,70 @@
         
         
         {% if taj_d_plot2 %}
-        <div id='chart6' class='chart6' ”></div>
+            <div id='chart6' class='chart6' ”></div>
+            
+            <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+            <script type='text/javascript'>
+                var graphs = {{ taj_d_plot2 | safe}};
+                Plotly.plot('chart6', graphs, {});
+            </script>
         
-        <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
-        <script type='text/javascript'>
-            var graphs = {{ taj_d_plot2 | safe}};
-            Plotly.plot('chart6', graphs, {});
-        </script>
+        {% endif %}
+
+        {% if gbr_fst_plt %}
+            <div id='chart7' class='chart7' ”></div>
+            
+            <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+            <script type='text/javascript'>
+                var graphs = {{ gbr_fst_plt | safe}};
+                Plotly.plot('chart7', graphs, {});
+            </script>
+        
+        {% endif %}
+
+
+        {% if jpt_fst_plt %}
+            <div id='chart8' class='chart8' ”></div>
+            
+            <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+            <script type='text/javascript'>
+                var graphs = {{ jpt_fst_plt | safe}};
+                Plotly.plot('chart8', graphs, {});
+            </script>
+        
+        {% endif %}
+
+
+        {% if mxl_fst_plt %}
+            <div id='chart9' class='chart9' ”></div>
+            
+            <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+            <script type='text/javascript'>
+                var graphs = {{ mxl_fst_plt | safe}};
+                Plotly.plot('chart9', graphs, {});
+            </script>
+        
+        {% endif %}
+
+        {% if pjl_fst_plt %}
+            <div id='chart10' class='chart10' ”></div>
+            
+            <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+            <script type='text/javascript'>
+                var graphs = {{ pjl_fst_plt | safe}};
+                Plotly.plot('chart10', graphs, {});
+            </script>
+        
+        {% endif %}
+
+        {% if yri_fst_plt %}
+            <div id='chart11' class='chart11' ”></div>
+            
+            <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+            <script type='text/javascript'>
+                var graphs = {{ yri_fst_plt | safe}};
+                Plotly.plot('chart11', graphs, {});
+            </script>
         
         {% endif %}
 

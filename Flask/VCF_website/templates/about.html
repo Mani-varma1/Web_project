@@ -1,74 +1,73 @@
 {% extends "layout.html" %} 
 {% block content %}
-    <!-- Population Genomics" -->
-    <div class="w3-container w3-light-grey" style="padding:17% ">
-      <div class="w3-row-padding w3-center">
-        <div class="w3-col m12">
-          <h3 style="margin-top: -5%; margin-bottom: 5%;">POPULATION GENOMICS</h3>
-          <br>
-          <p>Description of population genomics: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-            tempor incididunt ut labore et dolore. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad, voluptas
-            modi! Eligendi temporibus soluta unde mollitia eos veniam cupiditate distinctio accusantium quibusdam in aliquam
-            adipisci, culpa repudiandae quasi accusamus quaerat veritatis quis amet asperiores dignissimos ipsa! Quaerat
-            magnam vel aut, voluptatum perferendis maiores neque quod beatae, eligendi modi, cumque molestias. Lorem ipsum
-            dolor sit amet consectetur adipisicing elit. Laboriosam sit amet ullam? Quaerat repudiandae aliquid eum,
-            molestias pariatur id natus sequi aspernatur dolore necessitatibus iusto ex, saepe dolorem. Nulla quas ipsum
-            necessitatibus nostrum animi atque quasi architecto aut ipsa. Expedita dolorum, animi quis modi et ad
-            perspiciatis soluta, tempora autem quaerat placeat ratione voluptate magni maiores optio rem molestias! Quia
-            debitis ullam repellat nam magni incidunt dicta officia? Architecto dolore iure ratione ipsa itaque sed,
-            voluptatem ad modi, fugit ut voluptatibus? Aut, facilis! Distinctio molestias, voluptates velit sequi iste
-            eveniet eligendi fuga molestiae quis mollitia eos, error quidem nobis. Dolore laboriosam quisquam deserunt
-            distinctio maiores voluptas? Ratione rerum dolorum unde. Harum magnam culpa ipsum dolores sapiente dicta
-            pariatur, quas provident cumque perferendis veritatis reiciendis a sed, suscipit labore saepe corrupti fugit
-            similique! Ea odio suscipit illum neque aut, in, ipsum obcaecati recusandae necessitatibus ratione libero dolore
-            consequatur, earum consectetur nulla.
-          </p>
-        </div>
+  <!-- Oursite" -->
+  <div class="w3-container w3-light-grey" style="padding: 50px 16px">
+    <div class="row">
+      <div class="col-sm-12 col-md-6">
+        <img class="w3-image w3-round-large center" style="float: left" src="..\static\profile_pics\POPgen-logos_black.png" alt="Buildings" width="50%" />
+      </div>
+      <div class="col-sm-12 col-md-6">
+        <h3 style="margin-top: 10%">POPgen</h3>
+        <p>
+          POPgen explores the annotation and description of single nucleotide
+          polymorphisms (SNPs) within five human populations. SNPs are the key
+          controllers of genetic diversity. POPgen provides a user-friendly
+          application that takes inputs of genomics coordinates, SNP name or gene
+          name and retrieves SNP information such as rs id, genomic position,
+          genotype frequency and allele frequency. We wrangled the sequencing data
+          specifically to the human chromosome 22 from five different populations
+          around the world.
+        </p>
+        <br />
+        <p>
+          <a target="_blank" href="{{ url_for('help') }}" class="w3-button w3-black w3-padding-large w3-large w3-margin-top w3-opacity w3-hover-opacity-off">Documentation</a>
+        </p>
       </div>
     </div>
-    <!-- IGSR" -->
-    <div class="w3-container w3-sand" style="padding:150px 16px">
-      <div class="w3-row-padding">
-        <div class="w3-col m6">
-          <h3>IGSR</h3>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-            dolore. Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque cumque omnis, laborum nostrum voluptatum
-            necessitatibus? Maiores rerum quas ipsum reiciendis in consequatur doloribus fugiat voluptatibus accusantium aut
-            saepe, a, culpa facilis officiis ipsa reprehenderit tempora quod vel? Ullam placeat voluptatum corporis nulla
-            aliquid debitis eum quidem, facere enim dolorem labore!
-          </p>
-          <br>
-          <p><a href="https://www.internationalgenome.org/" class="w3-button w3-black"> IGSR website</a></p>
-        </div>
-        <div class="w3-col m6">
-          <img class="w3-image w3-round-large" style=" margin-left: 400px" src="..\static\profile_pics\IGSR.jpg" alt="Buildings" width="400"
-            height="194">
-        </div>
+  </div>
+  <!-- IGSR" -->
+  <div class="w3-container w3-white" style="padding: 50px 10px">
+    <div class="row">
+      <div class="col-sm-12 col-md-6">
+        <h3>IGSR</h3>
+        <p>
+          The International Genome Sample Resource collects data from multiple
+          human populations through Variant Call Format (VCF) files, containing
+          genotype/haplotype information for sequenced samples at each called SNP.
+          IGSR provided our team with the usability and accessibility of data from
+          the 1000 Genomes Project.
+        </p>
+        <br />
+        <p>
+          <a target="_blank" href="https://www.internationalgenome.org/home" class="w3-button w3-black w3-padding-large w3-large w3-margin-top w3-opacity w3-hover-opacity-off">IGSR Website</a>
+        </p>
+      </div>
+      <div class="col-sm-12 col-md-6">
+        <img class="w3-image w3-round-large center" src="..\static\profile_pics\IGSR.jpg" alt="Buildings" width="400" />
       </div>
     </div>
-    
-    
-    <!-- Oursite" -->
-    <div class="w3-container w3-light-grey" style="padding: 250px 16px">
-      <div class="w3-row-padding">
-        <div class="w3-col m6">
-          <img class="w3-image w3-round-large" style="float: left" src="..\static\profile_pics\IGSR.jpg" alt="Buildings" width="400" height="194">
-        </div>
-        <div class="w3-col m6">
-          <h3 style="text-align: right; margin-top: 10px;">POPgen</h3>
-          <p style="text-align: right;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-            incididunt ut labore et
-            dolore. Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque cumque omnis, laborum nostrum
-            voluptatum necessitatibus? Maiores <br> rerum quas ipsum reiciendis in consequatur doloribus fugiat
-            voluptatibus accusantium aut saepe, a, culpa facilis officiis ipsa reprehenderit tempora quod vel? Ullam
-            placeat voluptatum corporis nulla aliquid debitis eum quidem, facere enim dolorem labore!
-          </p>
-        </div>
-      </div>
-    </div>
-    <!-- Footer -->
-    <footer class="w3-center w3-black w3-padding-64">
-      <p>Powered by: <span class="w3-hover-text-green">Caffine Overdose and Slepless Nights</span></p>
-    </footer>
+  </div>
 
+  <!-- Population Genomics" -->
+  <div class="w3-container w3-light-grey" style="padding: 16%">
+    <div class="w3-row-padding w3-center">
+      <div class="w3-col m12">
+        <h3 style="margin-top: -5%; margin-bottom: 5%">POPULATION GENOMICS</h3>
+        <br />
+        <p>
+          Population genomics is the study of genetic variation within and between
+          populations and the evolutionary factors that explain this variation.
+          Through the analysis of genetic variation, inferences from population
+          genomic data can be applied to conservation genetics, evolutionary
+          biology and precision medicine, etc. The advent of next-generation
+          sequencing (NGS) technologies has provided a surge of genomic data from
+          several populations, helping to improve our understanding of the
+          evolutionary history in and between populations.
+        </p>
+        <p>
+          <a target="_blank" href="https://en.wikipedia.org/wiki/Population_genomics"class="w3-button w3-black w3-padding-large w3-large w3-margin-top w3-opacity w3-hover-opacity-off">Wiki Page</a>
+        </p>
+      </div>
+    </div>
+  </div>
 {% endblock content %}
