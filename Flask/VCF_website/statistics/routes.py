@@ -25,11 +25,8 @@ def stats(pops= None, stats=None, bin=None, step = None):
             pop_stats = json.loads(session['pop_stats'])
             all_fstat =json.loads(session['all_fstat'])
             nuc_div_plot1=json.loads(session['nuc_div_plot1'])
-            nuc_div_plot2=json.loads(session['nuc_div_plot2'])
             hap_div_plot1=json.loads(session['hap_div_plot1'])
-            hap_div_plot2=json.loads(session['hap_div_plot2'])
             taj_d_plot1=json.loads(session['taj_d_plot1'])
-            taj_d_plot2=json.loads(session['taj_d_plot2'])
             gbr_fst_plt= json.loads(session['gbr_fst_plt'])
             jpt_fst_plt=json.loads(session['jpt_fst_plt'])
             mxl_fst_plt=json.loads(session['mxl_fst_plt'])
@@ -43,11 +40,8 @@ def stats(pops= None, stats=None, bin=None, step = None):
             pop_stats = pop_stats,
             all_fstat = all_fstat,
             nuc_div_plot1=nuc_div_plot1,
-            nuc_div_plot2=nuc_div_plot2,
             hap_div_plot1=hap_div_plot1,
-            hap_div_plot2=hap_div_plot2,
             taj_d_plot1=taj_d_plot1,
-            taj_d_plot2=taj_d_plot2,
             gbr_fst_plt= gbr_fst_plt,
             jpt_fst_plt=jpt_fst_plt,
             mxl_fst_plt=mxl_fst_plt,
@@ -355,19 +349,19 @@ def stats(pops= None, stats=None, bin=None, step = None):
 
         # Create plots based on the user selected stats
         if 'Nucleotide Diversity' in stats_sel:
-            nuc_div_plot1,nuc_div_plot2 = gstat.plot_nuc_div(plot_pi,x_axis,sel_pops)
+            nuc_div_plot1= gstat.plot_nuc_div(plot_pi,x_axis,sel_pops)
         else:
-            nuc_div_plot1,nuc_div_plot2 = (None,None)
+            nuc_div_plot1= None
         
         if 'Haplotype Diversity' in stats_sel:
-            hap_div_plot1,hap_div_plot2 = gstat.plot_win_hap(plot_hap,x_axis,sel_pops)
+            hap_div_plot1= gstat.plot_win_hap(plot_hap,x_axis,sel_pops)
         else:
-            hap_div_plot1,hap_div_plot2 = (None,None)
+            hap_div_plot1= None
     
         if 'Tajimas D' in stats_sel:
-            taj_d_plot1,taj_d_plot2 = gstat.plot_win_taj_d(plot_taj_d,x_axis,sel_pops)
+            taj_d_plot1= gstat.plot_win_taj_d(plot_taj_d,x_axis,sel_pops)
         else:
-            taj_d_plot1,taj_d_plot2 = (None,None)
+            taj_d_plot1= None
 
 
         # For creating windowed fst plot we first get the overall fst for all combinations in a dictionary format 
@@ -435,11 +429,8 @@ def stats(pops= None, stats=None, bin=None, step = None):
         session['pop_stats'] = json.dumps(pop_stats)
         session['all_fstat'] = json.dumps(all_fstat)
         session['nuc_div_plot1'] = json.dumps(nuc_div_plot1)
-        session['nuc_div_plot2'] = json.dumps(nuc_div_plot2)
         session['hap_div_plot1'] = json.dumps(hap_div_plot1)
-        session['hap_div_plot2'] = json.dumps(hap_div_plot2)
         session['taj_d_plot1'] = json.dumps(taj_d_plot1)
-        session['taj_d_plot2'] = json.dumps(taj_d_plot2)
         session['gbr_fst_plt'] = json.dumps(gbr_fst_plt)
         session['jpt_fst_plt'] = json.dumps(jpt_fst_plt)
         session['mxl_fst_plt'] = json.dumps(mxl_fst_plt)
@@ -454,11 +445,8 @@ def stats(pops= None, stats=None, bin=None, step = None):
         pop_stats = pop_stats,
         all_fstat = all_fstat,
         nuc_div_plot1=nuc_div_plot1,
-        nuc_div_plot2=nuc_div_plot2,
         hap_div_plot1=hap_div_plot1,
-        hap_div_plot2=hap_div_plot2,
         taj_d_plot1=taj_d_plot1,
-        taj_d_plot2=taj_d_plot2,
         gbr_fst_plt= gbr_fst_plt,
         jpt_fst_plt=jpt_fst_plt,
         mxl_fst_plt=mxl_fst_plt,
