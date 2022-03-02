@@ -12,7 +12,7 @@ jpt = pd.read_csv('JPT_data.tsv',sep='\t')
 pjl = pd.read_csv('PJL_data.tsv',sep='\t')
 yri = pd.read_csv('YRI_data.tsv',sep='\t')
 query = pd.read_csv('query.tsv',sep='\t')
-query
+
 for row in query.itertuples():
     c.execute("""
             INSERT INTO query_search (chrom,rs_val,pos,gene_name,ref_allele,alt_allele)
