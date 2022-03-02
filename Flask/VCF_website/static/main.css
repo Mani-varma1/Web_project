@@ -1,0 +1,230 @@
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Raleway", sans-serif;
+}
+
+body,
+html {
+  height: 100%;
+  line-height: 1.8;
+}
+
+a {
+  color: #333;
+}
+
+.col-container {
+  display: table;
+  width: 100%;
+}
+
+/* Full height image header */
+.bgimg-1 {
+  background-position: center;
+  background-size: cover;
+  background-color: bisque;
+  background-image: url("../static/profile_pics/background.jpg");
+  min-height: 100%;
+}
+
+.w3-bar .w3-button {
+  padding: 8px;
+}
+
+.bg-steel {
+  background-color: rgba(10, 10, 10, 0);
+}
+
+.content-section {
+  background: #ffffff;
+  padding: 10px 20px;
+  border: 5px solid #dddddd;
+  border-radius: 15px;
+  margin-bottom: 20px;
+}
+
+.article-title {
+  color: rgb(175, 26, 26);
+}
+
+a.article-title:hover {
+  color: #428bca;
+  text-decoration: none;
+}
+
+.article-content {
+  white-space: pre-line;
+}
+
+.article-img {
+  height: 65px;
+  width: 65px;
+  margin-right: 32px;
+}
+
+.article-metadata {
+  padding-bottom: 1px;
+  margin-bottom: 4px;
+  border-bottom: 1px solid #e3e3e3;
+}
+
+.article-metadata a:hover {
+  color: #333;
+  text-decoration: none;
+}
+
+.article-svg {
+  width: 25px;
+  height: 25px;
+  vertical-align: middle;
+}
+
+.account-img {
+  height: 125px;
+  width: 125px;
+  margin-right: 20px;
+  margin-bottom: 16px;
+}
+
+.account-heading {
+  font-size: 2.5rem;
+}
+
+.change-width {
+  width: 70%;
+  margin-left: 15%;
+  margin-top: 5%;
+  margin-bottom: 10%;
+}
+
+.center {
+  display: table-row-group;
+  margin-left: 0%;
+  margin-right: 0%;
+  width: 80%;
+  margin: auto;
+}
+
+
+
+@import url('https://fonts.googleapis.com/css?family=Assistant');
+
+.cell-1 {
+border-collapse: separate;
+border-spacing: 0 4em;
+background: #ffffff;
+border-bottom: 5px solid transparent;
+background-clip: padding-box;
+cursor: pointer
+}
+thead {
+background: #dddcdc
+}
+.table-elipse {
+cursor: pointer
+}
+#demo {
+-webkit-transition: all 0.3s ease-in-out;
+-moz-transition: all 0.3s ease-in-out;
+-o-transition: all 0.3s 0.1s ease-in-out;
+transition: all 0.3s ease-in-out
+}
+.row-child {
+background-color: rgba(89, 88, 88, 0.487);
+color: #fff
+}
+
+
+.header{
+    position:sticky;
+    top: 0 ;
+}
+
+
+.table-wrapper {
+  max-height: 600px;
+  overflow: auto;
+  width: 150%;
+}
+ 
+.footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: rgb(0, 0, 0);
+  color: white;
+  text-align: center;
+}
+
+.fa-github {
+  font-size: 20px;
+}
+
+.w3-button {
+  border-radius: 6px;
+}
+
+.w3-button:hover {
+  box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24),
+    0 17px 50px 0 rgba(0, 0, 0, 0.19);
+}
+
+div#loading1 {
+  width: 150px;
+  height: 150px;
+  display: none;
+  background: url('https://media2.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif?cid=ecf05e47tneroh1f2ahl8ja3fwat37tgded61xiuvzk8ljs5&rid=giphy.gif&ct=g') center no-repeat;
+  cursor: wait;
+  padding-left: 100%;
+}
+div#loading2 {
+  width: 150px;
+  height: 150px;
+  display: none;
+  background: url('https://media2.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif?cid=ecf05e47tneroh1f2ahl8ja3fwat37tgded61xiuvzk8ljs5&rid=giphy.gif&ct=g') center no-repeat;
+  cursor: wait;
+  padding-left: 100%;
+}
+div#loading3 {
+  width: 150px;
+  height: 150px;
+  display: none;
+  background: url('https://media2.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif?cid=ecf05e47tneroh1f2ahl8ja3fwat37tgded61xiuvzk8ljs5&rid=giphy.gif&ct=g') center no-repeat;
+  cursor: wait;
+  padding-left: 100%;
+}
+  
+.tab {
+  overflow: hidden;
+  border: 1px solid #ccc;
+  background-color: #f1f1f1;
+  width: 150%;
+}
+
+/* Style the buttons inside the tab */
+.tab button {
+  background-color: inherit;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+  font-size: 17px;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+  background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+  background-color: #ccc;
+}

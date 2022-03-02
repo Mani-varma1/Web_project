@@ -1,0 +1,264 @@
+{% extends "layout.html" %}
+{% block search %}
+  <h1> Results </h1>
+  <div class="container col-md-15 col-md-offset-55">
+    <div class="table-wrapper">
+      <table id="example" class="table table-striped table-bordered" style="width: 100%">
+          <thead>
+              <tr>
+                  <th>Chromosome</th>
+                  <th>RS ID</th>
+                  <th>Gene Name</th>
+                  <th>Position</th>
+                  <th>Reference allele</th>
+                  <th>Alternate allele</th>
+              </tr>
+          </thead>
+          <tbody>
+            {% for row in Results %}
+              <tr>
+              <td>{{ row["chrom"]}}</td>
+              <td>{{ row["rs_val"]}}</td>
+              <td>{{ row["gene_name"]}}</td>
+              <td>{{ row["pos"]}}</td>
+              <td>{{ row["ref_allele"] }}</td>
+              <td>{{ row["alt_allele"] }} </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+      </table>
+    </div>
+  
+    <!-- Tab links -->
+    <div class="tab mt-5"> 
+      <button class="tablinks" onclick="openCity(event, 'GBR')" id="defaultOpen">GBR</button>
+      <button class="tablinks" onclick="openCity(event, 'JPT')">JPT</button>
+      <button class="tablinks" onclick="openCity(event, 'MXL')">MXL</button>
+      <button class="tablinks" onclick="openCity(event, 'PJL')">PJL</button>
+      <button class="tablinks" onclick="openCity(event, 'YRI')">YRI</button>
+    </div>
+
+    <!-- Tab content -->
+    <div id="GBR" class="tabcontent">
+      <div class="table-wrapper">
+        <table id="example" class="table table-striped table-bordered" style="width:100%">
+          <thead>
+            <tr>
+              <th>RS ID</th>
+              <th>genotypes</th>
+              <th>allele frequency</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in GBR %}
+            <tr>
+              <td>{{ row["rs_val_id"]}}</td>
+              <td>
+                <pre>{{ row["geno_freq"]}}</pre>
+              </td>
+              <td>
+                <pre>{{ row["allele_freq"]}}</pre>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div id="JPT" class="tabcontent">
+      <div class="table-wrapper">
+        <table id="example" class="table table-striped table-bordered" style="width:100%">
+          <thead>
+            <tr>
+              <th>RS ID</th>
+              <th>genotypes</th>
+              <th>allele frequency</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in JPT %}
+            <tr>
+              <td>{{ row["rs_val_id"]}}</td>
+              <td>
+                <pre>{{ row["geno_freq"]}}</pre>
+              </td>
+              <td>
+                <pre>{{ row["allele_freq"]}}</pre>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div id="MXL" class="tabcontent">
+      <div class="table-wrapper">
+        <table id="example" class="table table-striped table-bordered" style="width:100%">
+          <thead>
+            <tr>
+              <th>RS ID</th>
+              <th>genotypes</th>
+              <th>allele frequency</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in MXL %}
+            <tr>
+              <td>{{ row["rs_val_id"]}}</td>
+              <td>
+                <pre>{{ row["geno_freq"]}}</pre>
+              </td>
+              <td>
+                <pre>{{ row["allele_freq"]}}</pre>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div id="PJL" class="tabcontent">
+      <div class="table-wrapper">
+        <table id="example" class="table table-striped table-bordered" style="width:100%">
+          <thead>
+            <tr>
+              <th>RS ID</th>
+              <th>genotypes</th>
+              <th>allele frequency</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in PJL %}
+            <tr>
+              <td>{{ row["rs_val_id"]}}</td>
+              <td>
+                <pre>{{ row["geno_freq"]}}</pre>
+              </td>
+              <td>
+                <pre>{{ row["allele_freq"]}}</pre>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div id="YRI" class="tabcontent">
+      <div class="table-wrapper">
+        <table id="example" class="table table-striped table-bordered" style="width:100%">
+          <thead>
+            <tr>
+              <th>RS ID</th>
+              <th>genotypes</th>
+              <th>allele frequency</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in MXL %}
+            <tr>
+              <td>{{ row["rs_val_id"]}}</td>
+              <td>
+                <pre>{{ row["geno_freq"]}}</pre>
+              </td>
+              <td>
+                <pre>{{ row["allele_freq"]}}</pre>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <a href="/download">Download</a>
+  </div>
+  <form novalidate="novalidate" method="POST" action="">
+    {{ form.hidden_tag() }}
+          {{ form.stats.label() }}
+          {% if form.stats.errors %}
+              {{ form.stats(class="form-control form-control-lg is-invalid") }}
+              <div class="invalid-feedback">
+                  {% for error in form.stats.errors %}
+                      <span>{{ error }}</span>
+                  {% endfor %}
+              </div>
+          {% else %}
+              {{ form.stats(style="list-style-type: none") }}
+          {% endif %}
+
+          {{ form.populations.label() }}
+          {% if form.populations.errors %}
+              {{ form.populations(class="form-control form-control-lg is-invalid") }}
+              <div class="invalid-feedback">
+                  {% for error in form.populations.errors %}
+                      <span>{{ error }}</span>
+                  {% endfor %}
+              </div>
+          {% else %}
+              {{ form.populations(style="list-style-type: none") }}
+          {% endif %}
+
+          <div class="form-row"></div>
+            {{ form.bin_size.label() }}
+            {% if form.bin_size.errors %}
+                {{ form.bin_size(class="form-control form-control-lg is-invalid") }}
+                <div class="invalid-feedback">
+                    {% for error in form.bin_size.errors %}
+                        <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% else %}
+                {{ form.bin_size(class="col-3", placeholder="Bin Size") }}
+            {% endif %}
+
+              {% if not form.bin_size.errors %}
+                {{ form.step_size.label(style="padding-left:50px;") }}
+              {% else %}
+                {{ form.step_size.label() }}
+              {% endif %}
+              {% if form.step_size.errors %}
+                  {{ form.step_size(class="form-control form-control-lg is-invalid") }}
+                  <div class="invalid-feedback">
+                      {% for error in form.step_size.errors %}
+                          <span>{{ error }}</span>
+                      {% endfor %}
+                  </div>
+              {% else %}
+                  {{ form.step_size(class="col-3", placeholder="Step Size") }}
+              {% endif %}
+              <div class="form-group">
+                  {{ form.pop_stat(class="btn btn-outline-info mt-3 mb-5",id="content-dsip1", onclick="loading();") }}
+                  <div id="loading1"></div>
+            </div>
+          </div>
+  </form>
+  <script>
+    function openCity(evt, cityName) {
+      var i, tabcontent, tablinks;
+      tabcontent = document.getElementsByClassName("tabcontent");
+      for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+      }
+      tablinks = document.getElementsByClassName("tablinks");
+      for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+      }
+      document.getElementById(cityName).style.display = "block";
+      evt.currentTarget.className += " active";
+    }
+
+    // Get the element with id="defaultOpen" and click on it
+    document.getElementById("defaultOpen").click();
+  </script>
+  {% endblock search %}
+<html xmlns:mso="urn:schemas-microsoft-com:office:office" xmlns:msdt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"><head>
+<!--[if gte mso 9]><xml>
+<mso:CustomDocumentProperties>
+<mso:TaxCatchAll msdt:dt="string">1;#Protect</mso:TaxCatchAll>
+<mso:QMULInformationClassificationTaxHTField0 msdt:dt="string">Protect|9124d8d9-0c1c-41e9-aa14-aba001e9a028</mso:QMULInformationClassificationTaxHTField0>
+</mso:CustomDocumentProperties>
+</xml><![endif]-->
+</head>
