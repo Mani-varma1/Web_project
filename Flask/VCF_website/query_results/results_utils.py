@@ -4,8 +4,7 @@ import json
 import ast
 
 
-'''
-This function is udes to run queries for each population, depending on what search parameters were used. 
+''' This function is used to run queries for each population, depending on what search parameters were used. 
 Uses SQLAlchemy to structure the queries.
 Query results are then stored in sessions as JSON objects which can then be loaded to the results and stats pages.
 '''
@@ -65,9 +64,7 @@ def pop_data(results,variable):
     return None
 
 
-'''
-This function converts the genotype and allele counts to frequencies to be displayed on the results page. 
-'''
+''' This function converts the genotype and allele counts to frequencies to be displayed on the results page. '''
 def convert_freq(pop):
     for i in pop:
         gf = ast.literal_eval(i['geno_freq'])
