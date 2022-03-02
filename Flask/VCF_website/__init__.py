@@ -17,6 +17,7 @@ app.config['SESSION_TYPE'] ='filesystem'
 sess = Session()
 sess.init_app(app)
 
+''' Setting up blueprints for the app '''
 from VCF_website.main.routes import main
 from VCF_website.query_results.routes import query_results
 from VCF_website.statistics.routes import statistics
