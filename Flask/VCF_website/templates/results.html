@@ -31,11 +31,11 @@
   
     <!-- Tab links -->
     <div class="tab mt-5"> 
-      <button class="tablinks" onclick="openCity(event, 'GBR')" id="defaultOpen">GBR</button>
-      <button class="tablinks" onclick="openCity(event, 'JPT')">JPT</button>
-      <button class="tablinks" onclick="openCity(event, 'MXL')">MXL</button>
-      <button class="tablinks" onclick="openCity(event, 'PJL')">PJL</button>
-      <button class="tablinks" onclick="openCity(event, 'YRI')">YRI</button>
+      <button class="tablinks" onclick="openPOP(event, 'GBR')" id="defaultOpen">GBR</button>
+      <button class="tablinks" onclick="openPOP(event, 'JPT')">JPT</button>
+      <button class="tablinks" onclick="openPOP(event, 'MXL')">MXL</button>
+      <button class="tablinks" onclick="openPOP(event, 'PJL')">PJL</button>
+      <button class="tablinks" onclick="openPOP(event, 'YRI')">YRI</button>
     </div>
 
     <!-- Tab content -->
@@ -186,7 +186,7 @@
                   {% endfor %}
               </div>
           {% else %}
-              {{ form.stats(style="list-style-type: none") }}
+              {{ form.stats() }}
           {% endif %}
 
           {{ form.populations.label() }}
@@ -198,7 +198,7 @@
                   {% endfor %}
               </div>
           {% else %}
-              {{ form.populations(style="list-style-type: none") }}
+              {{ form.populations() }}
           {% endif %}
 
           <div class="form-row"></div>
@@ -236,7 +236,7 @@
           </div>
   </form>
   <script>
-    function openCity(evt, cityName) {
+    function openPOP(evt, popName) {
       var i, tabcontent, tablinks;
       tabcontent = document.getElementsByClassName("tabcontent");
       for (i = 0; i < tabcontent.length; i++) {
@@ -246,7 +246,7 @@
       for (i = 0; i < tablinks.length; i++) {
         tablinks[i].className = tablinks[i].className.replace(" active", "");
       }
-      document.getElementById(cityName).style.display = "block";
+      document.getElementById(popName).style.display = "block";
       evt.currentTarget.className += " active";
     }
 
