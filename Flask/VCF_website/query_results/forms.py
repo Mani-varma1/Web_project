@@ -4,10 +4,21 @@ from wtforms.validators import DataRequired, Optional, ValidationError
 from markupsafe import Markup
 from wtforms.widgets.core import html_params, ListWidget, CheckboxInput
 
+"""
+SelectMultipleField just creates a table of all availiable options to be selected.
+To improve user experience, we have combined it with the checkbox widgets from Wtforms
+allowing us to use check boxes, which is more intuative.
+"""
 class MultiCheckboxField(SelectMultipleField):
     widget = ListWidget(prefix_label=False)
     option_widget =CheckboxInput()
 
+    
+"""
+Form provides users with checkboxs for selected the required populations and stats,
+with both fields requiring at least one selected option and a  custom validators 
+for checking if the user has selected more than 2 populations if FST stat was selected. 
+"""
 class PopulationStatistics(FlaskForm):
     choices_stats = [('Homozygosity','Homozygosity'),('Nucleotide Diversity','Nucleotide Diversity'),('Haplotype Diversity','Haplotype Diversity'),('Tajimas D','Tajimas D'),('FST','FST')]
     stats = MultiCheckboxField('Select Statistics:', choices=choices_stats, validators=[DataRequired(message="Please select atleast one statistic")])
