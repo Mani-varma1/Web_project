@@ -1,5 +1,4 @@
 from VCF_website import db
-# from VCF_website import ma
 
 ''' Main table which stores information about individual SNPs. '''
 class query_search(db.Model):
