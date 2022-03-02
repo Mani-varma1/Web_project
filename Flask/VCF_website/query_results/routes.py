@@ -25,7 +25,7 @@ def loading(search):
 
             # If nothing found redirect back to search with a flashed message notifying the user that nothing was found
             if not results:
-                flash("No results found, please search for another ID", 'info')
+                flash("No results found, please search for another ID", 'warning')
                 return redirect(url_for('main.search'))
 
             # Run the function that parses the data from query object to python list object and assign them to sessions from results_utils.py
@@ -38,21 +38,25 @@ def loading(search):
             
             
         else:
-            # For a range between Starting and ending positions base pair queries based on starting position and chr
-            results = query_search.query.filter(query_search.pos >= int(variable['start_pos'])).filter(query_search.pos <= int(variable['end_pos'])).filter(query_search.chrom == '{}'.format(variable['chr'])).all()
-            
-            # If nothing found redirect and inform
-            if not results:
-                flash("No result found, please search for another ID", 'info')
+            if int(variable['end_pos']) >= 16050075:
+                # For a range between Starting and ending positions base pair queries based on starting position and chr
+                results = query_search.query.filter(query_search.pos >= int(variable['start_pos'])).filter(query_search.pos <= int(variable['end_pos'])).filter(query_search.chrom == '{}'.format(variable['chr'])).all()
+                
+                # If nothing found redirect and inform
+                if not results:
+                    flash("No result found, please search for another ID", 'warning')
+                    return redirect(url_for('main.search'))
+
+
+                # Run the function that parses the data from query object to python list object and assign them to sessions
+                pop_data(results,variable)
+
+                # Flash message so user can have a better understanding of the input window size and step sizes by reading the documentation
+                flash("Please read the documentation for appropriate parameters", 'info')
+                return redirect(url_for('query_results.results', title='Results'))
+            else:
+                flash("No result found, please search for another ID", 'warning')
                 return redirect(url_for('main.search'))
-
-
-            # Run the function that parses the data from query object to python list object and assign them to sessions
-            pop_data(results,variable)
-
-            # Flash message so user can have a better understanding of the input window size and step sizes by reading the documentation
-            flash("Please read the documentation for appropriate parameters", 'info')
-            return redirect(url_for('query_results.results', title='Results'))
    
     else:
         # Both rsid and gene form submission are recieved as a string of a single value e.g. "rs123" or "GENE1" or as a string with commas
@@ -99,7 +103,8 @@ def loading(search):
 
                         # If no results found redirects to search to search something else
                         if not results:
-                            flash("No result found, please search for another ID", 'info')
+                            flash(
+                                "No result found, please search for another ID", 'warning')
                             return redirect(url_for('main.search'))
 
                         
@@ -114,7 +119,8 @@ def loading(search):
                        
                         # If no results found redirects to search to search something else
                         if not results:
-                            flash("No result found, please search for another ID", 'info')
+                            flash(
+                                "No result found, please search for another ID", 'warning')
                             return redirect(url_for('main.search'))
                             
                         # Run the function that parses the data from query object to python list object and assign them to sessions
@@ -139,7 +145,7 @@ def loading(search):
 
                 # If no results found redirects to search to search something else
                 if not results:
-                    flash("No result found, please search for another ID", 'info')
+                    flash("No result found, please search for another ID", 'warning')
                     return redirect(url_for('main.search'))
 
                 # Run the function that parses the data from query object to python list object and assign them to sessions
@@ -150,7 +156,7 @@ def loading(search):
                 return redirect(url_for('query_results.results', title='Results'))
             else:
                 # Bad characters in the input there asking for users to check the format
-                flash("Please Check your format", 'info')
+                flash("Please Check your format", 'danger')
                 return redirect(url_for('main.search'))
         
 
@@ -164,7 +170,7 @@ def loading(search):
 
             # If no results found redirects to search to search something else
             if not results:
-                flash("No result found, please search for another ID", 'info')
+                flash("No result found, please search for another ID", 'warning')
                 return redirect(url_for('main.search'))
 
             # Run the function that parses the data from query object to python list object and assign them to sessions
@@ -185,7 +191,7 @@ def results():
         pjl = json.loads(session['pjl'])
         yri = json.loads(session['yri'])
     except Exception:
-        flash ('Please Search for SNPs first', 'info')
+        flash('Please Search for SNPs first', 'warning')
         return redirect(url_for('main.search'))
 
 

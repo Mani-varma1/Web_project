@@ -259,50 +259,9 @@ def plot_win_taj_d(TD, position, num_pops):
             yaxis_title="Tajima's D")
 
 
-        # creating Tajima's D graph as an  individual plot 
-        fig_2 = go.Figure()
-        buttons = []
-        i = 0
+        graph1JSON = json.dumps(fig_1, cls=plotly.utils.PlotlyJSONEncoder)
 
-        # iterating through dictionary and addding each population to graph 
-        for x in TD.items():
-            obj = go.Scatter(name=x[0], x=position, y=x[1])
-            fig_2.add_trace(obj)
-
-            # args is a list of booleans that tells the buttons which trace to show on click 
-            args = [False] * len(TD)
-            args[i] = True
-
-            # creating button object for each population 
-            button = dict(label=x[0],
-                          method="update",
-                          args=[{"visible": args}])
-
-            # add button to list
-            buttons.append(button)
-            i += 1
-
-        # adding buttons
-        fig_2.update_layout(
-            updatemenus=[
-                dict(
-                    type="dropdown",
-                    direction="down",
-                    buttons=buttons)
-            ])
-        # adding axis names
-        fig_2.update_layout(
-            xaxis_title='Position (Base pairs)',
-            yaxis_title="Tajima's D")
-
-        if len(num_pops)==1:
-            graph1JSON = json.dumps(fig_1, cls=plotly.utils.PlotlyJSONEncoder)
-            graph2JSON = None
-        else:
-            graph1JSON = json.dumps(fig_1, cls=plotly.utils.PlotlyJSONEncoder)
-            graph2JSON = json.dumps(fig_2, cls=plotly.utils.PlotlyJSONEncoder)
-
-        return graph1JSON,graph2JSON
+        return graph1JSON
 
 
 
@@ -311,62 +270,23 @@ def plot_win_taj_d(TD, position, num_pops):
 def plot_win_hap(HD, position,num_pops):
 
     # graph containing all populations without buttons
-    fig_3 = go.Figure()
+    fig_2 = go.Figure()
     for x in HD.items():
         obj = go.Scatter(name=x[0], x=position, y=x[1])
-        fig_3.add_trace(obj)
+        fig_2.add_trace(obj)
 
-    fig_3.update_layout(
+    fig_2.update_layout(
         xaxis_title='Position (Base pairs)',
         yaxis_title="Haploid Diversity")
 
-        
-    # creating Haplotype graphs
-    fig_4 = go.Figure()
-    buttons = []
-    i = 0
+ 
 
-    # iterating through dictionary and adding each population
-    for x in HD.items():
-        obj = go.Scatter(name=x[0], x=position, y=x[1])
-        fig_4.add_trace(obj)
-
-    # args is a list of booleans that tells the buttons which trace to show on click 
-        args = [False] * len(HD)
-        args[i] = True
-
-    # create button object for each pop
-        button = dict(label=x[0],
-                        method="update",
-                        args=[{"visible": args}])
-
-    # add button to list
-        buttons.append(button)
-        i += 1
-
-    # add buttons 
-    fig_4.update_layout(
-        updatemenus=[
-            dict(
-                type="dropdown",
-                direction="down",
-                buttons=buttons)
-        ])
-    # add axis names
-    fig_4.update_layout(
-        xaxis_title='Position (Base pairs)',
-        yaxis_title="Haploid Diversity")
-    
-    if len(num_pops)==1:
-        graph3JSON = json.dumps(fig_3, cls=plotly.utils.PlotlyJSONEncoder)
-        graph4JSON = None
-    else:
-        graph3JSON = json.dumps(fig_3, cls=plotly.utils.PlotlyJSONEncoder)
-        graph4JSON = json.dumps(fig_4, cls=plotly.utils.PlotlyJSONEncoder)
+    graph2JSON = json.dumps(fig_2, cls=plotly.utils.PlotlyJSONEncoder)
 
 
 
-    return graph3JSON,graph4JSON
+
+    return graph2JSON
 
 
 
@@ -374,64 +294,22 @@ def plot_win_hap(HD, position,num_pops):
 def plot_nuc_div(ND, position,num_pops):
 
     # graph containing all populations without buttons
-    fig_5 = go.Figure()
+    fig_3 = go.Figure()
     for x in ND.items():
         obj = go.Scatter(name=x[0], x=position, y=x[1])
-        fig_5.add_trace(obj)
+        fig_3.add_trace(obj)
 
-    fig_5.update_layout(
+    fig_3.update_layout(
         xaxis_title='Position (Base pairs)',
         yaxis_title="Nucleotide Diversity")
 
         
-    # creating Haplotype graphs
-    fig_6 = go.Figure()
-    buttons = []
-    i = 0
-
-    # iterating through dictionary and adding each population
-    for x in ND.items():
-        obj = go.Scatter(name=x[0], x=position, y=x[1])
-        fig_6.add_trace(obj)
-
-    # args is a list of booleans that tells the buttons which trace to show on click
-        args = [False] * len(ND)
-        args[i] = True
-
-    # create button object for each pop
-        button = dict(label=x[0],
-                        method="update",
-                        args=[{"visible": args}])
-
-    # add button to list
-        buttons.append(button)
-        i += 1
-
-    # add buttons
-    fig_6.update_layout(
-        updatemenus=[
-            dict(
-                type="dropdown",
-                direction="down",
-                buttons=buttons)
-        ])
-    # add axis names
-    fig_6.update_layout(
-        xaxis_title='Position (Base pairs)',
-        yaxis_title="Nucleotide Diversity")
-
-
-    
-    if len(num_pops)==1:
-        graph3JSON = json.dumps(fig_5, cls=plotly.utils.PlotlyJSONEncoder)
-        graph4JSON = None
-    else:
-        graph3JSON = json.dumps(fig_5, cls=plotly.utils.PlotlyJSONEncoder)
-        graph4JSON = json.dumps(fig_6, cls=plotly.utils.PlotlyJSONEncoder)
+    graph3JSON = json.dumps(fig_3, cls=plotly.utils.PlotlyJSONEncoder)
 
 
 
-    return graph3JSON,graph4JSON
+    return graph3JSON
+
 
 
 
