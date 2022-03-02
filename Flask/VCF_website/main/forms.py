@@ -65,7 +65,20 @@ class GreaterThan(object):
             raise ValidationError(message % d)
 
 
-
+"""
+    WTform allows us to use forms in HTML in object oritentated way, by automatically adding all the necessary
+    tags and attributes and creating html code within python which can be simply passed as a variable and used
+    by jinja2 template. 
+    
+    SelectField provides a dropdown list for user to select based on the choices defined.
+    widget parameter allows us to use the CustomSelect class to add attributes to our SelectField, in our case
+    specifically adding the disable CHR option, so user is forced to pick a valid option.
+    
+    IntergerField only accecpt numbers and validators for starting location is necessary if the user is using this search option
+    and the ending position is optional, but has to be greater than starting location if provided.
+    
+    SubmitField will allow users us to submit the form. 
+"""
 class SearchPos(FlaskForm):
     choices = [("", "CHR"),('1', '1'), ('22', '22'),]
     select = SelectField("Select Chromosome", choices=choices, validators=[DataRequired(message="Please select a chromosome")],widget=CustomSelect(),default="",)
@@ -74,12 +87,14 @@ class SearchPos(FlaskForm):
     submit = SubmitField("Search")
 
     
-    
+""" StringField allows for alpha numeric characters and creates a text field with all the required tags.
+    The use of regular expression limits the type of format user can input in our case has to be rs followed by digits and commas.
+"""    
 class SearchRs(FlaskForm):
     rs_val = StringField("RS ID",validators=[DataRequired(), Regexp(r'^(rs[0-9]+,?\s?,?\s?)+', message="Please provide a valid rs value")])
     rs_search = SubmitField("Search")
 
-
+"""StringField allows for alpha numeric characters to accomidate for gene names."""
 class SearchGene(FlaskForm):
     gene = StringField("Gene Name",validators=[DataRequired()])
     gene_search = SubmitField("Search")
