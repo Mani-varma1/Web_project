@@ -2,8 +2,8 @@ from flask import render_template, url_for, flash, redirect, request, session,Bl
 from VCF_website.models import snp_GBR,snp_JPT,snp_MXL,snp_PJL,snp_YRI,query_search
 from VCF_website.query_results.results_utils import pop_data, convert_freq
 from VCF_website.query_results.forms import PopulationStatistics
-import json
 from io import StringIO
+import json
 import csv
 
 query_results = Blueprint("query_results",__name__)
@@ -15,32 +15,33 @@ def loading(search):
     session.clear()
     
     
-    """ Check if the user input was using Chromosome locations"""
-
-    """ For single location"""
+    """ Check if the user input was using Chromosome locations which passed to this route as a dictionary"""
     if isinstance(variable, dict):
+        
+        """ For single location"""
         if variable["end_pos"] == None:
+            """ queries based on starting position and chr"""
             results = query_search.query.filter(query_search.pos.like(variable['start_pos'])).filter(query_search.chrom == '{}'.format(variable["chr"])).all()
 
-            """ If nothing found redirect"""
+            """ If nothing found redirect back to search with a flashed message notifying the user that nothing was found"""
             if not results:
-                flash("No result found, please search for another ID", 'info')
+                flash("No results found, please search for another ID", 'info')
                 return redirect(url_for('main.search'))
 
-            """ Run the function that parses the data from query object to python list object and assign them to sessions"""
+            """ Run the function that parses the data from query object to python list object and assign them to sessions from results_utils.py"""
             pop_data(results,variable)
 
-            """ Flash message so user can have a better understanding of the input window size and step sizes by reading the documentation"""
+            """ Flash message so user can have a better understanding of the appropriate window size and step sizes inputs by reading the documentation"""
             flash("Please read the documentation for appropriate parameters", 'info')            
             return redirect(url_for('query_results.results', title='Results'))
         
             
             
-            """ For Starting and ending positions"""
         else:
+            """ For a range between Starting and ending positions base pair queries based on starting position and chr"""
             results = query_search.query.filter(query_search.pos >= int(variable['start_pos'])).filter(query_search.pos <= int(variable['end_pos'])).filter(query_search.chrom == '{}'.format(variable['chr'])).all()
             
-            """ If nothing found redirect"""
+            """ If nothing found redirect and inform"""
             if not results:
                 flash("No result found, please search for another ID", 'info')
                 return redirect(url_for('main.search'))
@@ -54,6 +55,10 @@ def loading(search):
             return redirect(url_for('query_results.results', title='Results'))
    
     else:
+        """Both rsid and gene form submission are recieved as a string of a single value e.g. "rs123" or "GENE1" or as a string with commas
+            e.g. "rs123,rs456,...." or "GENE1,GENE2,...". The formating is strict and if other unexpected characters provided, should redirect 
+            back to search url with flashed message informing user of the format issue.
+        """
 
         """For Multi rsid or gene list, gene limited to just 3. if conditions not met
             redirects to search with a flashed message asking the user to check the format
@@ -72,7 +77,7 @@ def loading(search):
                         rs_lst.append(i)
                     else:
                         """assigns everything else to gene list"""
-                        gene_lst.append(i)
+                        gene_lst.append(i.upper().strip())
                 
 
                 """ Sanity check to make sure both lists have items concurrently or no values at the same time"""
@@ -127,10 +132,10 @@ def loading(search):
                 flash("Sorry please check your format and try again", 'danger')
                 return redirect(url_for('main.search'))
 
-
-        
+   
+            """ If comma not in the list, expecting all the values are single so if it starts with rs, checking for dbSNP search."""
         elif variable.startswith('rs'):
-            """ If its a single rs id value making sure no special characters are present (e.g. , . !)"""
+            """ If its a single rs id value making sure no special characters are present (e.g: $ . !)"""
             if variable.isalnum():
                 results = query_search.query.filter(query_search.rs_val.like(variable)).all() 
 
@@ -146,13 +151,14 @@ def loading(search):
                 flash("Please read the documentation for appropriate parameters", 'info')
                 return redirect(url_for('query_results.results', title='Results'))
             else:
-                """ Bad characters in the input"""
+                """ Bad characters in the input there asking for users to check the format"""
                 flash("Please Check your format", 'info')
                 return redirect(url_for('main.search'))
         
 
 
         else:
+            """ Some Genes have - in them to for multiple loci?"""
 
             """ Only expecting a single gene"""
             variable = variable.upper()
