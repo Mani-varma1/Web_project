@@ -14,10 +14,11 @@ def Homozygosity(freq_data):
     ''' Estimates a score for homozygosity using direct count method as explained in Sabatti & Risch, 2002. 
     Input a list of dictionaries retrieved from search query. 
     Each item should correspond to a single rs ID.
-    :param freq_dict: genotype count data. Keys correspond to hom_ref, het and hom_alt
-    :type freq_dict: dict
-    :return: Observed homozygosity (rounded to 3 d.p)
-    :rtype: float
+
+    Parameters:
+        freq_data (dict): genotype count data. Keys correspond to hom_ref, het and hom_alt
+    Return: 
+        Observed homozygosity (rounded to 3 d.p)
     '''
     total_hom = 0
     total_gen = 0
@@ -28,11 +29,10 @@ def Homozygosity(freq_data):
     return round(obs_homozygosity,3)
 
 
-''' Using scikit-allel - windows determined by number of variants. will need to be plotted with
-    rs IDs on x-axis to work correctly. Exception being nucleotide diversity.
-    bin_size and step_size are user submitted, and pop refers to a single population chosen. functions
-    would need to be run for each population if multiple populations are selected. 
-'''
+# Using scikit-allel - windows determined by number of variants. will need to be plotted with
+# rs IDs on x-axis to work correctly. Exception being nucleotide diversity.
+# bin_size and step_size are user submitted, and pop refers to a single population chosen. functions
+# would need to be run for each population if multiple populations are selected. 
 def nuc_div(pop,pos):
     pop_gt = np.array(pop)
     pop = allel.GenotypeArray(pop_gt)
@@ -73,16 +73,20 @@ def hudson_fst(pop1,pop2):
 
 
 def get_main_stats(pop,freq_data,pos,stats):
-    """ Get main stats bundles other basic statistics into a single functiona and also 
+    """ Bundles other basic statistics into a single functiona and also 
     checks for the user input before calculation.
-    :param pop: genotype array data 
-    :type pop: array
-    :param freq_data: genotype count data. Keys correspond to hom_ref, het and hom_alt
-    :type freq_data: dict
-    :param pos: Positions for SNPs
-    :type pos: list
-    :param stats: Stats to be calculated
-    :type stats: list
+
+    Parameters:
+        pop (array): genotype array data
+        freq_data (dict): genotype count data. Keys correspond to hom_ref, het and hom_alt
+        pos (list): Positions for SNPs
+        stats (list): Stats to be calculated
+    Return:
+        homo (float):
+        nd ():
+        hap_div ():
+        taj_d ():
+    
     """
     if 'Homozygosity' in stats:
         homo = Homozygosity(freq_data)
@@ -150,7 +154,7 @@ def overall_stats_cts(all_pop):
     full_pop_data = []
     if len(full_pop_data) == 0:
         frq_lst = all_pop[0]
-        """In place update of the dictionary from """
+        # In place update of the dictionary from
         for dt in frq_lst:
             for k,v in dt.items():
                 dt.update({k: int(v)})
@@ -244,7 +248,7 @@ def avg_win(pos,size,step):
 
 def plot_win_taj_d(TD, position, num_pops):
 
-        ''' graph containing all populations without buttons '''
+        # graph containing all populations without buttons 
         fig_1 = go.Figure()
         for x in TD.items():
             obj = go.Scatter(name=x[0], x=position, y=x[1])
@@ -255,30 +259,30 @@ def plot_win_taj_d(TD, position, num_pops):
             yaxis_title="Tajima's D")
 
 
-        ''' creating Tajima's D graph as an  individual plot '''
+        # creating Tajima's D graph as an  individual plot 
         fig_2 = go.Figure()
         buttons = []
         i = 0
 
-        ''' iterating through dictionary and addding each population to graph '''
+        # iterating through dictionary and addding each population to graph 
         for x in TD.items():
             obj = go.Scatter(name=x[0], x=position, y=x[1])
             fig_2.add_trace(obj)
 
-            ''' args is a list of booleans that tells the buttons which trace to show on click '''
+            # args is a list of booleans that tells the buttons which trace to show on click 
             args = [False] * len(TD)
             args[i] = True
 
-            ''' creating button object for each population '''
+            # creating button object for each population 
             button = dict(label=x[0],
                           method="update",
                           args=[{"visible": args}])
 
-            #add button to list
+            # add button to list
             buttons.append(button)
             i += 1
 
-        #adding buttons
+        # adding buttons
         fig_2.update_layout(
             updatemenus=[
                 dict(
@@ -286,7 +290,7 @@ def plot_win_taj_d(TD, position, num_pops):
                     direction="down",
                     buttons=buttons)
             ])
-        #adding axis names
+        # adding axis names
         fig_2.update_layout(
             xaxis_title='Position (Base pairs)',
             yaxis_title="Tajima's D")
@@ -306,7 +310,7 @@ def plot_win_taj_d(TD, position, num_pops):
 
 def plot_win_hap(HD, position,num_pops):
 
-    ''' graph containing all populations without buttons '''
+    # graph containing all populations without buttons
     fig_3 = go.Figure()
     for x in HD.items():
         obj = go.Scatter(name=x[0], x=position, y=x[1])
@@ -317,30 +321,30 @@ def plot_win_hap(HD, position,num_pops):
         yaxis_title="Haploid Diversity")
 
         
-    ''' creating Haplotype graphs '''
+    # creating Haplotype graphs
     fig_4 = go.Figure()
     buttons = []
     i = 0
 
-    ''' iterating through dictionary and adding each population '''
+    # iterating through dictionary and adding each population
     for x in HD.items():
         obj = go.Scatter(name=x[0], x=position, y=x[1])
         fig_4.add_trace(obj)
 
-    ''' args is a list of booleans that tells the buttons which trace to show on click '''
+    # args is a list of booleans that tells the buttons which trace to show on click 
         args = [False] * len(HD)
         args[i] = True
 
-    ''' create button object for each pop '''
+    # create button object for each pop
         button = dict(label=x[0],
                         method="update",
                         args=[{"visible": args}])
 
-    ''' add button to list '''
+    # add button to list
         buttons.append(button)
         i += 1
 
-    ''' add buttons '''
+    # add buttons 
     fig_4.update_layout(
         updatemenus=[
             dict(
@@ -348,7 +352,7 @@ def plot_win_hap(HD, position,num_pops):
                 direction="down",
                 buttons=buttons)
         ])
-    ''' add axis names '''
+    # add axis names
     fig_4.update_layout(
         xaxis_title='Position (Base pairs)',
         yaxis_title="Haploid Diversity")
@@ -380,7 +384,7 @@ def plot_nuc_div(ND, position,num_pops):
         yaxis_title="Nucleotide Diversity")
 
         
-    #creating Haplotype graphs
+    # creating Haplotype graphs
     fig_6 = go.Figure()
     buttons = []
     i = 0
@@ -390,20 +394,20 @@ def plot_nuc_div(ND, position,num_pops):
         obj = go.Scatter(name=x[0], x=position, y=x[1])
         fig_6.add_trace(obj)
 
-    #args is a list of booleans that tells the buttons which trace to show on click
+    # args is a list of booleans that tells the buttons which trace to show on click
         args = [False] * len(ND)
         args[i] = True
 
-    #create button object for each pop
+    # create button object for each pop
         button = dict(label=x[0],
                         method="update",
                         args=[{"visible": args}])
 
-    #add button to list
+    # add button to list
         buttons.append(button)
         i += 1
 
-    #add buttons
+    # add buttons
     fig_6.update_layout(
         updatemenus=[
             dict(
@@ -411,7 +415,7 @@ def plot_nuc_div(ND, position,num_pops):
                 direction="down",
                 buttons=buttons)
         ])
-    #add axis names
+    # add axis names
     fig_6.update_layout(
         xaxis_title='Position (Base pairs)',
         yaxis_title="Nucleotide Diversity")
@@ -432,7 +436,7 @@ def plot_nuc_div(ND, position,num_pops):
 
 
 def plot_win_FST(pop_FST, position):
-    """ Get the """
+    # Get the 
     fig_7 = go.Figure()
     buttons = []
     i = 0
@@ -442,20 +446,20 @@ def plot_win_FST(pop_FST, position):
         obj = go.Scatter(name=key, x=position, y=value)
         fig_7.add_trace(obj)
 
-    #args is a list of booleans that tells the buttons which trace to show on click
+    # args is a list of booleans that tells the buttons which trace to show on click
         args = [False] * len(pop_FST)
         args[i] = True
 
-    #create button object for each pop
+    # create button object for each pop
         button = dict(label=key,
                         method="update",
                         args=[{"visible": args}])
 
-    #add button to list
+    # add button to list
         buttons.append(button)
         i += 1
 
-    #add buttons
+    # add buttons
     fig_7.update_layout(
         updatemenus=[
             dict(
@@ -463,7 +467,7 @@ def plot_win_FST(pop_FST, position):
                 direction="down",
                 buttons=buttons)
         ])
-    #add axis names
+    # add axis names
     fig_7.update_layout(
         xaxis_title='Position (Base pairs)',
         yaxis_title="FST")

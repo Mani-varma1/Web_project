@@ -1,14 +1,11 @@
 import ast
 
-
-
-
-""" Data for geneotyype array is stored as compressed data using similar technique to Run-length encoding (RLE)
+def decompress(gt_arr):
+    """ Data for geneotyype array is stored as compressed data using similar technique to Run-length encoding (RLE)
     the compressed data includes list of lists [['2','a']]. This corresponds to [[0,0],[0,0]] : two samples that are
     homozygous alternative. The positions of the sample are also saved.  To decompress we use the value that corespond to 
     the compressed value and multiply with the integer
-"""
-def decompress(gt_arr):
+    """
     freq_data = []
     gt_data = []
     decomp_dict = {'a':'[0, 0]','b':'[0, 1]','c':'[1, 0]','d':'[1,1]'}
