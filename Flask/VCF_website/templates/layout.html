@@ -66,14 +66,14 @@
       <a href="{{ url_for('home') }}" class="w3-bar-item w3-button"><i class="fa fa-home"></i>HOME</a>
       <a href="{{ url_for('about') }}" class="w3-bar-item w3-button"><i class="fa fa-book"></i>ABOUT</a>
       <a href="{{ url_for('search') }}" class="w3-bar-item w3-button"><i class="fa fa-binoculars"></i> SEARCH</a>
-      <a href="{{ url_for('help') }}" class="w3-bar-item w3-button"><i class="fa fa-book"></i> HELP</a>
+      <a target="_blank" href="{{ url_for('help') }}" class="w3-bar-item w3-button"><i class="fa fa-book"></i> HELP</a>
       {% endif %}
       {% if session['results'] %}
         <a href="{{ url_for('home') }}" class="w3-bar-item w3-button"><i class="fa fa-home"></i>HOME</a>
         <a href="{{ url_for('about') }}" class="w3-bar-item w3-button"><i class="fa fa-book"></i>ABOUT</a>
         <a href="{{ url_for('search') }}" class="w3-bar-item w3-button"><i class="fa fa-binoculars"></i> SEARCH</a>
         <a href="{{ url_for('help') }}" class="w3-bar-item w3-button"><i class="fa fa-book"></i> HELP</a>
-        <a href="{{ url_for('results') }}" class="w3-bar-item w3-button"> RESULTS</a>
+        <a target="_blank" href="{{ url_for('results') }}" class="w3-bar-item w3-button"> RESULTS</a>
         <a href="{{ url_for('stats', pops= None, stats=None, bin=None, step=None) }}" class="w3-bar-item w3-button"> STATS</a>
       {% endif %}
         </div>
