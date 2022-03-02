@@ -25,7 +25,7 @@ def loading(search):
 
             # If nothing found redirect back to search with a flashed message notifying the user that nothing was found
             if not results:
-                flash("No results found, please search for another ID", 'info')
+                flash("No results found, please search for another ID", 'warning')
                 return redirect(url_for('main.search'))
 
             # Run the function that parses the data from query object to python list object and assign them to sessions from results_utils.py
@@ -44,7 +44,7 @@ def loading(search):
                 
                 # If nothing found redirect and inform
                 if not results:
-                    flash("No result found, please search for another ID", 'info')
+                    flash("No result found, please search for another ID", 'warning')
                     return redirect(url_for('main.search'))
 
 
@@ -55,7 +55,7 @@ def loading(search):
                 flash("Please read the documentation for appropriate parameters", 'info')
                 return redirect(url_for('query_results.results', title='Results'))
             else:
-                flash("No result found, please search for another ID", 'info')
+                flash("No result found, please search for another ID", 'warning')
                 return redirect(url_for('main.search'))
    
     else:
@@ -103,7 +103,8 @@ def loading(search):
 
                         # If no results found redirects to search to search something else
                         if not results:
-                            flash("No result found, please search for another ID", 'info')
+                            flash(
+                                "No result found, please search for another ID", 'warning')
                             return redirect(url_for('main.search'))
 
                         
@@ -118,7 +119,8 @@ def loading(search):
                        
                         # If no results found redirects to search to search something else
                         if not results:
-                            flash("No result found, please search for another ID", 'info')
+                            flash(
+                                "No result found, please search for another ID", 'warning')
                             return redirect(url_for('main.search'))
                             
                         # Run the function that parses the data from query object to python list object and assign them to sessions
@@ -143,7 +145,7 @@ def loading(search):
 
                 # If no results found redirects to search to search something else
                 if not results:
-                    flash("No result found, please search for another ID", 'info')
+                    flash("No result found, please search for another ID", 'warning')
                     return redirect(url_for('main.search'))
 
                 # Run the function that parses the data from query object to python list object and assign them to sessions
@@ -154,7 +156,7 @@ def loading(search):
                 return redirect(url_for('query_results.results', title='Results'))
             else:
                 # Bad characters in the input there asking for users to check the format
-                flash("Please Check your format", 'info')
+                flash("Please Check your format", 'danger')
                 return redirect(url_for('main.search'))
         
 
@@ -168,7 +170,7 @@ def loading(search):
 
             # If no results found redirects to search to search something else
             if not results:
-                flash("No result found, please search for another ID", 'info')
+                flash("No result found, please search for another ID", 'warning')
                 return redirect(url_for('main.search'))
 
             # Run the function that parses the data from query object to python list object and assign them to sessions
@@ -189,7 +191,7 @@ def results():
         pjl = json.loads(session['pjl'])
         yri = json.loads(session['yri'])
     except Exception:
-        flash ('Please Search for SNPs first', 'info')
+        flash('Please Search for SNPs first', 'warning')
         return redirect(url_for('main.search'))
 
 
