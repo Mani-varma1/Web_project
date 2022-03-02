@@ -25,7 +25,7 @@ class PopulationStatistics(FlaskForm):
     choices_stats = [('Homozygosity','Homozygosity'),('Nucleotide Diversity','Nucleotide Diversity'),('Haplotype Diversity','Haplotype Diversity'),('Tajimas D','Tajimas D'),('FST','FST')]
     # render_kw provides css styles so there are no bullet points next to the checkbox as we are using unordered lists
     stats = MultiCheckboxField('Select Statistics:', choices=choices_stats, validators=[DataRequired(message="Please select atleast one statistic")],render_kw={'style': 'height: fit-content; list-style: none;'})
-    choices_pop = [('GBR','GBR'),('JPT','JPT'),('MXL','MXL'),('PJL','PJL'),('YRI','YRI')]
+    choices_pop = [('GBR','British'),('JPT','Japanese'),('MXL','Mexican'),('PJL','Punjabi'),('YRI','Yoruba')]
     # render_kw provides css styles so there are no bullet points next to the checkbox as we are using unordered lists
     populations = MultiCheckboxField('Select Population:', choices=choices_pop, validators=[DataRequired(message="Please select a population")],render_kw={'style': 'height: fit-content; list-style: none;'})
     bin_size = IntegerField("Bin size:", validators=[DataRequired()])
