@@ -221,114 +221,85 @@
             </script>
         {% endif %}
         
-        {% if nuc_div_plot2 %}
+        
+        {% if hap_div_plot1 %}
+        
             <div id='chart2' class='chart2' ”></div>
             
             <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
             <script type='text/javascript'>
-                var graphs = {{ nuc_div_plot2 | safe}};
+                var graphs = {{ hap_div_plot1 | safe}};
                 Plotly.plot('chart2', graphs, {});
             </script>
         {% endif %}
         
-        {% if hap_div_plot1 %}
         
+        
+        {% if taj_d_plot1 %}
             <div id='chart3' class='chart3' ”></div>
             
             <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
             <script type='text/javascript'>
-                var graphs = {{ hap_div_plot1 | safe}};
+                var graphs = {{ taj_d_plot1 | safe}};
                 Plotly.plot('chart3', graphs, {});
             </script>
         {% endif %}
         
         
-        {% if hap_div_plot2 %}
-        
+
+        {% if gbr_fst_plt %}
             <div id='chart4' class='chart4' ”></div>
             
             <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
             <script type='text/javascript'>
-                var graphs = {{ hap_div_plot2 | safe}};
-                Plotly.plot('chart4', graphs, {});
-            </script>
-        {% endif %}
-        
-        {% if taj_d_plot1 %}
-            <div id='chart5' class='chart5' ”></div>
-            
-            <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
-            <script type='text/javascript'>
-                var graphs = {{ taj_d_plot1 | safe}};
-                Plotly.plot('chart5', graphs, {});
-            </script>
-        {% endif %}
-        
-        
-        {% if taj_d_plot2 %}
-            <div id='chart6' class='chart6' ”></div>
-            
-            <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
-            <script type='text/javascript'>
-                var graphs = {{ taj_d_plot2 | safe}};
-                Plotly.plot('chart6', graphs, {});
-            </script>
-        
-        {% endif %}
-
-        {% if gbr_fst_plt %}
-            <div id='chart7' class='chart7' ”></div>
-            
-            <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
-            <script type='text/javascript'>
                 var graphs = {{ gbr_fst_plt | safe}};
-                Plotly.plot('chart7', graphs, {});
+                Plotly.plot('chart4', graphs, {});
             </script>
         
         {% endif %}
 
 
         {% if jpt_fst_plt %}
-            <div id='chart8' class='chart8' ”></div>
+            <div id='chart5' class='chart5' ”></div>
             
             <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
             <script type='text/javascript'>
                 var graphs = {{ jpt_fst_plt | safe}};
-                Plotly.plot('chart8', graphs, {});
+                Plotly.plot('chart5', graphs, {});
             </script>
         
         {% endif %}
 
 
         {% if mxl_fst_plt %}
-            <div id='chart9' class='chart9' ”></div>
+            <div id='chart6' class='chart6' ”></div>
             
             <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
             <script type='text/javascript'>
                 var graphs = {{ mxl_fst_plt | safe}};
-                Plotly.plot('chart9', graphs, {});
+                Plotly.plot('chart6', graphs, {});
             </script>
         
         {% endif %}
 
         {% if pjl_fst_plt %}
-            <div id='chart10' class='chart10' ”></div>
+            <div id='chart7' class='chart7' ”></div>
             
             <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
             <script type='text/javascript'>
                 var graphs = {{ pjl_fst_plt | safe}};
-                Plotly.plot('chart10', graphs, {});
+                Plotly.plot('chart7', graphs, {});
             </script>
         
         {% endif %}
 
         {% if yri_fst_plt %}
-            <div id='chart11' class='chart11' ”></div>
+            <div id='chart8' class='chart8' ”></div>
             
             <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
             <script type='text/javascript'>
                 var graphs = {{ yri_fst_plt | safe}};
-                Plotly.plot('chart11', graphs, {});
+                Plotly.plot('chart8', graphs, {});
             </script>
         
         {% endif %}
