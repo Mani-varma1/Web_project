@@ -1,4 +1,3 @@
-# Stats script
 from tracemalloc import start, stop
 import plotly.graph_objects as go
 import plotly
@@ -9,9 +8,17 @@ import ast
 import pandas as pd
 import numpy as np
 import itertools
+
+
 def Homozygosity(freq_data):
-    # input a list of dictionaries retrieved from search query. Each item should
-    # correspond to a single rs ID. 
+    ''' Estimates a score for homozygosity using direct count method as explained in Sabatti & Risch, 2002. 
+    Input a list of dictionaries retrieved from search query. 
+    Each item should correspond to a single rs ID.
+    :param freq_dict: genotype count data. Keys correspond to hom_ref, het and hom_alt
+    :type freq_dict: dict
+    :return: Observed homozygosity (rounded to 3 d.p)
+    :rtype: float
+    '''
     total_hom = 0
     total_gen = 0
     for x in freq_data:
@@ -21,14 +28,11 @@ def Homozygosity(freq_data):
     return round(obs_homozygosity,3)
 
 
-
-
-# Using scikit-allel - windows determined by number of variants. will need to be plotted with
-# rs IDs on x-axis to work correctly. Exception being nucleotide diversity.
-# bin_size and step_size are user submitted, and pop refers to a single population chosen. functions
-# would need to be run for each population if multiple populations are selected. 
-
-
+''' Using scikit-allel - windows determined by number of variants. will need to be plotted with
+    rs IDs on x-axis to work correctly. Exception being nucleotide diversity.
+    bin_size and step_size are user submitted, and pop refers to a single population chosen. functions
+    would need to be run for each population if multiple populations are selected. 
+'''
 def nuc_div(pop,pos):
     pop_gt = np.array(pop)
     pop = allel.GenotypeArray(pop_gt)
@@ -36,7 +40,6 @@ def nuc_div(pop,pos):
     pi= allel.sequence_diversity(pos=pos, ac=ac)
     
     return round(pi,3)
-
 
 
 def haplotype_div(pop):
@@ -48,7 +51,6 @@ def haplotype_div(pop):
     return round(hd,3)
 
 
-
 def tajima_d(pop, pos):
     pop_gt = np.array(pop)
     pop = allel.GenotypeArray(pop_gt)
@@ -56,9 +58,6 @@ def tajima_d(pop, pos):
     D= allel.tajima_d(ac=ac, pos=pos )
     
     return round(D,3)
-
-
-
 
 
 def hudson_fst(pop1,pop2):
@@ -73,43 +72,47 @@ def hudson_fst(pop1,pop2):
     return round(fst,3)
 
 
-
-""" Get main stats bundles other basic statistics into a single functiona and also 
-    checks for the user input before calculation
-"""
 def get_main_stats(pop,freq_data,pos,stats):
+    """ Get main stats bundles other basic statistics into a single functiona and also 
+    checks for the user input before calculation.
+    :param pop: genotype array data 
+    :type pop: array
+    :param freq_data: genotype count data. Keys correspond to hom_ref, het and hom_alt
+    :type freq_data: dict
+    :param pos: Positions for SNPs
+    :type pos: list
+    :param stats: Stats to be calculated
+    :type stats: list
+    """
     if 'Homozygosity' in stats:
         homo = Homozygosity(freq_data)
     else:
         homo = 'Not calculated'
 
-
     if 'Nucleotide Diversity' in stats:
         nd = nuc_div(pop,pos=pos)
     else:
         nd = 'Not calculated'
-
     
     if 'Haplotype Diversity' in stats:
         hap_div = haplotype_div(pop)
     else:
         hap_div = 'Not calculated'
 
-
     if 'Tajimas D' in stats:
         taj_d = tajima_d(pop,pos=pos)
     else:
         taj_d = 'Not calculated'
 
-
-    
     return homo,nd,hap_div,taj_d
 
 
-
-""" First get the genotype data in a dictionary format with their populations code as the key.
-performs permutations to create all pairwise comparisions in a tuple e.g.('GBR','JPT'). For each permutation, it calculates the fst by using the items in tuple to only call the genotype data that is specific to the population  """
 def get_fstat(paris,gt_dict):
+    """ First get the genotype data in a dictionary format with their populations code as the key.
+    performs permutations to create all pairwise comparisions in a tuple e.g.('GBR','JPT'). 
+    For each permutation, it calculates the fst by using the items in tuple to only call the 
+    genotype data that is specific to the population.  
+    """
     combos = itertools.permutations(paris,2)
     lst = []
     for i in combos:
@@ -125,8 +128,11 @@ def get_fstat(paris,gt_dict):
 
 
 
-""" For calculating the stats using scikit allel using genotype data and combining all the individuals into a single super population"""
+
 def overall_stats_gtd(all_pops_array):
+    """ For calculating the stats using scikit allel using genotype data and combining 
+    all the individuals into a single super population 
+    """
     for i,ele in enumerate(all_pops_array):
         ele = np.array(ele)
         if i == 0:
@@ -136,8 +142,11 @@ def overall_stats_gtd(all_pops_array):
     return all_pop_arr
 
     
-""" For calculating observed Homozygosity using count data and combining all the individuals into a single super population"""
+
 def overall_stats_cts(all_pop):
+    """ For calculating observed Homozygosity using count data and combining 
+    all the individuals into a single super population
+    """
     full_pop_data = []
     if len(full_pop_data) == 0:
         frq_lst = all_pop[0]
@@ -156,18 +165,12 @@ def overall_stats_cts(all_pop):
 
     return full_pop_data
 
-
-    
-
-
-
-    
+  
 
 ############################################################################################################################################
 ######################################################    WINDOWED STATS ###################################################################
 ############################################################################################################################################
     
-
 
 def win_nuc_div(positions,pop,bin_size=100,step_size=None):
     # input list of queries retrieved from the results page, window size and step size. 
@@ -180,7 +183,6 @@ def win_nuc_div(positions,pop,bin_size=100,step_size=None):
     return win_pi
 
 
-
 def win_tajima_d(positions,pop,bin_size=100,step_size=None):
     pos = np.array(positions)
     pop_gt = np.array(pop)
@@ -190,23 +192,13 @@ def win_tajima_d(positions,pop,bin_size=100,step_size=None):
     return win_tajima_D
 
 
-
-
 def win_haplotype_div(positions,pop,bin_size=100,step_size=None):
-    # input list of queries retrieved from the results page, window size and step size. 
-    # window size refers to number of variants.
     pos = np.array(positions)
     pop_gt = np.array(pop)
     pop = allel.GenotypeArray(pop_gt)
     pop_hap = pop.to_haplotypes()
-    # moving_hap = allel.moving_haplotype_diversity(h=pop_hap,size=bin_size,step=step_size)
     windowed_hap, windows, counts = allel.windowed_statistic(pos=pos,values=pop_hap,statistic=allel.haplotype_diversity,size=bin_size, step=step_size)
     return windowed_hap
-
-
-
-
-
 
 
 def win_hudson_fst(positions,pop1,pop2,bin_size=100,step_size=None):
@@ -223,8 +215,9 @@ def win_hudson_fst(positions,pop1,pop2,bin_size=100,step_size=None):
 
 
 
-""" Similar to fstat we are doing permutations and inthis case also providing the position and window sizes to be used for windowed stats"""
 def get_win_fstat(paris,gt_dict,pos,bin_size,step_size):
+    """ Windowed hudson Fst using permutations to get pair-wise combinations of populations
+    """
     combos = itertools.permutations(paris,2)
     lst = []
     for i in combos:
@@ -251,7 +244,7 @@ def avg_win(pos,size,step):
 
 def plot_win_taj_d(TD, position, num_pops):
 
-        #graph containing all populations without buttons
+        ''' graph containing all populations without buttons '''
         fig_1 = go.Figure()
         for x in TD.items():
             obj = go.Scatter(name=x[0], x=position, y=x[1])
@@ -262,21 +255,21 @@ def plot_win_taj_d(TD, position, num_pops):
             yaxis_title="Tajima's D")
 
 
-        #creating Tajima's D graph as an  individual plot
+        ''' creating Tajima's D graph as an  individual plot '''
         fig_2 = go.Figure()
         buttons = []
         i = 0
 
-        #iterating through dictionary and addding each population to graph
+        ''' iterating through dictionary and addding each population to graph '''
         for x in TD.items():
             obj = go.Scatter(name=x[0], x=position, y=x[1])
             fig_2.add_trace(obj)
 
-            #args is a list of booleans that tells the buttons which trace to show on click
+            ''' args is a list of booleans that tells the buttons which trace to show on click '''
             args = [False] * len(TD)
             args[i] = True
 
-            #creating button object for each population
+            ''' creating button object for each population '''
             button = dict(label=x[0],
                           method="update",
                           args=[{"visible": args}])
@@ -313,7 +306,7 @@ def plot_win_taj_d(TD, position, num_pops):
 
 def plot_win_hap(HD, position,num_pops):
 
-    # graph containing all populations without buttons
+    ''' graph containing all populations without buttons '''
     fig_3 = go.Figure()
     for x in HD.items():
         obj = go.Scatter(name=x[0], x=position, y=x[1])
@@ -324,30 +317,30 @@ def plot_win_hap(HD, position,num_pops):
         yaxis_title="Haploid Diversity")
 
         
-    #creating Haplotype graphs
+    ''' creating Haplotype graphs '''
     fig_4 = go.Figure()
     buttons = []
     i = 0
 
-    # iterating through dictionary and adding each population
+    ''' iterating through dictionary and adding each population '''
     for x in HD.items():
         obj = go.Scatter(name=x[0], x=position, y=x[1])
         fig_4.add_trace(obj)
 
-    #args is a list of booleans that tells the buttons which trace to show on click
+    ''' args is a list of booleans that tells the buttons which trace to show on click '''
         args = [False] * len(HD)
         args[i] = True
 
-    #create button object for each pop
+    ''' create button object for each pop '''
         button = dict(label=x[0],
                         method="update",
                         args=[{"visible": args}])
 
-    #add button to list
+    ''' add button to list '''
         buttons.append(button)
         i += 1
 
-    #add buttons
+    ''' add buttons '''
     fig_4.update_layout(
         updatemenus=[
             dict(
@@ -355,7 +348,7 @@ def plot_win_hap(HD, position,num_pops):
                 direction="down",
                 buttons=buttons)
         ])
-    #add axis names
+    ''' add axis names '''
     fig_4.update_layout(
         xaxis_title='Position (Base pairs)',
         yaxis_title="Haploid Diversity")
