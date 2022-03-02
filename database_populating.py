@@ -1,18 +1,23 @@
 import pandas as pd 
 import sqlite3 as sql 
 import numpy as np
+import zipfile
 
-conn = sql.connect('site.db')
+with zipfile.ZipFile('data_for_populating.7z', 'r') as my_zip:
+    my_zip.extractall('data')
+
+
+conn = sql.connect('Flask/VCF_website/site.db')
 
 c = conn.cursor()
 
-mxl = pd.read_csv('MXL_data.tsv',sep='\t')
-gbr = pd.read_csv('GBR_data.tsv',sep='\t')
-jpt = pd.read_csv('JPT_data.tsv',sep='\t')
-pjl = pd.read_csv('PJL_data.tsv',sep='\t')
-yri = pd.read_csv('YRI_data.tsv',sep='\t')
-query = pd.read_csv('query.tsv',sep='\t')
-query
+mxl = pd.read_csv('data/MXL_data.tsv',sep='\t')
+gbr = pd.read_csv('data/GBR_data.tsv',sep='\t')
+jpt = pd.read_csv('data/JPT_data.tsv',sep='\t')
+pjl = pd.read_csv('data/PJL_data.tsv',sep='\t')
+yri = pd.read_csv('data/YRI_data.tsv',sep='\t')
+query = pd.read_csv('data/query.tsv',sep='\t')
+
 for row in query.itertuples():
     c.execute("""
             INSERT INTO query_search (chrom,rs_val,pos,gene_name,ref_allele,alt_allele)
