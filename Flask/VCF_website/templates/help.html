@@ -152,25 +152,25 @@
         
         <h4>Observed Homozygosity</h4>
         <p>This is a measure of the total sum of homozygous reference and homozygous alternative for each SNP. The value outputted indicates the proportion in which the SNP is homozygous, and a high value indicates the likelihood of the SNP being homozygous. This is based on a direct count method highlighted in Sabatti & Risch, 2002.</p>
-        <img src="{{url_for('static', filename='help_files/popgen_database_diagram.png')}}" align="middle" />
+        <img src="{{url_for('static', filename='help_files/Obs_Homo.png')}}" align="middle" />
         
         <h4>Genetic Diversity</h4>
         <p>Genetic Diversity can be used to see whether there is variation between selected populations. </p>
         <p>Nucleotide Diversity</p>
         <p>Nucleotide Diversity ( π ) is used as a measure of genetic diversity on POPgen. This is defined as the average number of nucleotide differences per site when two sequences are chosen randomly from the sample population. The formula outputs π and a high π indicates high genetic variation.</p>
-        <img src="{{url_for('static', filename='help_files/popgen_database_diagram.png')}}" align="middle" />
+        <img src="{{url_for('static', filename='help_files/Nucl_Div.png')}}" align="middle" />
         <p>Here, xi and xj refer to the population frequency of the ith and jth nucleomorph, and n refer to sample size. π ij refers to the differences in nucleotides between the ith and jth sequences (Nei & Li, 1979). </p>
         
         <h4>Haplotype Diversity</h4>
         <p>Haplotype Diversity, also known as gene diversity, can be defined as the probability of two alleles randomly being different when sampled (de Jong et al., 2011). </p>
-        <img src="{{url_for('static', filename='help_files/popgen_database_diagram.png')}}" align="middle" />
+        <img src="{{url_for('static', filename='help_files/Haplo_Div.png')}}" align="middle" />
         <p>The function estimates haplotype diversity (H), where xi refers to the relative haplotype diversity in the sample and N refers to the sample size.  A value close to 1 indicates that the probability of picking two haplotypes which are the same are extremely high. A value close to 0 indicates that there are lots of haplotypes indicating more variation. </p>
         
         <h4>Neutrality Test</h4>
         <p>Neutrality tests are used in population genetics to assess the goodness-of-fit of standard neutral model (Achaz, 2009) based on the frequency spectrum such as Tajima’s or Fu and Li’s F.</p>
         <p>Tajimas’ D</p>
         <p>Tajima’s D (D) is used as a test against neutrality, which is calculated through genotype arrays and counting the alleles. The formula compares the difference in values of Watterson theta (ratio of number of SNPs observed to expected number of SNPs based on neutral model of evolution) and expected number of segregating sites (according to a neutral model of evaluation). </p>
-        <img src="{{url_for('static', filename='help_files/popgen_database_diagram.png')}}" align="middle" />
+        <img src="{{url_for('static', filename='help_files/Tajima'sD.png')}}" align="middle" />
         <p>Interpreting D</p>
         <p>D = 0: The observed and expected variation are similar. One conclusion is there is no evidence of selection for the observed sequence.</p>
         <p>D > 0: Observed variation is greater than expected. This may indicate that the alternate alleles are scarce and that there may be a balancing selection. </p>
@@ -180,7 +180,7 @@
         <h4>Population Genetic Variation</h4>
         <p>Fst</p>
         <p></p>
-        <img src="{{url_for('static', filename='help_files/popgen_database_diagram.png')}}" align="middle" />
+        <img src="{{url_for('static', filename='help_files/Fst.png')}}" align="middle" />
         <p></p>
     </section>  
     
