@@ -29,10 +29,7 @@ def Homozygosity(freq_data):
     return round(obs_homozygosity,3)
 
 
-# Using scikit-allel - windows determined by number of variants. will need to be plotted with
-# rs IDs on x-axis to work correctly. Exception being nucleotide diversity.
-# bin_size and step_size are user submitted, and pop refers to a single population chosen. functions
-# would need to be run for each population if multiple populations are selected. 
+
 def nuc_div(pop,pos):
     pop_gt = np.array(pop)
     pop = allel.GenotypeArray(pop_gt)
@@ -174,8 +171,8 @@ def overall_stats_cts(all_pop):
 ############################################################################################################################################
 ######################################################    WINDOWED STATS ###################################################################
 ############################################################################################################################################
-    
 
+    
 def win_nuc_div(positions,pop,bin_size=100,step_size=None):
     # input list of queries retrieved from the results page, window size and step size. 
     # window size and step size refers to number of nucleotides.
