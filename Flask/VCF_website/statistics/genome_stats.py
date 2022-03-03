@@ -178,7 +178,7 @@ def overall_stats_cts(all_pop):
 
 def win_nuc_div(positions,pop,bin_size=100,step_size=None):
     # input list of queries retrieved from the results page, window size and step size. 
-    # window size and step size refers to number of nucleotides. produces a list of 4 arrays
+    # window size and step size refers to number of nucleotides.
     pos = np.array(positions)
     pop_gt = np.array(pop)
     pop = allel.GenotypeArray(pop_gt)
