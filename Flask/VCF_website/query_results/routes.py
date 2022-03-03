@@ -238,6 +238,13 @@ def download():
     mxl = json.loads(session['mxl'])
     pjl = json.loads(session['pjl'])
     yri = json.loads(session['yri'])
+    
+    # Convert them to a frequency format.
+    convert_freq(gbr)
+    convert_freq(jpt)
+    convert_freq(mxl)
+    convert_freq(pjl)
+    convert_freq(yri)
 
     # Recreate the list of dictionaries, adding inside each dictionary the population key/value pairs
     # The final list of dicts inside the file will be "results_print", 
