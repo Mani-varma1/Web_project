@@ -527,7 +527,7 @@ def download_stats():
     first_col_values = [html_first_col, html_gene,all_stats['Observed Homozygosity'],all_stats['Nucleotide Diversity(pi)'],all_stats['Haplotide Diversity'],all_stats['Tajima D']]
     cw.writerow(first_col_values)
 
-    # Create a space between the 
+    # Create a space between the tables 
     cw.writerow('')
     cw.writerow('')
     cw.writerow('')
