@@ -82,6 +82,7 @@
 
     <section id="search">
         <h2>Search</h2>
+        
         <p>Querying was done through SQLAlchemy. Searches can be made based on chromosomal positions, RS ID, and gene names (Using HGNC names). Individual SNPs can be queried by passing a single position in the start field or 1 RS ID. Multiple SNPs can be queried by providing a chromosomal region (start and stop positions) or a list of comma-separated RS IDs or gene names. Gene names have been limited to a maximum of five. </p>
         <p>Queries must be submitted in the correct format (especially for multiple SNP searches) and in the case of gene names, are case sensitive. </p>
         <p>NOTE: Large search queries can be made however this is dependent on hardware limitations. Significant slowdowns in page responsiveness can occur if 100,000s of SNPs are queried due to browser limitations. Keep this in mind when searching the database. On average, it takes ~1.5 minutes to run a search regardless of number of SNPs queried. This can take longer depending on how many SNPs need to be outputted to the page. It can take around 3 minutes to output a 500,000bp search.</p>
@@ -92,6 +93,11 @@
     <h2>Results</h2>
 
     <div class="line"></div>  
+
+
+    <h2>Statistics</h2>
+
+    <div class="line"></div> 
 
     <section id="sum-stats">
         <h3>Summary Statistics</h3>
@@ -105,13 +111,49 @@
         <p>Lorem ipsum dolor</p>
     </section>  
     
-    <div class="line"></div>  
 
-    <section id="limitations">
-        <h2>Limitations</h2>
-        <p>Lorem ipsum dolor</p>
+    <div class="line"></div> 
+
+
+    <h2>Limitations</h2>
+
+
+    <div class="line"></div> 
+
+    <section id="dataset_limitations">
+        <h3>Dataset Limitations<h3>
+        <p>The dataset itself has issues, and no single dataset from the 1KGP was perfect. As the nature of this project involves using datasets that are constantly being updated themselves, there are some discrepancies with the final form of the dataset used. Recent dbSNP builds no longer supports certain SNPs that are found in the dataset used. To satisfy the requirements for the database, these SNPs would need to be removed during the data wrangling process. This will inevitably lead to regions in the VCF files that hold no SNPs. One potential workaround would be to include the non-supported RS IDs as they are still searchable on the dbSNP (the individual pages simply mention that its unsupported), however this would require mixing different builds for dbSNP to populate the missing field and using several reference files, to ensure that no positions were left unannotated. As bcftools was used to annotate the RS IDs, this can become complicated as it tends to override previous annotations. </p>
+    </section>
+  
+    <div class="line"></div> 
+
+    <section id="database_limitations">
+        <h3>Database Limitations<h3>
+        <p>The format of the tables, regarding populations, is unnormalised. It would be best practice, especially with larger datasets spanning multiple chromosomes and more populations, to split the genotype and allele frequency into four or five separate columns and storing only 1 value in each field. This would allow the database to satisfy the first normal form (1NF). Another issue is regarding the formatting of phased genotype arrays. Initially, two additional tables were trialed, one table containing sample IDs and information regarding each sample, and another table containing genotype array data, with a column containing RS ID and sample ID. The issue with this approach was the number of rows that would need to be populated for a single chromosome. For chromosome 22 and 500 samples, this would equate to ~500,000,000 rows. For the purposes of this version of the application, keeping array data in the form that we used can simplify the populating of the database, but changes to individual genotypes would prove to be difficult.</p>
+    </section>
+            
+    <div class="line"></div> 
+
+    <section id="tech_limitations">
+        <h3>Technologies Limitations<h3>
+        <p>Flask is only viable for a small-scale application. More complex applications need support for more built-in packages and libraries. Consequently, there could be an issue when scaling the application. Django would be a good alternative option, as it offers everything Flask has and more, but with a steeper learning curve.</p>
+        <p>Most web apps use HTML, CSS and JS. Although we used some built in JS libraries, the use of these was very limited. There is a need for more custom JS. For a full control of our website, use JS with libraries such as react, which also allows us to build our own API and make the website more robust.</p>
+        <p>Storage requirements could be an issue if multiple users access the database and search for large regions at the same time.</p>
     </section>
 
+    <div class="line"></div> 
+
+    <section id="future_developments">
+        <h2>Future Developments<h2>
+        <p>1. Expanding dataset to include entire human genome – significant storage requirements and data wrangling required. It took around 1 week to get the gene names for the smallest autosome. The entire dbSNP database would need to be accessed to generate gene names for each RS ID. Also, a more efficient method for wrangling the data would need to be employed as the current scripts can take up to 1 hour to go from VCF files to a populated database.  </p>
+        <p>2. Expand to all populations from IGSR and allow for filtering by superpopulations. Would need to create additional tables for each population and use dictionaries to categorise populations by superpopulations.  </p>
+        <p>3. More meaningful stats options (e.g. PCA) using genotype array data – would require restructuring of database to separate 1 genotype per field. Also, would require sample information table for information about sample ID, population and superpopulation.  </p>
+        <p>4. Exploring options of non-relational databases that may be better suited for the type of data we are using. For example, multivalue databases or object databases could be used for data that was stored as lists or dictionaries. </p>
+        <p>5. Improvements to algorithms for better efficiency – Code relies on some nested for loops that can significantly increase memory usage and time complexity. </p>
+        <p>6. Cleaner code – streamline repetitive elements by using more classes and functions.</p>
+          
+    </section>
+            
     {% endblock content %}<html xmlns:mso="urn:schemas-microsoft-com:office:office" xmlns:msdt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"><head>
 <!--[if gte mso 9]><xml>
 <mso:CustomDocumentProperties>
