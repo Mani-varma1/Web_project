@@ -5,57 +5,86 @@
     <div class="line"></div>
 
     <section id="software-arch">
-    <h3>Software Architecture</h3>
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+        <h3>Software Architecture</h3>
+        <img src="{{url_for('static', filename='help_files/website_arch.png')}}" align="middle" />
+        <p><strong> Figure 1: POPgen software schematic and component integration </strong></p>
+        <p> Figure 1 shows the finalized software structure and all the integrated components used to create the functional POPgen web application, which can search through SNP information within human chromosome 22. This SNP information was downloaded from the IGSR web application and constructed into a functional database using SQLite3, which was then linked to flask using the package SQLAlchemy. SQLAlchemy facilitates communication between the flask python program and the constructed relational SQLite3 database in python. The main application runs on Flask using Jinja2 as a template engine to create HTML and other markup formats which can then be returned to the user in a http response (routes.py is the executable file). Website routes were defined using the HTML language and static files such as CSS (maintain consistency in website design). Together the application renders the final site that also features a user download for the results of their search parameters.</p> 
     </section>
 
     <div class="line"></div>
 
     <section id="web-arch">
         <h3>Website Architecture</h3>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-        </section>
+        <p> Figure 2. shows a summary of all the routes within the POPgen website and how they are linked. The Search page outputs the results page from user-input fields, such as the gene name, RS ID and Chromosome location. The results page then outputs the relevant data in tables and provides options to view the summary statistics within and between populations. Once the statistics options within the results page have been selected and searched, the statistics page will show the relevant statistics for the selected populations available within the database.</p>
+        <img src="{{url_for('static', filename='help_files/soft_arch.png')}}" align="middle" />
+        <p><strong> Figure 2. POPgen web routes and links shown by solid black arrows. Web content shown by dotted lines. </strong></p>
+    </section>
 
     <div class="line"></div>
+
+    <section id="structure_design">
+        <h3>Structure and Design</h3>
+        <p>The structure of the website was defined using HTML tags/classes from the stylesheets of both Bootstrap and W3-CSS for each page within the website architecture. These HTML templates were coupled with CSS languages to produce a professional website design that provides a simple and user-friendly experience. The Bootstrap and W3-CSS tags create a framework for responsive elements to the website and help organize where each HTML component will appear on the website. For example, Bootstrap classes were used to center the team information on the about page. </p>
+    </section>
+
+    <div class="line"></div>  
 
     <section id="deployment">
         <h3>Deployment</h3>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+        <h4><strong> Web Deployment </strong></h4>
+        <p>Elastic Beanstalk was used from the Amazon Web Services (AWS).</p>
     </section>
 
+    <div class="line"></div>    
+
     <h2>Data</h2>
+
     <div class="line"></div>
     
     <section id="collection">
-        <h3>Collection</h3>
-        <p>Lorem ipsum dolor</p>
+        <h3>Data Collection</h3>
+        <p>The data used to populate the database was primarily retrieved from the 1000 Genomes Project and the NCBI FTP server. The data used for this project was sourced from phase 3 data collection and this was done for two primary reasons:</p>
+        <p>Phase three data contained information about both indels and multiallelic SNPs, which can be filtered to create a dataset only containing biallelic SNPs. Earlier phases of the project were not able to distinguish and identify multiallelic SNPs and would record them as separate entries within the VCF files (1KGP consortium, 2015).</p>
+        <p>Phase three data used a larger sample size with more populations included. </p>
+        <p>Phase three data used genomic positions based on the ensembl GrCh37.p19 reference build. This is important to note as the current RS ID's found on the dbSNP from ensembl have positions that correspond to both the GrCH37.p19 and the newer GrCH38.p19 reference build. The reasoning for choosing the GrCH37 build is explained in the Data Wrangling section.  </p>
+        <p>Sample data was also required to allow sub-setting based on population, which was also obtained from 1KGP from the respective data collection page.</p>
+        <p>Information regarding RS ID corresponding to position as well as gene consequence can be obtained from NCBI (Sherry et al, 2001). A VCF for the entire genome would need to be downloaded and then filtered. These files can be found here:</p>
+        <p>https://ftp.ncbi.nih.gov/snp/latest_release/VCF/. </p>
+        <p>Both GrCH37 (GCF_000001405.25) and GrCH38 (GCF_000001405.39) builds can be found with their corresponding tabix files. The chromosome fields are populated according RefSeq annotation. </p>
+        <p>Data regarding gene names which corresponds to RS IDs can be obtained through several ways.  NCBI provides a command line tool which can retrieve information from dbSNP using their API (Kans, 2022). This is limited to 3 requests per second per IP address. The command used to retrieve gene names is shown below:</p>
+        <p><code>for i in `cat x`; do esearch -db snp -query "${i} AND human [orgn]" | esummary | xtract -pattern DocumentSummary -element SNP_ID,NAME | uniq; done > output.txt</code></p>
     </section>  
 
     <div class="line"></div>
 
     <section id="pre-processing">
-        <h3>Pre-processing</h3>
-        <p>Lorem ipsum dolor</p>
+        <h3>Data Wrangling & Pre-processing</h3>
+        <p>To keep storage requirements low, the database was constructed using VCF data from chromosome 22 for five populations: Mexican (MXL), British (GBR), Japanese (JPT), Punjabi (PJL), and Yoruba (YRI). Each of these populations belong to separate superpopulations, therefore information regarding superpopulations was left out as it would make the search options redundant for this build.</p>
+        <p>Bcftools was used to subset only for biallelic SNPs and the 5 populations. The VCF files available from 1KGP contain empty fields for ID. To populate the database correctly, these would need to be filled. The following command from bcftools was used assuming we have a VCF file with annotated IDs and positions according to the same reference build:</p>
+        <p><code>bcftools annotate -a 'path/to/dbsnp.vcf.gz' -c ID 'path/to/1KGP.vcf.gz' -o 'path/to/output.vcf.gz </code></p>
+        <p>The reference VCF would need to be first filtered for only the chromosome of interest, which can also be done in bcftools. </p>
+        <p>Some positions found on the VCF file which had previously been associated with a RS ID were no longer supported as of the current dbSNP build. As RS ID is required for the database, these SNPs were filtered from the final VCF file. This has led to gaps within the chromosome region, which may affect expected statistical values when searching these regions. These regions are: 20706257-20708536 & 25722272-25742171</p>
+        <p>To get the data into a format that would make it easier to populate the database, the scikit-allel package in python was used (Miles & Harding, 2021). This has the advantage of using local storage array solutions to reduce load on memory usage. It also has many features to subset data and read it into custom array-like structures that work in a similar fashion to numpy arrays. The script used to wrangle this data can be found on the GitHub repository.</p>
+        <p>This script will produce 6 tsv files; one query file and 5 population files. The population data contains genotype arrays and pre-calculated counts for genotypes and alleles per SNP.</p>
+        <p>The query file requires further wrangling to get gene names inputted. A txt file containing gene names and RS IDs were then loaded into python as pandas dataframes along with the query file and merged on RS ID to produce a final query file. This file is provided along with population data, which can be used to create the database.</p>
     </section>  
     
     <div class="line"></div>
 
     <section id="storage">
-        <h3>Storage</h3>
-        <p>As a database, SQLite3 is used because it is suitable for non-production environments. 
-        Connectivity to the database is implemented using SQLAlchemy-Flask, an open source SQL toolkit and object-relational mapper (ORM) for Python. Multiple tables are used to store the data, which are joined with the relationships shown in the figure below.</p> 
-            
-            <p>SQLAlchemy was selected to be used because it provides a high-level approach that is simple to implement and helps in developing code quicker. SQLAlchemy, due to its ORM capabilities, acts as a database abstraction layer. This layer sits as an intermediary between the app and the database engine. It allows defining regular Python objects and methods and translates them into low-level SQL database instructions.
-        .</p>
+        <h3>Data Storage</h3>
+        <p>SQLite3 and SQLAlchemy were used to create and populate the database. Structures for the tables can be found in the models.py file. All search queries are initially made with the query table, which contains information about the chromosomal position, reference allele, alternate allele, and, where it is applicable, any genes that are implicated. Due to the unique property of RS IDs from the dbSNP, these were used as primary keys for which any searches would need to be matched to. The results page outputs the data stored within the query _search table (as seen in Figure 3). The other tables correspond to each population and contains information about the genotype frequency, allele frequency and phased genotype arrays for each SNP, with RS ID acting as a foreign key referencing the query_ search table. Both genotype frequency and allele frequency are stored in dictionary format within each of these fields.</p>
         <img src="{{url_for('static', filename='help_files/popgen_database_diagram.png')}}" align="middle" />
-        
+        <p><strong>Figure 4. POPgen database schematic: Shown is 6 tables and the links represented by solid lines</strong></p>
     </section>  
     
     <div class="line"></div>   
 
     <section id="search">
         <h2>Search</h2>
-        <p>Lorem ipsum dolor</p>
+        <p>Querying was done through SQLAlchemy. Searches can be made based on chromosomal positions, RS ID, and gene names (Using HGNC names). Individual SNPs can be queried by passing a single position in the start field or 1 RS ID. Multiple SNPs can be queried by providing a chromosomal region (start and stop positions) or a list of comma-separated RS IDs or gene names. Gene names have been limited to a maximum of five. </p>
+        <p>Queries must be submitted in the correct format (especially for multiple SNP searches) and in the case of gene names, are case sensitive. </p>
+        <p>NOTE: Large search queries can be made however this is dependent on hardware limitations. Significant slowdowns in page responsiveness can occur if 100,000s of SNPs are queried due to browser limitations. Keep this in mind when searching the database. On average, it takes ~1.5 minutes to run a search regardless of number of SNPs queried. This can take longer depending on how many SNPs need to be outputted to the page. It can take around 3 minutes to output a 500,000bp search.</p>
     </section>
 
     <div class="line"></div>
