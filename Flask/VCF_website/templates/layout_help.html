@@ -64,7 +64,7 @@
                     <a href="#search">Search</a>
                 </li>
                 <li>
-                    <a href="#resultsSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Results</a>
+                    <a href="#resultsSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Statistics</a>
                     <ul class="collapse list-unstyled" id="resultsSubmenu">
                         <li>
                             <a href="#sum-stats">Summary Statistics</a>
@@ -75,10 +75,21 @@
                     </ul>
                 </li>
                 <li>
-                    <a href="#limitations">Limitations</a>
+                    <a href="#limitationsSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Limitations</a>
+                    <ul class="collapse list-unstyled" id="resultsSubmenu">
+                        <li>
+                            <a href="#dataset-lim">Dataset Limitations</a>
+                        </li>
+                        <li>
+                            <a href="#database-lim">Database Limitations</a>
+                        </li>  
+                        <li>
+                            <a href="#tech-lim">Technologies Limitations</a>
+                    </ul>
                 </li>
-            </ul>
-
+                <li>
+                    <a href="#future-dev">Future Developments</a>
+                </li>                
             <ul class="list-unstyled CTAs">
                 <li>
                     <a href="{{url_for('static', filename='help_files/Popgen_Help.pdf')}}" class="download">Download PDF</a>
