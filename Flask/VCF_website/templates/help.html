@@ -138,25 +138,62 @@
 
     <div class="line"></div>
 
-    <h2>Results</h2>
-
-    <div class="line"></div>  
-
-
     <h2>Statistics</h2>
 
     <div class="line"></div> 
 
     <section id="sum-stats">
         <h3>Summary Statistics</h3>
-        <p>Lorem ipsum dolor</p>
+        <p>Statistics analyses are performed to see whether there are significant differences between and within populations, using SNP information and genomic regions. All but one statistical values are calculated through Scikit-allel (Miles & Harding, 2021). </p>
+        <p>Several summary statistics are available on POPgen. The user can select the summary statistics of interest, and values and plots will be outputted. The download button can be used to download summary statistics.</p>
+        <p>Window size and step size are determined by the user. Step size is optional, and an empty field will result in window plots with no overlaps. Choosing an appropriate window size with respect to the size of the region searched is important to obtain meaningful analysis.</p>
+        <p>Window sizes that are two small may result in NaN values due to insufficient number of SNPs in a window. The plots will still be produced, but with breaks where there are missing values. If this occurs, you may need to adjust the window and step size to reduce the occurrence of NaN values. Typically, a window size of 25,000 and step size of 10,000 is recommended for a search of a 100,000 bp region.</p>
+        <p>As mentioned previously, there are two regions that may cause unexpected NaNs; 20706257-20708536 and 25722272 – 25742171. These regions contain missing SNPs found in the original VCF due to unsupported RS ID. Care needs to be taken when searching these regions, especially the latter. </p>
+        
+        <h4>Observed Homozygosity</h4>
+        <p>This is a measure of the total sum of homozygous reference and homozygous alternative for each SNP. The value outputted indicates the proportion in which the SNP is homozygous, and a high value indicates the likelihood of the SNP being homozygous. This is based on a direct count method highlighted in Sabatti & Risch, 2002.</p>
+        <img src="{{url_for('static', filename='help_files/popgen_database_diagram.png')}}" align="middle" />
+        
+        <h4>Genetic Diversity</h4>
+        <p>Genetic Diversity can be used to see whether there is variation between selected populations. </p>
+        <p>Nucleotide Diversity</p>
+        <p>Nucleotide Diversity ( π ) is used as a measure of genetic diversity on POPgen. This is defined as the average number of nucleotide differences per site when two sequences are chosen randomly from the sample population. The formula outputs π and a high π indicates high genetic variation.</p>
+        <img src="{{url_for('static', filename='help_files/popgen_database_diagram.png')}}" align="middle" />
+        <p>Here, xi and xj refer to the population frequency of the ith and jth nucleomorph, and n refer to sample size. π ij refers to the differences in nucleotides between the ith and jth sequences (Nei & Li, 1979). </p>
+        
+        <h4>Haplotype Diversity</h4>
+        <p>Haplotype Diversity, also known as gene diversity, can be defined as the probability of two alleles randomly being different when sampled (de Jong et al., 2011). </p>
+        <img src="{{url_for('static', filename='help_files/popgen_database_diagram.png')}}" align="middle" />
+        <p>The function estimates haplotype diversity (H), where xi refers to the relative haplotype diversity in the sample and N refers to the sample size.  A value close to 1 indicates that the probability of picking two haplotypes which are the same are extremely high. A value close to 0 indicates that there are lots of haplotypes indicating more variation. </p>
+        
+        <h4>Neutrality Test</h4>
+        <p>Neutrality tests are used in population genetics to assess the goodness-of-fit of standard neutral model (Achaz, 2009) based on the frequency spectrum such as Tajima’s or Fu and Li’s F.</p>
+        <p>Tajimas’ D</p>
+        <p>Tajima’s D (D) is used as a test against neutrality, which is calculated through genotype arrays and counting the alleles. The formula compares the difference in values of Watterson theta (ratio of number of SNPs observed to expected number of SNPs based on neutral model of evolution) and expected number of segregating sites (according to a neutral model of evaluation). </p>
+        <img src="{{url_for('static', filename='help_files/popgen_database_diagram.png')}}" align="middle" />
+        <p>Interpreting D</p>
+        <p>D = 0: The observed and expected variation are similar. One conclusion is there is no evidence of selection for the observed sequence.</p>
+        <p>D > 0: Observed variation is greater than expected. This may indicate that the alternate alleles are scarce and that there may be a balancing selection. </p>
+        <p>D < 0: Observed variation is less than expected. This may indicate that the alternate alleles are abundant, indicating possibility of a selection pressure/selective sweep.</p>
+        <p>With single values, it may be hard to ascertain the meaning of these values, as these interpretations are only relevant if the value for D is statistically significant. The sliding window feature can obtain a range of values along an overall searched region, which can then be used to identify regions that may be significantly different from other observed values. A table of confidence limits for D can be found in the original published paper, which can be used to determine significance of individual observed values. (Tajima, 1989).</p>
+        
+        <h4>Population Genetic Variation</h4>
+        <p>Fst</p>
+        <p></p>
+        <img src="{{url_for('static', filename='help_files/popgen_database_diagram.png')}}" align="middle" />
+        <p></p>
     </section>  
     
     <div class="line"></div> 
 
     <section id="plots">
         <h3>Plots</h3>
-        <p>Lorem ipsum dolor</p>
+        <h4>Sliding Window Plots</h4>
+        <img src="{{url_for('static', filename='help_files/sliding_window_plots.png')}}" align="middle" />
+        <p>Figure 5. An example of a sliding plot for Fst using a search region of 18,000,000-19,000,000 for 5 populations, window size = 25,000 step size = 10,000. </p>
+        <p>A sliding window plot is created using a window of a fixed size which is sliding along the genomic region of interest. The sliding window will move in steps of a specified size from the beginning to end position. At each window, the statistical values are calculated and plotted against the average genomic position.</p>
+        <p>A sliding window plot is calculated and plotted using positions, population data, window sizes and step sizes. Window and step sizes are given in base pairs and can be specified by the user. The window size refers to the number of variants for haplotype diversity. Step size refers to the number of nucleotides for nucleotide diversity. </p>
+        <p>Plots are created using Plotly package (Nucleotide Diversity, Haplotype Diversity, Tajima’s D and Fst). The different populations can be selected either using the lines to the side of the plot.</p>
     </section>  
     
 
