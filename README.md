@@ -44,7 +44,7 @@ A script for populating the database has been provided for those that wish to se
 
 Finally, to run the application: 
 
-<code>python application.py</code>  
+<code>python run.py</code>  
 
 ## Search Parameters
 
