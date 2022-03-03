@@ -6,9 +6,9 @@
 
     <section id="software-arch">
         <h3>Software Architecture</h3>
-        <img src="{{url_for('static', filename='help_files/website_arch.png')}}" align="middle" />
-        <p><strong> Figure 1: POPgen software schematic and component integration </strong></p>
-        <p> Figure 1 shows the finalized software structure and all the integrated components used to create the functional POPgen web application, which can search through SNP information within human chromosome 22. This SNP information was downloaded from the IGSR web application and constructed into a functional database using SQLite3, which was then linked to flask using the package SQLAlchemy. SQLAlchemy facilitates communication between the flask python program and the constructed relational SQLite3 database in python. The main application runs on Flask using Jinja2 as a template engine to create HTML and other markup formats which can then be returned to the user in a http response (routes.py is the executable file). Website routes were defined using the HTML language and static files such as CSS (maintain consistency in website design). Together the application renders the final site that also features a user download for the results of their search parameters.</p> 
+        <img src="{{url_for('static', filename='help_files/software_arch.png')}}" align="middle" />
+        <p style="font-weight: bold;"> Figure 1: POPgen software schematic and component integration </p>
+        <p> Figure 1. shows the finalized software structure and all the integrated components used to create the functional POPgen web application, which can search through SNP information within human chromosome 22. This SNP information was downloaded from the IGSR web application and constructed into a functional database using SQLite3, which was then linked to flask using the package SQLAlchemy. SQLAlchemy facilitates communication between the flask python program and the constructed relational SQLite3 database in python. The main application runs on Flask using Jinja2 as a template engine to create HTML and other markup formats which can then be returned to the user in a http response (routes.py is the executable file). Website routes were defined using the HTML language and static files such as CSS (maintain consistency in website design). Together the application renders the final site that also features a user download for the results of their search parameters.</p> 
     </section>
 
     <div class="line"></div>
@@ -16,8 +16,8 @@
     <section id="web-arch">
         <h3>Website Architecture</h3>
         <p> Figure 2. shows a summary of all the routes within the POPgen website and how they are linked. The Search page outputs the results page from user-input fields, such as the gene name, RS ID and Chromosome location. The results page then outputs the relevant data in tables and provides options to view the summary statistics within and between populations. Once the statistics options within the results page have been selected and searched, the statistics page will show the relevant statistics for the selected populations available within the database.</p>
-        <img src="{{url_for('static', filename='help_files/soft_arch.png')}}" align="middle" />
-        <p><strong> Figure 2. POPgen web routes and links shown by solid black arrows. Web content shown by dotted lines. </strong></p>
+        <img src="{{url_for('static', filename='help_files/web_arch.png')}}" align="middle" />
+        <p style="font-weight: bold;"> Figure 2. POPgen web routes and links shown by solid black arrows. Web content shown by dotted lines. </p>
     </section>
     <div class="line"></div>
 
@@ -42,9 +42,9 @@
         <h4>Walkthrough</h4>
         <p>The website lets you search by chromosome name and position (start-end), rs id, gene name. It outputs SNPs information (chromosomal position, reference allele, alternate allele, frequencies) and allows you to select the desired statistics for calculation, based on the 5 populations provided. The populations can be selected as well. The statistics page contains the results of the calculated statistics (Table 1), as well as sliding windowed plots, of all statistics for better visualization and user experience.</p>
         <img src="{{url_for('static', filename='help_files/table_stats.png')}}" align="middle" />
-        <p>Table 1. Output of calculation of all statistics and all populations.</p>
+        <p style="font-weight: bold;"> Table 1. Output of calculation of all statistics and all populations.</p>
         <img src="{{url_for('static', filename='help_files/plot_stats.png')}}" align="middle" />
-        <p>Figure 3. An example of a sliding plot for Tajima’s D using a search region of 18,000,000-19,000,000 for 5 populations, window size = 25,000 step size = 10,000.</p>
+        <p style="font-weight: bold;"> Figure 3. An example of a sliding plot for Tajima’s D using a search region of 18,000,000-19,000,000 for 5 populations, window size = 25,000 step size = 10,000.</p>
     </section>
 
     <div class="line"></div>
@@ -123,7 +123,7 @@
         <h3>Data Storage</h3>
         <p>SQLite3 and SQLAlchemy were used to create and populate the database. Structures for the tables can be found in the models.py file. All search queries are initially made with the query table, which contains information about the chromosomal position, reference allele, alternate allele, and, where it is applicable, any genes that are implicated. Due to the unique property of RS IDs from the dbSNP, these were used as primary keys for which any searches would need to be matched to. The results page outputs the data stored within the query _search table (as seen in Figure 3). The other tables correspond to each population and contains information about the genotype frequency, allele frequency and phased genotype arrays for each SNP, with RS ID acting as a foreign key referencing the query_ search table. Both genotype frequency and allele frequency are stored in dictionary format within each of these fields.</p>
         <img src="{{url_for('static', filename='help_files/popgen_database_diagram.png')}}" align="middle" />
-        <p><strong>Figure 4. POPgen database schematic: Shown is 6 tables and the links represented by solid lines</strong></p>
+        <p style="font-weight: bold;"> Figure 4. POPgen database schematic: Shown is 6 tables and the links represented by solid lines </p>
     </section>  
     
     <div class="line"></div>   
@@ -179,9 +179,9 @@
         
         <h4>Population Genetic Variation</h4>
         <p>Fst</p>
-        <p></p>
+        <p>Fst is a measure of genetic variance which is explained by population structure. POPgen calculates the Fst values for each pair of populations the user has selected. The function is calculated through the method of Hudson (1992). Values range from 0 (low degree of differentiation) to 1 (High degree of differentiation).</p>
         <img src="{{url_for('static', filename='help_files/Fst.png')}}" align="middle" />
-        <p></p>
+        <p>Here, P1 refers to sample allele frequency in the first population and P2 refers to sample allele frequency in the second population. The function used by POPgen produces the numerator (which defines the mean number of differences within a population) and the denominator (defines the mean number of differences between populations). The sum of the numerators is divided by the sum of the denominators to obtain an average value for Fst over all variants searched. This definition of Fst was chosen as it is independent of sample size and is recommended when doing pair-wise comparisons (Bhatia et al, 2013). </p>
     </section>  
     
     <div class="line"></div> 
@@ -190,7 +190,7 @@
         <h3>Plots</h3>
         <h4>Sliding Window Plots</h4>
         <img src="{{url_for('static', filename='help_files/sliding_window_plots.png')}}" align="middle" />
-        <p>Figure 5. An example of a sliding plot for Fst using a search region of 18,000,000-19,000,000 for 5 populations, window size = 25,000 step size = 10,000. </p>
+        <p style="font-weight: bold;">Figure 5. An example of a sliding plot for Fst using a search region of 18,000,000-19,000,000 for 5 populations, window size = 25,000 step size = 10,000. </p>
         <p>A sliding window plot is created using a window of a fixed size which is sliding along the genomic region of interest. The sliding window will move in steps of a specified size from the beginning to end position. At each window, the statistical values are calculated and plotted against the average genomic position.</p>
         <p>A sliding window plot is calculated and plotted using positions, population data, window sizes and step sizes. Window and step sizes are given in base pairs and can be specified by the user. The window size refers to the number of variants for haplotype diversity. Step size refers to the number of nucleotides for nucleotide diversity. </p>
         <p>Plots are created using Plotly package (Nucleotide Diversity, Haplotype Diversity, Tajima’s D and Fst). The different populations can be selected either using the lines to the side of the plot.</p>
