@@ -19,8 +19,56 @@
         <img src="{{url_for('static', filename='help_files/soft_arch.png')}}" align="middle" />
         <p><strong> Figure 2. POPgen web routes and links shown by solid black arrows. Web content shown by dotted lines. </strong></p>
     </section>
+    <div class="line"></div>
+
+    <section id="run_popgen">
+        <h3>Runnig POPgen</h3>
+        
+        <h4>How to run</h4>
+        <p>POPgen has been deployed to the web successfully. </p>
+        <p>However, users can run POPgen locally. For POPgen to run, downloading the Web_Project directory from GitHub is needed.</p>
+        <p>POPgen can run locally using:</p>
+        <p>$ git clone https://github.com/Mani-varma1/Web_project</p>
+        <p>$ cd Flask </p>
+        <p>Virtual environment can be set up using: </p>
+        <p>$ py -3 -m venv .venv</p>
+        <p>$ .venv/Scripts/activate</p>
+        <p>To install necessary packages:</p>
+        <p>$ pip install -r packages.txt</p>
+        <p>A script for populating the database has been provided for those that wish to set up a local database and wish to explore the dataset. The files required for generating the database have also been provided in the form of a zip file with an empty database. All that needs to be done is to run the database_populating.py script in the folder it is located in. This will extract the files to a new data folder and automatically populate the database. The script takes roughly 30 minutes to run. </p>
+        <p>Finally, to run the application:</p>
+        <p>$ python application.py</p>
+        
+        <h4>Walkthrough</h4>
+        <p>The website lets you search by chromosome name and position (start-end), rs id, gene name. It outputs SNPs information (chromosomal position, reference allele, alternate allele, frequencies) and allows you to select the desired statistics for calculation, based on the 5 populations provided. The populations can be selected as well. The statistics page contains the results of the calculated statistics (Table 1), as well as sliding windowed plots, of all statistics for better visualization and user experience.</p>
+        <img src="{{url_for('static', filename='help_files/table_stats.png')}}" align="middle" />
+        <p>Table 1. Output of calculation of all statistics and all populations.</p>
+        <img src="{{url_for('static', filename='help_files/plot_stats.png')}}" align="middle" />
+        <p>Figure 3. An example of a sliding plot for Tajima’s D using a search region of 18,000,000-19,000,000 for 5 populations, window size = 25,000 step size = 10,000.</p>
+    </section>
 
     <div class="line"></div>
+
+    <section id="technologies">        
+        <h3>Technologies</h3>
+        
+        <h4>Flask</h4>
+        <p>The structure of the website was defined using HTML tags/classes from the stylesheets of both Bootstrap and W3-CSS for each page within the website architecture. These HTML templates were coupled with CSS languages to produce a professional website design that provides a simple and user-friendly experience. The Bootstrap and W3-CSS tags create a framework for responsive elements to the website and help organize where each HTML component will appear on the website. For example, Bootstrap classes were used to center the team information on the about page. </p>
+        
+        <h4>HTML, CSS and JavaScript</h4>
+        <p>HTML and CSS are the core elements of the frontend allowing for a well-organized and easy to understand user interface. HTML Document Object Models (DOM) were coupled with Bootstrap and W3-CSS libraries for creating a responsive and polished website. These libraries contain prebuilt custom classes for professional grade styling of our website. Although JavaScript is a core component of any modern website, we have used pre-existing libraries like JQuery to improve the interactivity of our website. </p>
+        
+        <h4>Forms and Validation</h4>
+        <p>We often require input data types to be in specific format for the downstream analysis to work. User input can often be unpredictable and error prone. It is crucial to provide the user with appropriate feedback when mistakes are made. Although HTML has such attributes, they are limited in nature without extensive use of JavaScript. Extensions such as Flask WTforms, allow developers to easily create forms in an object-oriented way, which can be passed as a variable to the necessary templates. Setting up flask forms is extremely simple. The main advantages of using WTforms is their data validation, which allows the web server to check the input data and is within the constraints set by the application, and cross site request forgery form (CSRF) protection, which prevents malicious attacker to induce users to perform actions that they do not intend to perform. We can also easily create our own custom validation checks that are specific to our website forms without JavaScript. Having form validation can be coupled to CSS with Jinja2 to provide visual feedback to the users on their input errors, which can significantly improve the user experience and allows developers to focus more on the downstream analysis without formatting issues.</p>
+        
+        <h4>Sessions</h4>
+        <p>Web apps often require data to be stored between each request as a user interacts with the app. However, HTTP is a stateless protocol and has no knowledge of other requests that were executed. This data could be stored in cookies which are stored on the user's computer. Due to security concerns and storage limit of 4KB, sessions are often used. Sessions are files that contain information on non-user specific requests they have executed. This allows us to access this data in multiple routes, without having to request user input for the same data on different pages. We use sessions to store information that was retrieved from queries which include SNP information and population specific frequencies. Prior to storage we must first serialize the data as session can only be stored in JSON format. Based on the user input parameters, the data size retrieved from the database could exceed 4KB. Therefore, we decided to store the sessions on the file systems, with no limits mentioned in the documentation. These sessions will automatically clear when either the browser is closed or replaced with data from a new query search if the user decides to change their search parameters. We can also have access to the session data within Jinja2 to create dynamic route links. Sessions can be used by JavaScript to perform various tasks in the front end without relying on the backend. Having sessions allows the user to quickly load the data if they close the tab by accident or navigate around the website, without having to search the database again.</p>
+        
+        <h4>Data Compression</h4>
+        <p>Due to the amount of data within the VCF file it is not practical to store the raw genotype data for everyone as shown in VCF format. Doing so could significantly increase the storage requirements and deteriorate the querying speed. The repetitive nature of our data means there is lot of redundant data that violates the first normal form of databases, so we have decided to compress the data.  Although many compressions technologies exist, we took inspiration from Run length encoding (RLE) to create a custom compression method which retains the positions of the sample and minimises the data storage requirement. Allowing us to be more flexible in the future if we decide to include other statistical methods.</p>       
+    </section>
+
+    <div class="line"></div>  
 
     <section id="structure_design">
         <h3>Structure and Design</h3>
