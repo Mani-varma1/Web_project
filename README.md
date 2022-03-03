@@ -40,7 +40,7 @@ To install necessary packages:
 
 A script for populating the database has been provided for those that wish to set up a local database and wish to explore the dataset. The files required for generating the database have also been provided in the form of a zip file with an empty database. All that needs to be done is to run the database_populating.py script in the folder it is located in. This will extract the files to a new data folder and automatically populate the database. The script takes roughly 30 minutes to run.  
 
-<code>python database_populating.py<code>
+<code>python database_populating.py</code>
 
 Finally, to run the application: 
 
