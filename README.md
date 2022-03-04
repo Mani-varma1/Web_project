@@ -1,6 +1,6 @@
 # POPGen: A population genomics web application
 
-## Link: 
+## Link: http://alpha1-env.eba-hjtnnxpb.eu-west-2.elasticbeanstalk.com/
 
 ## Description
 
